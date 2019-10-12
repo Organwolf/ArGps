@@ -7,48 +7,24 @@ using System;
 
 public class CSV : MonoBehaviour
 {
-    [SerializeField] string pathToCsvFile;
+    [SerializeField] string pathToCsvWaterFile;
+    [SerializeField] string pathToCsvHeightFile;
 
-    private List<Location> locations;
+    private List<Location> waterHeightLocations;
     private List<Location> locationsWithinRadius;
-    //public List<AronsLocation> ListOfPositions
-    //{
-    //    get
-    //    {
-    //        return listOfPositions;
-    //    }
-    //}
+    private List<Location> heightAtLocations;
 
     private void Start()
     {
         Debug.Log("Start triggered");
 
-        locations = new List<Location>();
+        waterHeightLocations = new List<Location>();
         locationsWithinRadius = new List<Location>();
-        ReadAndParseCSV(pathToCsvFile);
-        // ReadAndParseCSVHieght
-
-
-        // ---> remove the code below
-        //// UTM gis centrum
-        //var UTMEastingGis = 386915.91;
-        //var UTMNorthingGis = 6175124.26;
-
-        //// UTM well
-        //var UTMEastingWell = 386942.95;
-        //var UTMNorthingWell = 6175107.41;
-
-        //// Well
-        //var A = new Location(55.7085304, 13.2006627, 0);
-        //// GIS-center
-        //var B = new Location(55.708675, 13.200226, 0);
-
-        //var eucDist = Distance(UTMEastingGis, UTMNorthingGis, UTMEastingWell, UTMNorthingWell);
-        //Debug.Log("Distance euc: " + eucDist);
-        //var havDist = HaversineDistance(13.200226, 13.2006627, 55.708675, 55.7085304);
-        //Debug.Log("Distance hav: " + havDist);
-        // <---
+        heightAtLocations = new List<Location>();
+        ReadAndParseCSV(pathToCsvWaterFile);
+        ReadAndParseCSVHieght(pathToCsvHeightFile);
     }
+
 
     // Weekend project 12-13/10
     // file from DTM: ar_dem_2m_84.csv
@@ -59,10 +35,45 @@ public class CSV : MonoBehaviour
     // h = p.h from DTM
     // w = p.w from the currente csv
 
-
-    public void ReadAndParseCSV(string pathToCsvFile)
+    private void ReadAndParseCSVHieght(string pathToCsvHeightFile)
     {
-        TextAsset entireCSV = Resources.Load(pathToCsvFile) as TextAsset;
+        TextAsset entireCSV = Resources.Load(pathToCsvHeightFile) as TextAsset;
+        var lines = entireCSV.text.Split('\n');
+
+        foreach (var line in lines)
+        {
+            var locationString = line.Split(',');
+
+            var longitudeString = locationString[0].Trim();
+            float longitude;
+
+            if (float.TryParse(longitudeString, out longitude) == false)
+            {
+                longitude = 0;
+            }
+
+            var latitudeString = locationString[1].Trim();
+            float latitude;
+
+            if (float.TryParse(latitudeString, out latitude) == false)
+            {
+                latitude = 0;
+            }
+
+            var heightString = locationString[2].Trim();
+            float altitude;
+            if (float.TryParse(heightString, out altitude) == false)
+            {
+                altitude = 0;
+            }
+
+            heightAtLocations.Add(new Location(latitude, longitude, altitude));
+        }
+    }
+
+    public void ReadAndParseCSV(string pathToCsvWaterFile)
+    {
+        TextAsset entireCSV = Resources.Load(pathToCsvWaterFile) as TextAsset;
         var lines = entireCSV.text.Split('\n');
 
         foreach (var line in lines)
@@ -92,23 +103,42 @@ public class CSV : MonoBehaviour
                 altitude = 0;
             }
 
-            locations.Add(new Location(latitude, longitude, altitude));
+            waterHeightLocations.Add(new Location(latitude, longitude, altitude));
         }
     }
 
-    public List<Location> PointsWithinRadius(Location phone, double radius)
+
+    // Water height csv should actually be fed into this algorithm
+    public List<Location> PointsWithinRadius(Location deviceLocation, double radius)
     {
         locationsWithinRadius.Clear();
 
-        foreach(Location loc in locations)
+        foreach(Location loc in waterHeightLocations)
         {
-            var distance = HaversineDistance(loc.Longitude, phone.Longitude, loc.Latitude, phone.Latitude);
+            var distance = HaversineDistance(loc.Longitude, deviceLocation.Longitude, loc.Latitude, deviceLocation.Latitude);
             //Debug.Log("distance: " + distance);
 
             if (distance <= radius)
                 locationsWithinRadius.Add(loc);
         }
         return locationsWithinRadius;
+    }
+
+    public float GetHeight(Location deviceLocation)
+    {
+        float closestHeightValue = float.MaxValue;
+
+        foreach (Location loc in heightAtLocations)
+        {
+            var currentDistance = (float)HaversineDistance(loc.Longitude, deviceLocation.Longitude, loc.Latitude, deviceLocation.Latitude);
+
+            if (currentDistance < closestHeightValue)
+            {
+                closestHeightValue = currentDistance;
+            }
+            
+        }
+        return closestHeightValue;
     }
 
     private double Distance(double x1, double y1, double x2, double y2) => Math.Sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));

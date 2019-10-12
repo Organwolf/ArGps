@@ -135,6 +135,7 @@ public class WaterMesh : MonoBehaviour
         try
         {
             List<Location> locations = csv.PointsWithinRadius(deviceLocation, radius);
+            double height = csv.GetHeight(deviceLocation);
 
             foreach (Location loc in locations)
             {
