@@ -26,24 +26,28 @@ public class CSV : MonoBehaviour
         locations = new List<Location>();
         locationsWithinRadius = new List<Location>();
         ReadAndParseCSV(pathToCsvFile);
+        // ReadAndParseCSVHieght
 
-        // UTM gis centrum
-        var UTMEastingGis = 386915.91;
-        var UTMNorthingGis = 6175124.26;
 
-        // UTM well
-        var UTMEastingWell = 386942.95;
-        var UTMNorthingWell = 6175107.41;
+        // ---> remove the code below
+        //// UTM gis centrum
+        //var UTMEastingGis = 386915.91;
+        //var UTMNorthingGis = 6175124.26;
 
-        // Well
-        var A = new Location(55.7085304, 13.2006627, 0);
-        // GIS-center
-        var B = new Location(55.708675, 13.200226, 0);
+        //// UTM well
+        //var UTMEastingWell = 386942.95;
+        //var UTMNorthingWell = 6175107.41;
 
-        var eucDist = Distance(UTMEastingGis, UTMNorthingGis, UTMEastingWell, UTMNorthingWell);
-        Debug.Log("Distance euc: " + eucDist);
-        var havDist = HaversineDistance(13.200226, 13.2006627, 55.708675, 55.7085304);
-        Debug.Log("Distance hav: " + havDist);
+        //// Well
+        //var A = new Location(55.7085304, 13.2006627, 0);
+        //// GIS-center
+        //var B = new Location(55.708675, 13.200226, 0);
+
+        //var eucDist = Distance(UTMEastingGis, UTMNorthingGis, UTMEastingWell, UTMNorthingWell);
+        //Debug.Log("Distance euc: " + eucDist);
+        //var havDist = HaversineDistance(13.200226, 13.2006627, 55.708675, 55.7085304);
+        //Debug.Log("Distance hav: " + havDist);
+        // <---
     }
 
     // Weekend project 12-13/10
@@ -54,6 +58,7 @@ public class CSV : MonoBehaviour
     // foreach of the points from the CSV
     // h = p.h from DTM
     // w = p.w from the currente csv
+
 
     public void ReadAndParseCSV(string pathToCsvFile)
     {
