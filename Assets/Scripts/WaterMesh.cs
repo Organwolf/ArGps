@@ -117,6 +117,9 @@ public class WaterMesh : MonoBehaviour
         }
     }
 
+
+    // Is it enough to attach this function to a button?
+    // How can this be merged with my reset button?
     public void Restart()
     {
         ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "Restart", $"({gameObject.name}) - Restarting!", DebugMode);
@@ -135,6 +138,8 @@ public class WaterMesh : MonoBehaviour
         try
         {
             List<Location> locations = csv.PointsWithinRadius(deviceLocation, radius);
+
+            // New function. Currently not in use
             double height = csv.GetHeight(deviceLocation);
 
             foreach (Location loc in locations)
@@ -255,31 +260,11 @@ public class WaterMesh : MonoBehaviour
             obj.localLocation = targetPosition;
         }
 
-        // Create mesh during update
-        //createMesh(state.globalLocalPositions);
-        createMesh();
+        // Create mesh
+        delaunayMesh.Generate(state.getLocalLocations());
 
         PositionUpdated();
         state.LocationUpdatedCount++;
-    }
-
-    private void createMesh()
-    {
-        List<Vector3> localLocations = state.getLocalLocations();
-        //Debug.Log(localLocations.Count);
-
-        delaunayMesh.Generate(localLocations);
-
-
-        //foreach (GlobalLocalPosition glp in globalLocalPositions)
-        //{
-        //    glp.gameObject.transform.localPosition = glp.localLocation;
-        //    var localLocations = state.getLocalLocations();
-        //    // Send localLocations to delaunay class
-        //}
-
-        //if (state.globalLocalPositions.Count > 0)
-        //    ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "UpdatePosition", $"({gameObject.name}): Object position updated!, Position of 1st obj= {state.globalLocalPositions[0].localLocation}, Coord of 1st obj={state.globalLocalPositions[0].globalLocation.ToString()}", DebugMode);
     }
 
     private void PositionUpdated()
