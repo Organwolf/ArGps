@@ -47,13 +47,13 @@ public class DelaunayMesh : MonoBehaviour {
     private List<Transform> chunks = new List<Transform>();
     private ARLocationProvider locationProvider;
     private float radius = 20f;
-    private CSV csv;
+    //private CSV csv;
     private List<Location> csvLocations;
 
 
     public void Start()
     {
-        csv = GetComponent<CSV>();
+        //csv = GetComponent<CSV>();
         locationProvider = ARLocationProvider.Instance;
         //csvLocations = csv.PointsWithinRadius(locationProvider.CurrentLocation.ToLocation(), (double)radius);
     }
@@ -61,7 +61,9 @@ public class DelaunayMesh : MonoBehaviour {
     public void OnLocationsStateDataChange(LocationsStateData data)
     {
         // Deal with cleaning up the prev mesh
-        // DestroyMesh()
+        // >>>>>
+        // DestroyMesh() <--- Finish tuesday
+        // <<<<<
         Generate(data.getLocalLocations());
     }
 
@@ -69,18 +71,6 @@ public class DelaunayMesh : MonoBehaviour {
 
         Polygon polygon = new Polygon();
         elevations = new List<float>();
-
-        var currentLocation = new Location(55.708675, 13.200226, 0);
-        try
-        {
-            csvLocations = csv.PointsWithinRadius(currentLocation, (double)radius);
-
-        }
-        catch (System.Exception)
-        {
-            Debug.Log("Couldn't fetch the csv file");
-            throw;
-        }
 
         foreach (Vector3 loc in locations)
         {
