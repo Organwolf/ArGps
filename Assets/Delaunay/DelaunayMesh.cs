@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TriangleNet.Geometry;
 using TriangleNet.Topology;
+using static ObjectLocationManager;
 
 public class DelaunayMesh : MonoBehaviour {
     // Maximum size of the terrain.
@@ -57,6 +58,13 @@ public class DelaunayMesh : MonoBehaviour {
         //csvLocations = csv.PointsWithinRadius(locationProvider.CurrentLocation.ToLocation(), (double)radius);
     }
 
+    public void OnLocationsStateDataChange(LocationsStateData data)
+    {
+        // Deal with cleaning up the prev mesh
+        // DestroyMesh()
+        Generate(data.getLocalLocations());
+    }
+
     public virtual void Generate(List<Vector3> locations) {
 
         Polygon polygon = new Polygon();
@@ -108,7 +116,8 @@ public class DelaunayMesh : MonoBehaviour {
         {
             foreach (Transform chunk in chunks)
                 Destroy(chunk.gameObject);
-        } chunks.Clear();
+        }
+        chunks.Clear();
 
         MakeMesh();
     }

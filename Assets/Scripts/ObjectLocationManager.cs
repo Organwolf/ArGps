@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-public class WaterMesh : MonoBehaviour
+public class ObjectLocationManager : MonoBehaviour
 {
     public class GlobalLocalPosition
     {
@@ -37,6 +37,11 @@ public class WaterMesh : MonoBehaviour
         public bool Paused;
     }
 
+    //public List<Vector3> GetLocalLocations()
+    //{
+    //    return state.getLocalLocations();
+    //}
+
     [Serializable]
     public class PlaceAtOptions
     {
@@ -57,7 +62,7 @@ public class WaterMesh : MonoBehaviour
             "when available, and enable/disable all child game objects.")]
         public bool HideObjectUntilItIsPlaced = true;
     }
-
+    
     #region Serialized fields
 
     [SerializeField]
@@ -79,28 +84,29 @@ public class WaterMesh : MonoBehaviour
     [Space(4.0f)] public PlaceAtOptions PlacementOptions = new PlaceAtOptions();
 
     #endregion Serialized fields
-
  
-
+    // Change to real ground
+    public double radius = 20f;
     public bool UseGroundHeight => AltitudeMode == AltitudeMode.GroundRelative;
     LocationsStateData state = new LocationsStateData();
 
     private ARLocationProvider locationProvider;
     private Transform arLocationRoot;
+
+    // Remove or implement
     private List<SmoothMove> smoothMoves = new List<SmoothMove>();
     private MovingAveragePosition movingAverageFilter;
+
     private GameObject debugPanel;
     private ARLocationManager arLocationManager;
     private Transform mainCameraTransform;
     private bool hasInitialized;
     private GroundHeight groundHeight;
     private CSV csv;
-    private double radius = 20f;
     private DelaunayMesh delaunayMesh;
 
     public void Start()
     {
-
         locationProvider = ARLocationProvider.Instance;
         arLocationManager = ARLocationManager.Instance;
         arLocationRoot = arLocationManager.gameObject.transform;
@@ -133,11 +139,19 @@ public class WaterMesh : MonoBehaviour
         }
     }
 
+    private List<Location> locations;
+
+    public void SetPositionsToHandleLocations(List<Location> locations)
+    {
+        this.locations = locations;
+    }
+
     private void Initialize(Location deviceLocation)
     {
+
         try
         {
-            List<Location> locations = csv.PointsWithinRadius(deviceLocation, radius);
+            // List<Location> locations = csv.PointsWithinRadius(deviceLocation, radius);
 
             // New function. Currently not in use
             double height = csv.GetHeight(deviceLocation);
@@ -154,13 +168,6 @@ public class WaterMesh : MonoBehaviour
                 // <---
                 state.globalLocalPositions.Add(glp);
             }
-            //foreach (Location loc in locations)
-            //{
-            //    GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            //    obj.transform.SetParent(arLocationRoot.transform);
-            //    obj.transform.localPosition = Vector3.zero;
-            //    state.spatialGameObjects.Add(new GlobalLocalPosition(loc.Clone(), obj));
-            //}
 
             if (!hasInitialized)
             {
@@ -177,12 +184,6 @@ public class WaterMesh : MonoBehaviour
                     //    smoothMoves.Add(SmoothMove.AddSmoothMove(obj.localLocation, PlacementOptions.MovementSmoothing));
                 }
 
-                //if (UseGroundHeight)
-                //{
-                //    groundHeight = gameObject.AddComponent<GroundHeight>();
-                //    groundHeight.Settings.Altitude = (float)state.Altitude;
-                //}
-
                 if (PlacementOptions.UseMovingAverage)
                 {
                     movingAverageFilter = new MovingAveragePosition
@@ -192,15 +193,12 @@ public class WaterMesh : MonoBehaviour
                             : 20
                     };
                 }
-
-                
             }
         }
         catch (Exception ex)
         {
             ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "Initialize", $"({ex.ToString()})", DebugMode);
         }
-
     }
 
     private void ProviderRestarted()
@@ -211,15 +209,21 @@ public class WaterMesh : MonoBehaviour
         state.PositionUpdatedCount = 0;
     }
 
+    public Action<LocationsStateData> LocationsStateDataChange;
+
     private void locationUpdatedHandler(LocationReading currentLocation, LocationReading lastLocation)
-    {
-        
+    {   
         ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "locationUpdatedHandler", $"({gameObject.name}): locationUpdatedHandler is called.");
         UpdatePosition(currentLocation.ToLocation());
+        
+        LocationsStateDataChange.Invoke(state);
     }
 
     public void UpdatePosition(Location deviceLocation)
     {
+        if (locations == null || locations.Count <= 0)
+            return;
+
         if (!hasInitialized)
         {
             Initialize(deviceLocation);
@@ -260,8 +264,8 @@ public class WaterMesh : MonoBehaviour
             obj.localLocation = targetPosition;
         }
 
-        // Create mesh
-        delaunayMesh.Generate(state.getLocalLocations());
+        // Create mesh - move code to Delaunay script
+        // delaunayMesh.Generate(state.getLocalLocations());
 
         PositionUpdated();
         state.LocationUpdatedCount++;
