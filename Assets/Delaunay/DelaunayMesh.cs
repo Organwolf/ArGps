@@ -42,20 +42,8 @@ public class DelaunayMesh : MonoBehaviour {
     // The delaunay mesh
     private TriangleNet.Mesh mesh = null;
 
-    // Debugging - Adding the height from the CSV file
     private List<Transform> chunks = new List<Transform>();
-    private ARLocationProvider locationProvider;
-    private float radius = 20f;
-    private CSV csv;
-    private List<Location> csvLocations;
-
-
-    public void Start()
-    {
-        csv = GetComponent<CSV>();
-        locationProvider = ARLocationProvider.Instance;
-        //csvLocations = csv.PointsWithinRadius(locationProvider.CurrentLocation.ToLocation(), (double)radius);
-    }
+    private List<Location> csvWaterLocations;
 
     // Event/Action experiment
     public void OnStringActionInvoked(string msg)
@@ -63,22 +51,16 @@ public class DelaunayMesh : MonoBehaviour {
         Debug.Log(msg);
     }
 
+    public void SetPositionsToHandleLocations(List<Location> locationWithWaterHeight)
+    {
+        csvWaterLocations = locationWithWaterHeight;
+    }
 
-    public virtual void Generate(List<Vector3> locations) {
+    public virtual void Generate(List<Vector3> locations)
+    {
 
         Polygon polygon = new Polygon();
         elevations = new List<float>();
-
-        var currentLocation = new Location(55.708675, 13.200226, 0);
-        try
-        {
-            csvLocations = csv.PointsWithinRadius(currentLocation, (double)radius);
-        }
-        catch (System.Exception)
-        {
-            Debug.Log("Couldn't fetch the csv file");
-            throw;
-        }
 
         // Create the polygon for the triangulation
         foreach (Vector3 loc in locations)
@@ -92,7 +74,7 @@ public class DelaunayMesh : MonoBehaviour {
         // Adjusted elevation <-- this has to be changed to be relative to the actual ground
         for (int i = 0; i < locations.Count; i++)
         {
-            elevations.Add(((float)csvLocations[i].Altitude / 10f) - 0.5f);
+            elevations.Add(((float)csvWaterLocations[i].Altitude / 10f) - 0.5f);
         }
 
         if (chunks != null)
