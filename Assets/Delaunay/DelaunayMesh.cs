@@ -66,7 +66,6 @@ public class DelaunayMesh : MonoBehaviour {
         try
         {
             csvLocations = csv.PointsWithinRadius(currentLocation, (double)radius);
-
         }
         catch (System.Exception)
         {
@@ -74,42 +73,28 @@ public class DelaunayMesh : MonoBehaviour {
             throw;
         }
 
+        // Create the polygon for the triangulation
         foreach (Vector3 loc in locations)
         {
             polygon.Add(new Vertex(loc.x, loc.z));
         }
 
-        Debug.Log("Vertices input: " + locations.Count);
-
-        //Debug locations
-        //polygon.Add(new Vertex(1, 1));
-        //polygon.Add(new Vertex(2, 2));
-        //polygon.Add(new Vertex(0, 3));
-        //polygon.Add(new Vertex(3, 1));
-        //polygon.Add(new Vertex(5, 2));
-
         TriangleNet.Meshing.ConstraintOptions options = new TriangleNet.Meshing.ConstraintOptions() { ConformingDelaunay = false };
         mesh = (TriangleNet.Mesh)polygon.Triangulate(options);
 
-        Debug.Log("Mesh vertices: " + mesh.Vertices.Count);
-
-        //foreach (Vertex vert in mesh.Vertices)
-        //{
-        //    elevations.Add(0);
-        //}
-
+        // Adjusted elevation <-- this has to be changed to be relative to the actual ground
         for (int i = 0; i < locations.Count; i++)
         {
             elevations.Add(((float)csvLocations[i].Altitude / 10f) - 0.5f);
-            Debug.Log($"The height of {i} is: {csvLocations[i].Altitude}");
         }
 
         if (chunks != null)
         {
             foreach (Transform chunk in chunks)
-                Destroy(chunk.gameObject);
-        } chunks.Clear();
+            Destroy(chunk.gameObject);
+        }
 
+        chunks.Clear();
         MakeMesh();
     }
     
@@ -156,7 +141,6 @@ public class DelaunayMesh : MonoBehaviour {
                 uvs.Add(new Vector2(0.0f, 0.0f));
                 uvs.Add(new Vector2(0.0f, 0.0f));
             }
-            // CHUNK LOGIC - material
 
             Mesh chunkMesh = new Mesh();
             chunkMesh.vertices = vertices.ToArray();
@@ -164,13 +148,11 @@ public class DelaunayMesh : MonoBehaviour {
             chunkMesh.triangles = triangles.ToArray();
             chunkMesh.normals = normals.ToArray();
 
-            // CHUNK LOGIC - init prefab
             Transform chunk = Instantiate<Transform>(chunkPrefab, transform.position, transform.rotation);
             chunk.GetComponent<MeshFilter>().mesh = chunkMesh;
             chunk.GetComponent<MeshCollider>().sharedMesh = chunkMesh;
             chunk.transform.parent = transform;
             chunks.Add(chunk);
-            // CHUNK LOGIC - init prefab
         }
     }
 

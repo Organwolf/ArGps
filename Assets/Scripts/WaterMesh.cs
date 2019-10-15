@@ -80,8 +80,6 @@ public class WaterMesh : MonoBehaviour
 
     #endregion Serialized fields
 
- 
-
     public bool UseGroundHeight => AltitudeMode == AltitudeMode.GroundRelative;
     LocationsStateData state = new LocationsStateData();
 
@@ -97,10 +95,10 @@ public class WaterMesh : MonoBehaviour
     private CSV csv;
     private double radius = 20f;
     private DelaunayMesh delaunayMesh;
+    private List<Location> csvWaterLocations;
 
     public void Start()
     {
-
         locationProvider = ARLocationProvider.Instance;
         arLocationManager = ARLocationManager.Instance;
         arLocationRoot = arLocationManager.gameObject.transform;
@@ -117,6 +115,8 @@ public class WaterMesh : MonoBehaviour
         }
     }
 
+    // Experimenting with Events/Actions
+
     public void Restart()
     {
         ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "Restart", $"({gameObject.name}) - Restarting!", DebugMode);
@@ -130,13 +130,16 @@ public class WaterMesh : MonoBehaviour
         }
     }
 
+    public void SetPositionsToHandleLocations(List<Location> locationWithWaterHeight)
+    {
+        csvWaterLocations = locationWithWaterHeight;
+    }
+
     private void Initialize(Location deviceLocation)
     {
         try
         {
-            List<Location> locations = csv.PointsWithinRadius(deviceLocation, radius);
-
-            foreach (Location loc in locations)
+            foreach (Location loc in csvWaterLocations)
             {
                 GlobalLocalPosition glp = new GlobalLocalPosition(loc, Vector3.zero);
                 // comment out once we just render the mesh
@@ -148,13 +151,6 @@ public class WaterMesh : MonoBehaviour
                 // <---
                 state.globalLocalPositions.Add(glp);
             }
-            //foreach (Location loc in locations)
-            //{
-            //    GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            //    obj.transform.SetParent(arLocationRoot.transform);
-            //    obj.transform.localPosition = Vector3.zero;
-            //    state.spatialGameObjects.Add(new GlobalLocalPosition(loc.Clone(), obj));
-            //}
 
             if (!hasInitialized)
             {
