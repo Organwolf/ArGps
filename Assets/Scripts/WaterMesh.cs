@@ -97,8 +97,13 @@ public class WaterMesh : MonoBehaviour
     private DelaunayMesh delaunayMesh;
     private List<Location> csvWaterLocations;
 
+    // Experimenting with Events/Actions
+    public Action<string> StringPrintAction;
+    
     public void Start()
     {
+
+
         locationProvider = ARLocationProvider.Instance;
         arLocationManager = ARLocationManager.Instance;
         arLocationRoot = arLocationManager.gameObject.transform;
@@ -115,7 +120,6 @@ public class WaterMesh : MonoBehaviour
         }
     }
 
-    // Experimenting with Events/Actions
 
     public void Restart()
     {
@@ -137,6 +141,8 @@ public class WaterMesh : MonoBehaviour
 
     private void Initialize(Location deviceLocation)
     {
+
+
         try
         {
             foreach (Location loc in csvWaterLocations)
@@ -210,6 +216,10 @@ public class WaterMesh : MonoBehaviour
 
     public void UpdatePosition(Location deviceLocation)
     {
+
+        // Experiment with Events/Actions
+        StringPrintAction.Invoke("Sending information to the DelaunayMesh class");
+
         if (!hasInitialized)
         {
             Initialize(deviceLocation);

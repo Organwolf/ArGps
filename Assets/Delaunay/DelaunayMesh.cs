@@ -57,6 +57,13 @@ public class DelaunayMesh : MonoBehaviour {
         //csvLocations = csv.PointsWithinRadius(locationProvider.CurrentLocation.ToLocation(), (double)radius);
     }
 
+    // Event/Action experiment
+    public void OnStringActionInvoked(string msg)
+    {
+        Debug.Log(msg);
+    }
+
+
     public virtual void Generate(List<Vector3> locations) {
 
         Polygon polygon = new Polygon();
