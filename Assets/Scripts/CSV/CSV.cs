@@ -7,8 +7,6 @@ using System;
 
 public class CSV : MonoBehaviour
 {
-    [SerializeField] string pathToCsvFile;
-
     private List<Location> locations;
     private List<Location> locationsWithinRadius;
 
@@ -16,10 +14,9 @@ public class CSV : MonoBehaviour
     {
         locations = new List<Location>();
         locationsWithinRadius = new List<Location>();
-        ReadAndParseCSV(pathToCsvFile);
     }
 
-    public void ReadAndParseCSV(string pathToCsvFile)
+    public List<Location> ReadAndParseCSV(string pathToCsvFile)
     {
         TextAsset entireCSV = Resources.Load(pathToCsvFile) as TextAsset;
         var lines = entireCSV.text.Split('\n');
@@ -53,6 +50,7 @@ public class CSV : MonoBehaviour
 
             locations.Add(new Location(latitude, longitude, altitude));
         }
+        return locations;
     }
 
     public List<Location> PointsWithinRadius(Location phone, double radius)

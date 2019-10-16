@@ -5,13 +5,15 @@ using ARLocation;
 
 public class Manager : MonoBehaviour
 {
+    [SerializeField] string pathToWaterCsv;
+    [SerializeField] double radius = 20.0;
+    [SerializeField] Location deviceLocation;
+
     private CSV csv;
     private WaterMesh waterMesh;
     private DelaunayMesh delaunayMesh;
     private ARLocationProvider locationProvider;
-
-    [SerializeField] double radius = 20.0;
-    [SerializeField] Location deviceLocation;
+    private List<Location> csvWaterLocation;
 
     private void Awake()
     {
@@ -25,12 +27,13 @@ public class Manager : MonoBehaviour
         // Event/Action experiment
         waterMesh.StringPrintAction += delaunayMesh.OnStringActionInvoked;
 
-        locationProvider = ARLocationProvider.Instance;
-        Location x = locationProvider.LastLocation.ToLocation();
-        Debug.Log($"Phones long: {x.Longitude} lat:{x.Latitude}");
+        //locationProvider = ARLocationProvider.Instance;
+        //Location x = locationProvider.LastLocation.ToLocation();
+        //Debug.Log($"Phones long: {x.Longitude} lat:{x.Latitude}");
 
-        List<Location> csvWaterLocations = csv.PointsWithinRadius(deviceLocation, radius);
-        waterMesh.SetPositionsToHandleLocations(csvWaterLocations);
-        delaunayMesh.SetPositionsToHandleLocations(csvWaterLocations);
+        csvWaterLocation = csv.ReadAndParseCSV(pathToWaterCsv);
+        var locationsWithinRadius = csv.PointsWithinRadius(deviceLocation, radius);
+        waterMesh.SetPositionsToHandleLocations(locationsWithinRadius);
+        delaunayMesh.SetPositionsToHandleLocations(locationsWithinRadius);
     }
 }

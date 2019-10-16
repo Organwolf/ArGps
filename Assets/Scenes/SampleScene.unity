@@ -255,18 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952af5055c190420a90507bb04848a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xsize: 50
-  ysize: 50
-  minPointRadius: 1
-  randomPoints: 3
-  trianglesInChunk: 20000
-  elevationScale: 100
-  sampleSize: 1
-  octaves: 8
-  frequencyBase: 2
-  persistence: 1.1
-  detailMesh: {fileID: 4831155545516978, guid: e99351797e7e142ee98a91d58ac9f289, type: 3}
-  detailMeshesToGenerate: 50
+  trianglesInChunk: 1
   chunkPrefab: {fileID: 4760822391077712, guid: dfbbc8c46a7ed47de952d225cce1f52c,
     type: 3}
 --- !u!114 &86549456
@@ -281,7 +270,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 897b12c961494e541b286ed53e053198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathToCsvFile: csv_large
 --- !u!114 &86549457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00dd732a1138141ac9ab48d44d4809d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 20
+  pathToWaterCsv: csv_large
+  radius: 50
   deviceLocation:
     Latitude: 55.708675
     Longitude: 13.200226

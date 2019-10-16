@@ -277,8 +277,6 @@ public class WaterMesh : MonoBehaviour
 
     private void locationUpdatedHandler(LocationReading currentLocation, LocationReading lastLocation)
     {
-
-
         ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "locationUpdatedHandler", $"({gameObject.name}): locationUpdatedHandler is called.");
         UpdatePosition(currentLocation.ToLocation());
     }

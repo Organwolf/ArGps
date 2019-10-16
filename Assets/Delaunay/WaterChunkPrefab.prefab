@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 23247137960634504}
   - component: {fileID: 64308250482023768}
   m_Layer: 0
-  m_Name: ChunkPrefab
+  m_Name: WaterChunkPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 67e6a6bbceb2d4634a2883a6682bc1ee, type: 2}
+  - {fileID: 2100000, guid: ea4f6861804ab954e8a17c6f028ec4bc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
