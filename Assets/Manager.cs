@@ -23,16 +23,21 @@ public class Manager : MonoBehaviour
         delaunayMesh = GetComponent<DelaunayMesh>();
     }
 
-    void Start()
+    public void ButtonLogic()
     {
-        // write a function that returns the devices current position from WaterMesh - Rename WaterMesh
-
+        waterMesh.enabled = true;
         csvWaterLocation = csv.ReadAndParseCSV(pathToWaterCsv);
         var locationsWithinRadius = csv.PointsWithinRadius(deviceLocation, radius);
         waterMesh.SetPositionsToHandleLocations(locationsWithinRadius);
 
         waterMesh.PositionsUpdated += OnPositionsUpdated;
         delaunayMesh.SetPositionsToHandleLocations(locationsWithinRadius);
+    }
+
+    void Start()
+    {
+        // write a function that returns the devices current position from WaterMesh - Rename WaterMesh
+
     }
 
     private void OnPositionsUpdated(LocationsStateData stateData)
