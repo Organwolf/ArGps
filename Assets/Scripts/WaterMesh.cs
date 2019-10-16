@@ -81,6 +81,8 @@ public class WaterMesh : MonoBehaviour
     #endregion Serialized fields
 
     public bool UseGroundHeight => AltitudeMode == AltitudeMode.GroundRelative;
+
+
     LocationsStateData state = new LocationsStateData();
 
     private ARLocationProvider locationProvider;
@@ -99,7 +101,9 @@ public class WaterMesh : MonoBehaviour
 
     // Experimenting with Events/Actions
     public Action<string> StringPrintAction;
-    
+
+    public Action<LocationsStateData> PositionsUpdated { get; set; }
+
     public void Start()
     {
         locationProvider = ARLocationProvider.Instance;
@@ -117,7 +121,6 @@ public class WaterMesh : MonoBehaviour
             return;
         }
     }
-
 
     public void Restart()
     {
@@ -197,10 +200,6 @@ public class WaterMesh : MonoBehaviour
 
     public void UpdatePosition(Location deviceLocation)
     {
-
-        // Experiment with Events/Actions
-        StringPrintAction.Invoke("Sending information to the DelaunayMesh class");
-
         if (!hasInitialized)
         {
             Initialize(deviceLocation);
@@ -239,34 +238,16 @@ public class WaterMesh : MonoBehaviour
             obj.localLocation = targetPosition;
         }
 
-        createMesh();
 
         PositionUpdated();
 
-        // Invoke a action here that sends appropriate data to the mesh?
-        // <--- right here
-
         state.LocationUpdatedCount++;
+
+        //Meshen borde göras EFTER positonerna blivit uppdaterade
+        PositionsUpdated(state);
     }
 
-    private void createMesh()
-    {
-        List<Vector3> localLocations = state.getLocalLocations();
-        //Debug.Log(localLocations.Count);
 
-        delaunayMesh.Generate(localLocations);
-
-
-        //foreach (GlobalLocalPosition glp in globalLocalPositions)
-        //{
-        //    glp.gameObject.transform.localPosition = glp.localLocation;
-        //    var localLocations = state.getLocalLocations();
-        //    // Send localLocations to delaunay class
-        //}
-
-        //if (state.globalLocalPositions.Count > 0)
-        //    ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "UpdatePosition", $"({gameObject.name}): Object position updated!, Position of 1st obj= {state.globalLocalPositions[0].localLocation}, Coord of 1st obj={state.globalLocalPositions[0].globalLocation.ToString()}", DebugMode);
-    }
     private void ProviderRestarted()
     {
         ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "ProviderRestarted", $"({gameObject.name})", DebugMode);

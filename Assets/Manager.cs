@@ -1,7 +1,8 @@
 ﻿using System.Collections;
+using ARLocation;
 using System.Collections.Generic;
 using UnityEngine;
-using ARLocation;
+using static WaterMesh;
 
 public class Manager : MonoBehaviour
 {
@@ -24,16 +25,21 @@ public class Manager : MonoBehaviour
 
     void Start()
     {
-        // Event/Action experiment
-        waterMesh.StringPrintAction += delaunayMesh.OnStringActionInvoked;
-
-        //locationProvider = ARLocationProvider.Instance;
-        //Location x = locationProvider.LastLocation.ToLocation();
-        //Debug.Log($"Phones long: {x.Longitude} lat:{x.Latitude}");
+        // write a function that returns the devices current position from WaterMesh - Rename WaterMesh
 
         csvWaterLocation = csv.ReadAndParseCSV(pathToWaterCsv);
         var locationsWithinRadius = csv.PointsWithinRadius(deviceLocation, radius);
         waterMesh.SetPositionsToHandleLocations(locationsWithinRadius);
+
+        waterMesh.PositionsUpdated += OnPositionsUpdated;
         delaunayMesh.SetPositionsToHandleLocations(locationsWithinRadius);
+    }
+
+    private void OnPositionsUpdated(LocationsStateData stateData)
+    {
+        // Denna kommer anropas varje gång en eller flera positoner blir uppdaterade.
+        // Så nu kommer du tom få tillgång till alla positioner som blivit uppdaterade.
+        var locations = stateData.getLocalLocations();
+        delaunayMesh.Generate(locations);
     }
 }
