@@ -267,11 +267,11 @@ public class WaterMesh : MonoBehaviour
 
     private void PositionUpdated()
     {
-        if (PlacementOptions.HideObjectUntilItIsPlaced && state.PositionUpdatedCount <= 0)
-        {
-            // ToDo: make the mesh visible here
-            state.globalLocalPositions.ForEach(obj => Misc.ShowGameObject(obj.gameObject));
-        }
+        //if (PlacementOptions.HideObjectUntilItIsPlaced && state.PositionUpdatedCount <= 0)
+        //{
+        //    // ToDo: make the mesh visible here
+        //    state.globalLocalPositions.ForEach(obj => Misc.ShowGameObject(obj.gameObject));
+        //}
 
         state.PositionUpdatedCount++;
 

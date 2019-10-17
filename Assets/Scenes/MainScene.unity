@@ -308,7 +308,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &95980005
 Transform:
   m_ObjectHideFlags: 0
@@ -682,7 +682,7 @@ PrefabInstance:
     - target: {fileID: 4674721499694745250, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ButtonLogic
+      value: GenerateWaterMesh
       objectReference: {fileID: 0}
     - target: {fileID: 3033183851367858112, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}

@@ -23,7 +23,7 @@ public class Manager : MonoBehaviour
         delaunayMesh = GetComponent<DelaunayMesh>();
     }
 
-    public void ButtonLogic()
+    public void GenerateWaterMesh()
     {
         waterMesh.enabled = true;
         csvWaterLocation = csv.ReadAndParseCSV(pathToWaterCsv);

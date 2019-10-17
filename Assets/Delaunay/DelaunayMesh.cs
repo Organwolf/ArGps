@@ -47,7 +47,7 @@ public class DelaunayMesh : MonoBehaviour {
         // Adjusted elevation <-- this has to be changed to be relative to the actual ground
         for (int i = 0; i < locations.Count; i++)
         {
-            elevations.Add(((float)csvWaterLocations[i].Altitude / 10f) - 2.5f);
+            elevations.Add(((float)csvWaterLocations[i].Altitude / 10f) - 2f);
         }
 
         if (chunks != null)
