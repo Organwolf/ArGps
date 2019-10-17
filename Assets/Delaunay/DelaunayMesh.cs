@@ -113,6 +113,18 @@ public class DelaunayMesh : MonoBehaviour {
         }
     }
 
+    public bool MeshVisible
+    {
+        get
+        {
+            return GetComponent<MeshRenderer>().enabled;
+        }
+        set
+        {
+            GetComponent<MeshRenderer>().enabled = value;
+        }
+    }
+
     /* Returns a point's local coordinates. */
     public Vector3 GetPoint3D(int index) {
         Vertex vertex = mesh.vertices[index];
