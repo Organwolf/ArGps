@@ -23,6 +23,12 @@ public class Manager : MonoBehaviour
         delaunayMesh = GetComponent<DelaunayMesh>();
     }
 
+    public void AlterHeightOfMesh()
+    {
+        // no defensive programming for now
+        delaunayMesh.SetHeightToMesh(10f);
+    }
+
     public void GenerateWaterMesh()
     {
         // Send the ground plane transform to the delaunayMesh class

@@ -157,6 +157,24 @@ public class DelaunayMesh : MonoBehaviour
         chunks.Clear();
     }
 
+    public GameObject GetMesh()
+    {
+        if (chunks.Count == 1)
+        {
+            return chunks[0].gameObject;
+        }
+        else
+            return null;
+    }
+
+    public void SetHeightToMesh(float newHeight)
+    {
+        if (chunks.Count == 1)
+        {
+            chunks[0].transform.position = new Vector3(chunks[0].transform.position.x, newHeight, chunks[0].transform.position.z);
+        }
+    }
+
     public bool MeshVisible
     {
         get
