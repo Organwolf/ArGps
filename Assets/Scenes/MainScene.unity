@@ -820,6 +820,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AR Floor
       objectReference: {fileID: 0}
+    - target: {fileID: 1809469862153096, guid: fd8a1ea49b1bb463bb0f799cae30cdcb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4893690304070136, guid: fd8a1ea49b1bb463bb0f799cae30cdcb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
