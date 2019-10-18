@@ -94,9 +94,7 @@ public class WaterMesh : MonoBehaviour
     private Transform mainCameraTransform;
     private bool hasInitialized;
     private GroundHeight groundHeight;
-    private CSV csv;
     private double radius = 20f;
-    private DelaunayMesh delaunayMesh;
     private List<Location> csvWaterLocations;
 
     // Experimenting with Events/Actions
@@ -112,8 +110,12 @@ public class WaterMesh : MonoBehaviour
         mainCameraTransform = arLocationManager.MainCamera.transform;
         locationProvider.OnLocationUpdatedEvent(locationUpdatedHandler);
         locationProvider.OnProviderRestartEvent(ProviderRestarted);
-        csv = GetComponent<CSV>();
-        delaunayMesh = GetComponent<DelaunayMesh>();
+
+        // Doesn't seem to matter
+        //var locationRootTransform = arLocationRoot.transform;
+        //Debug.Log($" ArLocationRoot position: {locationRootTransform.position} LocalPos: {locationRootTransform.localPosition}");
+        //arLocationRoot.transform.position = new Vector3(0, -2, 0);
+        //Debug.Log($" ArLocationRoot position: {locationRootTransform.position} LocalPos: {locationRootTransform.localPosition}");
 
         if (locationProvider == null)
         {
@@ -228,11 +230,16 @@ public class WaterMesh : MonoBehaviour
             Vector3 targetPosition = Location.GetGameObjectPositionForLocation(
                     arLocationRoot, mainCameraTransform, deviceLocation, obj.globalLocation, isHeightRelative
                 );
+
             // If GroundHeight is enabled, don't change the objects position
             if (UseGroundHeight)
             {
                 targetPosition.y = transform.position.y;
             }
+
+            //var log = $"Tragetpostion: {targetPosition} transform: {transform.position}";
+            //Debug.Log(log);
+
             // comment out once we just render the mesh
             obj.gameObject.transform.position = targetPosition;
             obj.localLocation = targetPosition;

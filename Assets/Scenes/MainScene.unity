@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952af5055c190420a90507bb04848a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trianglesInChunk: 5000
   chunkPrefab: {fileID: 4760822391077712, guid: dfbbc8c46a7ed47de952d225cce1f52c,
     type: 3}
 --- !u!114 &86549456
@@ -289,6 +290,7 @@ MonoBehaviour:
     Altitude: 0
     AltitudeMode: 0
     Label: 
+  placementManager: {fileID: 2061189425}
 --- !u!1 &95980004
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,7 +509,7 @@ PrefabInstance:
     - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_Name
-      value: UICanvas_Clean-up
+      value: UICanvas
       objectReference: {fileID: 0}
     - target: {fileID: 4674721501056865552, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -1349,6 +1351,7 @@ MonoBehaviour:
   arRaycastManager: {fileID: 2061189426}
   arPlaneManager: {fileID: 2061189422}
   arCamera: {fileID: 1735566239}
+  arLocationRoot: {fileID: 1704701963}
 --- !u!114 &2061189426
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -32,7 +32,7 @@ public class DelaunayMesh : MonoBehaviour
         csvWaterLocations = locationWithWaterHeight;
     }
 
-    public virtual void Generate(List<Vector3> locations)
+    public virtual void Generate(List<Vector3> locations, Transform groundPlaneTransform)
     {
 
         Polygon polygon = new Polygon();
@@ -50,7 +50,11 @@ public class DelaunayMesh : MonoBehaviour
         // Adjusted elevation <-- this has to be changed to be relative to the actual ground
         for (int i = 0; i < locations.Count; i++)
         {
-            elevations.Add(((float)csvWaterLocations[i].Altitude / 10f) - 2f);
+            //elevations.Add(((float)csvWaterLocations[i].Altitude / 100f) + groundPlaneTransform.position.y);
+            elevations.Add(groundPlaneTransform.position.y);
+
+            // for debug purposes
+            //elevations.Add(0);
         }
 
         if (chunks != null)

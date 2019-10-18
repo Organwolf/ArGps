@@ -12,7 +12,10 @@ using System;
 using UnityEngine.Android;
 #endif
 
-public class PlacementManager_CleanUp : MonoBehaviour
+// Trying to solve the elevation problem
+using ARLocation.Utils;
+
+public class PlacementManager : MonoBehaviour
 {
     // Prefabs & materials
     public GameObject groundPlanePrefab;
@@ -65,8 +68,13 @@ public class PlacementManager_CleanUp : MonoBehaviour
     // Elevation variables
     private float elevation = 0.001f;
 
+    // Trying to solve the elevation problem
+    [SerializeField] private Transform arLocationRoot;
+
     private void Awake()
     {
+        //arLocationRoot = arLocationManager
+
         // Lists for wall objects
         listOfPlacedObjects = new List<GameObject>();
         listOfWallMeshes = new List<GameObject>();
@@ -110,6 +118,7 @@ public class PlacementManager_CleanUp : MonoBehaviour
                             groundPlane = Instantiate(groundPlanePrefab, hitPose.position, hitPose.rotation);
                             planeIsPlaced = true;
                             TogglePlaneDetection();
+                            //arLocationRoot.transform = groundPlane.transform;
                         }
                     }
 
@@ -207,6 +216,18 @@ public class PlacementManager_CleanUp : MonoBehaviour
             measureLine.enabled = true;
             measureLine.SetPosition(0, startPoint.transform.position);
             measureLine.SetPosition(1, endPoint.transform.position);
+        }
+    }
+
+    public Transform GetGroundPlaneTransform()
+    {
+        if (groundPlane != null && planeIsPlaced)
+        {
+            return groundPlane.transform;
+        }
+        else
+        {
+            return null;
         }
     }
 
