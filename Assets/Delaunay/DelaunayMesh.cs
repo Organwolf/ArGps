@@ -6,7 +6,7 @@ using TriangleNet.Topology;
 
 public class DelaunayMesh : MonoBehaviour
 {
-
+    // Size of each chunk - currently larger enough to fit the mesh in 1 chunk
     [SerializeField] private int trianglesInChunk = 5000;
 
     // Prefab which is generated for each chunk of the mesh.
@@ -17,15 +17,8 @@ public class DelaunayMesh : MonoBehaviour
 
     // The delaunay mesh
     private TriangleNet.Mesh mesh = null;
-
     private List<Transform> chunks = new List<Transform>();
     private List<Location> csvWaterLocations;
-
-    // Event/Action experiment
-    public void OnStringActionInvoked(string msg)
-    {
-        Debug.Log(msg);
-    }
 
     public void SetPositionsToHandleLocations(List<Location> locationWithWaterHeight)
     {
@@ -34,11 +27,10 @@ public class DelaunayMesh : MonoBehaviour
 
     public virtual void Generate(List<Vector3> locations, Transform groundPlaneTransform)
     {
-
         Polygon polygon = new Polygon();
         elevations = new List<float>();
 
-        // Create the polygon for the triangulation
+        // Create separate polygons for the triangulation
         foreach (Vector3 loc in locations)
         {
             polygon.Add(new Vertex(loc.x, loc.z));
@@ -47,20 +39,12 @@ public class DelaunayMesh : MonoBehaviour
         TriangleNet.Meshing.ConstraintOptions options = new TriangleNet.Meshing.ConstraintOptions() { ConformingDelaunay = false };
         mesh = (TriangleNet.Mesh)polygon.Triangulate(options);
 
-        // Adjusted elevation <-- this has to be changed to be relative to the actual ground
         for (int i = 0; i < locations.Count; i++)
         {
-            elevations.Add((float)csvWaterLocations[i].Altitude * 10f + groundPlaneTransform.position.y);
-            //elevations.Add(groundPlaneTransform.position.y);
+            elevations.Add((float)csvWaterLocations[i].Altitude + groundPlaneTransform.position.y);
         }
 
-        if (chunks != null)
-        {
-            foreach (Transform chunk in chunks)
-                Destroy(chunk.gameObject);
-        }
-        chunks.Clear();
-
+        ClearMesh();
         MakeMesh();
     }
 
@@ -144,7 +128,6 @@ public class DelaunayMesh : MonoBehaviour
 
             chunks.Add(chunk);
         }
-        
     }
 
     private void ClearMesh()
@@ -172,18 +155,6 @@ public class DelaunayMesh : MonoBehaviour
         if (chunks.Count == 1)
         {
             chunks[0].transform.position = new Vector3(chunks[0].transform.position.x, newHeight, chunks[0].transform.position.z);
-        }
-    }
-
-    public bool MeshVisible
-    {
-        get
-        {
-            return GetComponent<MeshRenderer>().enabled;
-        }
-        set
-        {
-            GetComponent<MeshRenderer>().enabled = value;
         }
     }
 

@@ -15,7 +15,6 @@ public class Manager : MonoBehaviour
     private ARLocationProvider locationProvider;
     private Transform groundPlaneTransform;
 
-
     private void Awake()
     {
         csv = GetComponent<CSV>();
@@ -23,6 +22,14 @@ public class Manager : MonoBehaviour
         delaunayMesh = GetComponent<DelaunayMesh>();
     }
 
+    // Called each time the positions update
+    private void OnPositionsUpdated(LocationsStateData stateData)
+    {
+        var locations = stateData.getLocalLocations();
+        delaunayMesh.Generate(locations, groundPlaneTransform);
+    }
+
+    // UI
     public void AlterHeightOfMesh()
     {
         // no defensive programming for now
@@ -41,19 +48,5 @@ public class Manager : MonoBehaviour
 
         waterMesh.PositionsUpdated += OnPositionsUpdated;
         delaunayMesh.SetPositionsToHandleLocations(locationsWithinRadius);
-    }
-
-    void Start()
-    {
-        // write a function that returns the devices current position from WaterMesh - Rename WaterMesh
-
-    }
-
-    private void OnPositionsUpdated(LocationsStateData stateData)
-    {
-        // Denna kommer anropas varje gång en eller flera positoner blir uppdaterade.
-        // Så nu kommer du tom få tillgång till alla positioner som blivit uppdaterade.
-        var locations = stateData.getLocalLocations();
-        delaunayMesh.Generate(locations, groundPlaneTransform);
     }
 }
