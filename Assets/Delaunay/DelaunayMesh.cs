@@ -50,11 +50,8 @@ public class DelaunayMesh : MonoBehaviour
         // Adjusted elevation <-- this has to be changed to be relative to the actual ground
         for (int i = 0; i < locations.Count; i++)
         {
-            //elevations.Add(((float)csvWaterLocations[i].Altitude / 100f) + groundPlaneTransform.position.y);
-            elevations.Add(groundPlaneTransform.position.y);
-
-            // for debug purposes
-            //elevations.Add(0);
+            elevations.Add((float)csvWaterLocations[i].Altitude * 10f + groundPlaneTransform.position.y);
+            //elevations.Add(groundPlaneTransform.position.y);
         }
 
         if (chunks != null)
@@ -144,7 +141,10 @@ public class DelaunayMesh : MonoBehaviour
             chunk.GetComponent<MeshFilter>().mesh = chunkMesh;
             chunk.GetComponent<MeshCollider>().sharedMesh = chunkMesh;
             chunk.transform.parent = transform;
+
+            chunks.Add(chunk);
         }
+        
     }
 
     private void ClearMesh()

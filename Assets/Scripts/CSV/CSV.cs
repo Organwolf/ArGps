@@ -48,6 +48,9 @@ public class CSV : MonoBehaviour
                 altitude = 0;
             }
 
+            // Convert from cm to meters
+            altitude = altitude / 100.0f;
+
             locations.Add(new Location(latitude, longitude, altitude));
         }
         return locations;
