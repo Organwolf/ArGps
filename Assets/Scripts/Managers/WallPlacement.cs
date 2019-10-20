@@ -32,6 +32,7 @@ public class WallPlacement : MonoBehaviour
     private bool wallPlacementEnabled = true;
     private bool toggleVisibilityOfWalls;
     private List<GameObject> listOfLinerenderers;
+    private List<GameObject> listOfWallMeshes;
 
     // Line renderer
     [SerializeField] GameObject lineRendererPrefab;
@@ -48,14 +49,6 @@ public class WallPlacement : MonoBehaviour
     private Vector3 savedPoint;
     private List<GameObject> listOfPlacedObjects;
     private int groundLayerMask = 1 << 8;
-
-    // ProBuilder variables
-    private GameObject waterGameObject;
-    private int pipeSubdivAxis = 10;
-    private int pipeSubdivHeight = 4;
-    private float holeSize = 0.5f;
-    private float pipeHeight = 0.1f;
-    private List<GameObject> listOfWallMeshes;
 
     // UI slider values
     private textOverlayMultSlider multiplierText;
@@ -330,9 +323,6 @@ public class WallPlacement : MonoBehaviour
     // UI logic
     public void ResetSession()
     {
-        if (waterGameObject != null)
-            Destroy(waterGameObject);
-
         // Destroy the placed objects if any
         for (int i = 0; i < listOfPlacedObjects.Count; i++)
         {

@@ -1,12 +1,17 @@
 ﻿using ARLocation;
 using UnityEngine;
+using UnityEngine.UI;
 using static WaterMesh;
+
 
 public class Manager : MonoBehaviour
 {
     [SerializeField] string pathToWaterCsv;
     [SerializeField] double radius = 20.0;
     [SerializeField] Location deviceLocation;
+
+    // UI
+    [SerializeField] Slider exaggerateHeightSlider;
 
     private CSV csv;
     private WaterMesh waterMesh;
@@ -33,8 +38,15 @@ public class Manager : MonoBehaviour
     // UI
     public void AlterHeightOfMesh()
     {
-        // no defensive programming for now
-        delaunayMesh.SetHeightToMesh(10f);
+        float meshHeight = delaunayMesh.GetHeightOfMesh();
+        Debug.Log("Mesh height: " + meshHeight);
+        var sliderValue = exaggerateHeightSlider.value;
+        if(sliderValue > 0)
+        {
+            sliderValue *= 3;
+            //delaunayMesh.SetHeightToMesh(meshHeight * sliderValue);
+            delaunayMesh.SetHeightToMesh(sliderValue);
+        }
     }
 
     public void GenerateWaterMesh()
@@ -49,5 +61,11 @@ public class Manager : MonoBehaviour
 
         waterMesh.PositionsUpdated += OnPositionsUpdated;
         delaunayMesh.SetPositionsToHandleLocations(locationsWithinRadius);
+    }
+
+    public void ResetSession()
+    {
+        waterMesh.enabled = false;
+        wallPlacement.ResetSession();
     }
 }

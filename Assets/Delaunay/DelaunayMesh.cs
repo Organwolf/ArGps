@@ -158,6 +158,13 @@ public class DelaunayMesh : MonoBehaviour
         }
     }
 
+    // No defensive prog. I assume that we only have one chunk
+    public float GetHeightOfMesh()
+    {
+        float height = chunks[0].transform.position.y;
+        return height;
+    }
+
     /* Returns a point's local coordinates. */
     public Vector3 GetPoint3D(int index)
     {
