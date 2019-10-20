@@ -974,7 +974,7 @@ PrefabInstance:
     - target: {fileID: 4674721499617871937, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AlterHeightOfMesh
+      value: ResetSession
       objectReference: {fileID: 0}
     - target: {fileID: 4674721499694745250, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}

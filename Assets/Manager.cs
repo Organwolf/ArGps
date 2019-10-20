@@ -66,6 +66,10 @@ public class Manager : MonoBehaviour
     public void ResetSession()
     {
         waterMesh.enabled = false;
+        waterMesh.Restart();
+        delaunayMesh.ClearMesh();
         wallPlacement.ResetSession();
+
+        // solve the rescanning of the ground
     }
 }

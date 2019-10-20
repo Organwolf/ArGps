@@ -130,7 +130,7 @@ public class DelaunayMesh : MonoBehaviour
         }
     }
 
-    private void ClearMesh()
+    public void ClearMesh()
     {
         if (chunks != null)
         {

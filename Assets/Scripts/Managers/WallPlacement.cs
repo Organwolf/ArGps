@@ -29,6 +29,7 @@ public class WallPlacement : MonoBehaviour
     private bool planeIsPlaced;
     private float height = 4.0f;
     private GameObject groundPlane;
+    // These 2 aren't really in use right now 
     private bool wallPlacementEnabled = true;
     private bool toggleVisibilityOfWalls;
     private List<GameObject> listOfLinerenderers;
@@ -343,7 +344,8 @@ public class WallPlacement : MonoBehaviour
         }
         listOfLinerenderers.Clear();
 
-        arSession.Reset();
+        planeIsPlaced = false;
+        //arSession.Reset();
         Debug.Log("Session reset");
     }
 
