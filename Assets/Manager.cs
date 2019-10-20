@@ -7,11 +7,11 @@ public class Manager : MonoBehaviour
     [SerializeField] string pathToWaterCsv;
     [SerializeField] double radius = 20.0;
     [SerializeField] Location deviceLocation;
-    [SerializeField] PlacementManager placementManager;
 
     private CSV csv;
     private WaterMesh waterMesh;
     private DelaunayMesh delaunayMesh;
+    private WallPlacement wallPlacement;
     private ARLocationProvider locationProvider;
     private Transform groundPlaneTransform;
 
@@ -20,6 +20,7 @@ public class Manager : MonoBehaviour
         csv = GetComponent<CSV>();
         waterMesh = GetComponent<WaterMesh>();
         delaunayMesh = GetComponent<DelaunayMesh>();
+        wallPlacement = GetComponent<WallPlacement>();
     }
 
     // Called each time the positions update
@@ -39,7 +40,7 @@ public class Manager : MonoBehaviour
     public void GenerateWaterMesh()
     {
         // Send the ground plane transform to the delaunayMesh class
-        groundPlaneTransform = placementManager.GetGroundPlaneTransform();
+        groundPlaneTransform = wallPlacement.GetGroundPlaneTransform();
 
         waterMesh.enabled = true;
         var csvWaterLocation = csv.ReadAndParseCSV(pathToWaterCsv);

@@ -12,10 +12,8 @@ using System;
 using UnityEngine.Android;
 #endif
 
-// Trying to solve the elevation problem
-using ARLocation.Utils;
 
-public class PlacementManager : MonoBehaviour
+public class WallPlacement : MonoBehaviour
 {
     // Prefabs & materials
     public GameObject groundPlanePrefab;
@@ -47,7 +45,6 @@ public class PlacementManager : MonoBehaviour
     // Raycasts
     private List<ARRaycastHit> hitsAR = new List<ARRaycastHit>();
     private RaycastHit hits;
-    private bool HasSavedPoint;
     private Vector3 savedPoint;
     private List<GameObject> listOfPlacedObjects;
     private int groundLayerMask = 1 << 8;
@@ -61,20 +58,11 @@ public class PlacementManager : MonoBehaviour
     private List<GameObject> listOfWallMeshes;
 
     // UI slider values
-
     private textOverlayMultSlider multiplierText;
     private textOverlayRadiusSlider radiusText;
 
-    // Elevation variables
-    private float elevation = 0.001f;
-
-    // Trying to solve the elevation problem
-    [SerializeField] private Transform arLocationRoot;
-
     private void Awake()
     {
-        //arLocationRoot = arLocationManager
-
         // Lists for wall objects
         listOfPlacedObjects = new List<GameObject>();
         listOfWallMeshes = new List<GameObject>();
@@ -118,7 +106,6 @@ public class PlacementManager : MonoBehaviour
                             groundPlane = Instantiate(groundPlanePrefab, hitPose.position, hitPose.rotation);
                             planeIsPlaced = true;
                             TogglePlaneDetection();
-                            //arLocationRoot.transform = groundPlane.transform;
                         }
                     }
 
@@ -366,8 +353,6 @@ public class PlacementManager : MonoBehaviour
         }
         listOfLinerenderers.Clear();
 
-        HasSavedPoint = false;
-        elevation = 0.0f;
         arSession.Reset();
         Debug.Log("Session reset");
     }
