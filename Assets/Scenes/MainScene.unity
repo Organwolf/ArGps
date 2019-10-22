@@ -200,9 +200,10 @@ GameObject:
   - component: {fileID: 86549454}
   - component: {fileID: 86549457}
   - component: {fileID: 86549453}
+  - component: {fileID: 86549459}
   - component: {fileID: 86549455}
   - component: {fileID: 86549456}
-  - component: {fileID: 86549459}
+  - component: {fileID: 86549460}
   - component: {fileID: 86549458}
   m_Layer: 0
   m_Name: Manager
@@ -412,6 +413,19 @@ MonoBehaviour:
   arRaycastManager: {fileID: 2061189426}
   arPlaneManager: {fileID: 2061189422}
   arCamera: {fileID: 1735566239}
+--- !u!114 &86549460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86549452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5acbd257ee5d92241a7365d906ddf82a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pathToFile: csv_extended
 --- !u!1 &95980004
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,6 +765,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Name
+      value: UICanvas
+      objectReference: {fileID: 0}
     - target: {fileID: 2791005526974985557, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -795,11 +814,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ExaggerateHeightSlider
-      objectReference: {fileID: 0}
-    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_Name
-      value: UICanvas
       objectReference: {fileID: 0}
     - target: {fileID: 4674721501056865552, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
