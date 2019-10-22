@@ -38,13 +38,11 @@ public class Manager : MonoBehaviour
     // UI
     public void AlterHeightOfMesh()
     {
-        float meshHeight = delaunayMesh.GetHeightOfMesh();
-        Debug.Log("Mesh height: " + meshHeight);
         var sliderValue = exaggerateHeightSlider.value;
         if(sliderValue > 0)
         {
-            sliderValue *= 3;
-            //delaunayMesh.SetHeightToMesh(meshHeight * sliderValue);
+            sliderValue *= 2;
+            sliderValue = Mathf.Log(sliderValue);
             delaunayMesh.SetHeightToMesh(sliderValue);
         }
     }
