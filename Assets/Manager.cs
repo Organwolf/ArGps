@@ -63,12 +63,13 @@ public class Manager : MonoBehaviour
         delaunayMesh.SetPositionsToHandleLocations(locationsWithinRadius);
     }
 
+    // Currently doesn't work
     public void ResetSession()
     {
-        waterMesh.enabled = false;
-        waterMesh.Restart();
-        delaunayMesh.ClearMesh();
-        wallPlacement.ResetSession();
+        //waterMesh.enabled = false;
+        //waterMesh.Restart();
+        //delaunayMesh.ClearMesh();
+        //wallPlacement.ResetSession();
 
         // solve the rescanning of the ground
     }
