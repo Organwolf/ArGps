@@ -290,7 +290,7 @@ MonoBehaviour:
     Building: 0
     Height: 0
     WaterHeight: 0
-    NearestneightborWater: 0
+    NearestNeighborWater: 0
     NearestNeighborHeight: 0
     Latitude: 55.708675
     Longitude: 13.200226
@@ -530,7 +530,7 @@ MonoBehaviour:
         Building: 0
         Height: 0
         WaterHeight: 0
-        NearestneightborWater: 0
+        NearestNeighborWater: 0
         NearestNeighborHeight: 0
         Latitude: 55.7085304
         Longitude: 13.2006627
@@ -771,9 +771,24 @@ PrefabInstance:
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2791005526974985557, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791005526974985557, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5058821081429835100, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5058821081429835100, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2508430853433161315, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
@@ -805,6 +820,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508430853433161315, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_MinValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508430853433161315, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Value
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7872138992871119394, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -934,22 +959,22 @@ PrefabInstance:
     - target: {fileID: 4674721499617871936, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4674721499617871936, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4674721499617871936, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 226.2
       objectReference: {fileID: 0}
     - target: {fileID: 4674721499617871936, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -64.3
       objectReference: {fileID: 0}
     - target: {fileID: 4674721499694745277, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -1030,6 +1055,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RenderWalls
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674721499617871939, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4674721499023607619, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}

@@ -152,15 +152,15 @@ public partial class DelaunayMesh : MonoBehaviour
         chunks.Clear();
     }
 
-    //public GameObject GetMesh()
-    //{
-    //    if (chunks.Count == 1)
-    //    {
-    //        return chunks[0].gameObject;
-    //    }
-    //    else
-    //        return null;
-    //}
+    public GameObject GetMesh()
+    {
+        if (chunks.Count == 1)
+        {
+            return chunks[0].gameObject;
+        }
+        else
+            return null;
+    }
 
     public void SetHeightToMesh(float newHeight)
     {

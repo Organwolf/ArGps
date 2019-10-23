@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         var data = CSV_extended.ParseCsvFileUsingResources(pathToWaterCsv);
         var longitude = 13.200226;
         var latitude = 55.708675;
-        data = CSV_extended.PointsWithinRadius(data, radius, longitude, latitude);
+        //data = CSV_extended.PointsWithinRadius(data, radius, longitude, latitude);
 
 
         // Det är inte abstraktionen vi la till då? jo detta

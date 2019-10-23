@@ -20,7 +20,7 @@ namespace ARLocation
         public bool Building;
         public double Height;
         public double WaterHeight;
-        public double NearestNeightborWater;
+        public double NearestNeighborWater;
         public double NearestNeighborHeight;
 
         [FormerlySerializedAs("latitude")] [Tooltip("The latitude, in degrees.")]

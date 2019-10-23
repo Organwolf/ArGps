@@ -23,18 +23,21 @@ public class CSV_extended
         {
             string[] split = line.Split(',');
 
+            // TODO: Do the parsing before the creation of "data"
+            // that way you can add some logic and defensive programming
+
             double longitude = double.Parse(split[0]);
             double latitude = double.Parse(split[1]);
             var data = new Location
             {
                 Longitude = longitude,
                 Latitude = latitude,
-                Altitude = float.Parse(split[3]) + float.Parse(split[4]),
-                Building = (split[2] == "1"), // Detta kan faktiskt funka men vi kan väl vänta med det?
-                Height = float.Parse(split[3]), // Funkar height och waterHeight så kommer du få rätt på all den andra datan också. Ska kolla. Får lägga till utskrifter också för height är rätt stora värden
-                WaterHeight = double.Parse(split[4]),
+                //Altitude = float.Parse(split[3]) + float.Parse(split[4]),
+                Building = (split[2] == "1"),
+                Height = float.Parse(split[3]),
+                WaterHeight = double.Parse(split[4]) / 100f,
                 NearestNeighborHeight = float.Parse(split[5]),
-                NearestNeightborWater = float.Parse(split[6])
+                NearestNeighborWater = float.Parse(split[6]) / 100f,
             };
 
             parsedData.Add(data);
@@ -43,14 +46,35 @@ public class CSV_extended
         return parsedData;
     }
 
-    public static List<Location> PointsWithinRadius(List<Location> locations, double radius, double longitude, double latitude)
+    // These math functions should obviously be in their own class but for now they reside here.
+    // Later on I will interpolate between ~4 points and return an average value. For now I find the closest.
+    public static Location ClosestPoint(List<Location> locations, Location deviceLocation)
+    {
+        Location closestLocation = new Location();
+        double minDistance = Double.MaxValue;
+        double distanceToClosestPoint = -1;
+        foreach (Location location in locations)
+        {
+            var distance = HaversineDistance(location.Longitude, deviceLocation.Longitude, location.Latitude, deviceLocation.Latitude);
+
+            if (distance <= minDistance)
+                minDistance = distance;
+                distanceToClosestPoint = distance;
+                closestLocation = location;
+        }
+        Debug.Log("Distance to closest point: " + distanceToClosestPoint);
+        return closestLocation;
+    }
+
+    //public static List<Location> PointsWithinRadius(List<Location> locations, double radius, double longitude, double latitude)
+    public static List<Location> PointsWithinRadius(List<Location> locations, double radius, Location deviceLocation)
     {
         //locationsWithinRadius.Clear();
         List<Location> locationsWithinRadius = new List<Location>();
 
         foreach (Location loc in locations)
         {
-            var distance = HaversineDistance(loc.Longitude, longitude, loc.Latitude, latitude);
+            var distance = HaversineDistance(loc.Longitude, deviceLocation.Longitude, loc.Latitude, deviceLocation.Latitude);
 
             if (distance <= radius)
                 locationsWithinRadius.Add(loc);
