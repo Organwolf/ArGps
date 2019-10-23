@@ -203,7 +203,6 @@ GameObject:
   - component: {fileID: 86549459}
   - component: {fileID: 86549455}
   - component: {fileID: 86549456}
-  - component: {fileID: 86549460}
   - component: {fileID: 86549458}
   m_Layer: 0
   m_Name: Manager
@@ -268,7 +267,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 86549452}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 897b12c961494e541b286ed53e053198, type: 3}
   m_Name: 
@@ -285,9 +284,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00dd732a1138141ac9ab48d44d4809d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathToWaterCsv: csv_large
-  radius: 50
+  pathToWaterCsv: csv_extended
+  radius: 20
   deviceLocation:
+    Building: 0
+    Height: 0
+    WaterHeight: 0
+    NearestneightborWater: 0
+    NearestNeighborHeight: 0
     Latitude: 55.708675
     Longitude: 13.200226
     Altitude: 0
@@ -413,19 +417,6 @@ MonoBehaviour:
   arRaycastManager: {fileID: 2061189426}
   arPlaneManager: {fileID: 2061189422}
   arCamera: {fileID: 1735566239}
---- !u!114 &86549460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 86549452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5acbd257ee5d92241a7365d906ddf82a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pathToFile: csv_extended
 --- !u!1 &95980004
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,6 +527,11 @@ MonoBehaviour:
       LocationInputType: 0
       LocationData: {fileID: 0}
       Location:
+        Building: 0
+        Height: 0
+        WaterHeight: 0
+        NearestneightborWater: 0
+        NearestNeighborHeight: 0
         Latitude: 55.7085304
         Longitude: 13.2006627
         Altitude: 0
@@ -998,7 +994,7 @@ PrefabInstance:
     - target: {fileID: 4674721499694745250, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: GenerateWaterMesh
+      value: GenerateMesh
       objectReference: {fileID: 0}
     - target: {fileID: 4674721500977034948, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -1034,6 +1030,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RenderWalls
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674721499023607619, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Name
+      value: ShowMeshText
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f5ee01c89ebf38499d3b52fc3bb9469, type: 3}

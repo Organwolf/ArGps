@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TriangleNet.Geometry;
 using TriangleNet.Topology;
+using static WaterMesh;
+using System.Linq;
 
-public class DelaunayMesh : MonoBehaviour
+public partial class DelaunayMesh : MonoBehaviour
 {
     // Size of each chunk - currently larger enough to fit the mesh in 1 chunk
     [SerializeField] private int trianglesInChunk = 5000;
@@ -18,30 +20,40 @@ public class DelaunayMesh : MonoBehaviour
     // The delaunay mesh
     private TriangleNet.Mesh mesh = null;
     private List<Transform> chunks = new List<Transform>();
-    private List<Location> csvWaterLocations;
 
-    public void SetPositionsToHandleLocations(List<Location> locationWithWaterHeight)
-    {
-        csvWaterLocations = locationWithWaterHeight;
-    }
-
-    public virtual void Generate(List<Vector3> locations, Transform groundPlaneTransform)
+    public void Generate(IEnumerable<Vector3> locations, Transform groundPlaneTransform)
     {
         Polygon polygon = new Polygon();
         elevations = new List<float>();
 
-        // Create separate polygons for the triangulation
-        foreach (Vector3 loc in locations)
+        // Lyckades generera meshen när jag testade en andra gång ?!
+
+        Debug.Log($"Mesh Generated with {locations.ToList().Count} points."); //Kom du hit?
+
+        // Create separate polygons for the triangulation yes
+        foreach (var location in locations)
         {
-            polygon.Add(new Vertex(loc.x, loc.z));
+            polygon.Add(new Vertex(location.x, location.z));
         }
 
         TriangleNet.Meshing.ConstraintOptions options = new TriangleNet.Meshing.ConstraintOptions() { ConformingDelaunay = false };
         mesh = (TriangleNet.Mesh)polygon.Triangulate(options);
 
-        for (int i = 0; i < locations.Count; i++)
+        var globalLocalPositions = locations.ToArray();
+        for (int i = 0; i < globalLocalPositions.Length; i++)
         {
-            elevations.Add((float)csvWaterLocations[i].Altitude + groundPlaneTransform.position.y);
+            var globalLocalPosition = globalLocalPositions[i];
+
+            var waterHeight = globalLocalPosition.y;
+
+            if(waterHeight != -9999)
+            {
+                elevations.Add((float)waterHeight + groundPlaneTransform.position.y);
+            }
+            else
+            {
+                elevations.Add(groundPlaneTransform.position.y);
+            }
         }
 
         ClearMesh();
@@ -140,15 +152,15 @@ public class DelaunayMesh : MonoBehaviour
         chunks.Clear();
     }
 
-    public GameObject GetMesh()
-    {
-        if (chunks.Count == 1)
-        {
-            return chunks[0].gameObject;
-        }
-        else
-            return null;
-    }
+    //public GameObject GetMesh()
+    //{
+    //    if (chunks.Count == 1)
+    //    {
+    //        return chunks[0].gameObject;
+    //    }
+    //    else
+    //        return null;
+    //}
 
     public void SetHeightToMesh(float newHeight)
     {
@@ -166,7 +178,7 @@ public class DelaunayMesh : MonoBehaviour
     }
 
     /* Returns a point's local coordinates. */
-    public Vector3 GetPoint3D(int index)
+    private Vector3 GetPoint3D(int index)
     {
         Vertex vertex = mesh.vertices[index];
         float elevation = elevations[index];

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-
 public class CSV : MonoBehaviour
 {
     private List<Location> locations;
@@ -16,6 +15,7 @@ public class CSV : MonoBehaviour
         locationsWithinRadius = new List<Location>();
     }
 
+    //public List<Location> ReadAndParseCSV(string pathToCsvFile)
     public List<Location> ReadAndParseCSV(string pathToCsvFile)
     {
         TextAsset entireCSV = Resources.Load(pathToCsvFile) as TextAsset;

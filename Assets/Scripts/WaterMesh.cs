@@ -2,28 +2,39 @@
 using ARLocation.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public class WaterMesh : MonoBehaviour
 {
     public class GlobalLocalPosition
     {
-        public Location globalLocation;
+        public Location location;
         public Vector3 localLocation;
         public GameObject gameObject;
+        public LocationData locationData;
+
+        //public bool Building;
+        //public double Height;
+        //public double WaterHeight;
+        //public double NearestneightborWater;
+        //public double NearestNeighborHeight;
 
         public GlobalLocalPosition(Location gLocation, Vector3 lLocation)
         {
-            this.globalLocation = gLocation;
-            this.localLocation = lLocation;
+            location = gLocation;
+            localLocation = lLocation;
         }
     }
 
     public class LocationsStateData
     {
         public List<GlobalLocalPosition> globalLocalPositions = new List<GlobalLocalPosition>();
+        public uint LocationUpdatedCount;
+        public uint PositionUpdatedCount;
+        public bool Paused;
+
         public List<Vector3> getLocalLocations()
         {
             List<Vector3> lst = new List<Vector3>();
@@ -32,9 +43,20 @@ public class WaterMesh : MonoBehaviour
 
             return lst;
         }
-        public uint LocationUpdatedCount;
-        public uint PositionUpdatedCount;
-        public bool Paused;
+
+        public List<GlobalLocalPosition> GetLocalLocations()
+        {
+            //var lst = new List<Location>();
+            //foreach (GlobalLocalPosition glp in this.globalLocalPositions)
+            //{                
+            //    lst.Add(glp.globalLocation);
+            //}
+
+            //return lst;
+
+            // Snart, lite rörigt bara
+            return globalLocalPositions.Select(globalLocalPosition => globalLocalPosition).ToList();
+        }
     }
 
     [Serializable]
@@ -111,12 +133,6 @@ public class WaterMesh : MonoBehaviour
         locationProvider.OnLocationUpdatedEvent(locationUpdatedHandler);
         locationProvider.OnProviderRestartEvent(ProviderRestarted);
 
-        // Doesn't seem to matter
-        //var locationRootTransform = arLocationRoot.transform;
-        //Debug.Log($" ArLocationRoot position: {locationRootTransform.position} LocalPos: {locationRootTransform.localPosition}");
-        //arLocationRoot.transform.position = new Vector3(0, -2, 0);
-        //Debug.Log($" ArLocationRoot position: {locationRootTransform.position} LocalPos: {locationRootTransform.localPosition}");
-
         if (locationProvider == null)
         {
             Debug.LogError("[AR+GPS][PlaceAtLocation]: LocationProvider GameObject or Component not found.");
@@ -140,6 +156,11 @@ public class WaterMesh : MonoBehaviour
     public void SetPositionsToHandleLocations(List<Location> locationWithWaterHeight)
     {
         csvWaterLocations = locationWithWaterHeight;
+    }
+
+    public LocationsStateData GetLocationsStateData()
+    {
+        return state;
     }
 
     private void Initialize(Location deviceLocation)
@@ -228,7 +249,7 @@ public class WaterMesh : MonoBehaviour
         foreach (GlobalLocalPosition obj in state.globalLocalPositions)
         {
             Vector3 targetPosition = Location.GetGameObjectPositionForLocation(
-                    arLocationRoot, mainCameraTransform, deviceLocation, obj.globalLocation, isHeightRelative
+                    arLocationRoot, mainCameraTransform, deviceLocation, obj.location, isHeightRelative
                 );
 
             // If GroundHeight is enabled, don't change the objects position
@@ -251,11 +272,9 @@ public class WaterMesh : MonoBehaviour
         state.LocationUpdatedCount++;
 
         //Meshen borde göras EFTER positonerna blivit uppdaterade
+        //Det är konstigt för det ska kallas varje gång Mahdi uppdaterar sina positioner
         PositionsUpdated(state);
     }
-
-
-
 
     private void ProviderRestarted()
     {
