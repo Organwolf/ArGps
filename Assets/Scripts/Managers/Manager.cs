@@ -21,7 +21,7 @@ public class Manager : MonoBehaviour
     private WallPlacement wallPlacement;
 
     // how can I use locationProvider?
-    private ARLocationProvider locationProvider;
+    //private ARLocationProvider locationProvider;
 
     private List<Location> withinRadiusData;
     //private Transform groundPlaneTransform;
@@ -34,21 +34,18 @@ public class Manager : MonoBehaviour
         InitializeWaterMesh(pathToWaterCsv);
     }
 
-    // ARLocation related GPS stuff
-    //ARLocation.ARLocationProvider.LocationUpdatedUnityEvent
-
     // https://docs.unity3d.com/ScriptReference/LocationService.Start.html
     // Isn't continually updated but could be later on if needed. Now it get the phones location at start-up and uses that location 
     // once the "Generate Mesh" button is pressed. Obviuouse improvements can be made here.
     IEnumerator Start()
     {
+        // det är för att det är massa yeilds
         // First, check if user has location service enabled
         if (!Input.location.isEnabledByUser)
             yield break;
 
         // Start service before querying location
         Input.location.Start();
-
         // Wait until service initializes
         int maxWait = 20;
         while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
@@ -76,7 +73,6 @@ public class Manager : MonoBehaviour
             //print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
             deviceLocation = new Location(Input.location.lastData.latitude, Input.location.lastData.longitude, 0);
         }
-
         // Stop service if there is no need to query location updates continuously
         // should this stop? Not sure how it is activated in other parts of the code
         // could add a yeild that runs every second or something?
@@ -105,20 +101,6 @@ public class Manager : MonoBehaviour
         //    delaunayMesh.Generate(points, groundPlaneTransform);
         //}
     }
-    
-    // UI
-    public void AlterHeightOfMesh()
-    {
-        var sliderValue = exaggerateHeightSlider.value;
-        if(sliderValue > 0)
-        {
-            sliderValue += 0.5f;
-            sliderValue *= 2f;
-            var logHeight = Mathf.Log(sliderValue);
-            Debug.Log($"log height: {logHeight}");
-            delaunayMesh.SetHeightToMesh(logHeight);
-        }
-    }
 
     private void InitializeWaterMesh(string path)
     {        
@@ -135,15 +117,14 @@ public class Manager : MonoBehaviour
         waterMesh.PositionsUpdated += OnPositionsUpdated;
     }
 
-    // TODO all of this should most likely update continously
+    // TODO: all of this should most likely update continously
     public void GenerateMesh()
     {
-        //Debug.Log("GenerateMesh");
-        //waterMesh.enabled = true;
         Debug.Log("Device location: " + deviceLocation);
         var groundPlaneTransform = wallPlacement.GetGroundPlaneTransform();
+        
         // currently not used
-        var heightOfCamera = groundPlaneTransform.position.y;
+        // var heightOfCamera = groundPlaneTransform.position.y;
 
         var stateData = waterMesh.GetLocationsStateData();
         var locations = stateData.GetLocalLocations();
@@ -152,10 +133,9 @@ public class Manager : MonoBehaviour
         var closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
         float heightAtCamera = (float)closestPoint.Height;
 
-
         foreach (var globalLocalPosition in locations)
         {
-            // Sets all building heights to 0 atm
+            // Sets all value of -9999 to 0 atm - could change logic while reading the csv?
             float calculatedHeight = 0;
 
             float latitude = globalLocalPosition.localLocation.z;
@@ -167,11 +147,6 @@ public class Manager : MonoBehaviour
             bool insideBuilding = location.Building;
             float nearestNeighborHeight = (float)location.NearestNeighborHeight;
             float nearestNeighborWater = (float)location.NearestNeighborWater;
-            //Debug.Log($"water height: {waterHeight}");
-            //Debug.Log($"height: {height}");
-            //Debug.Log($"Inside building: {insideBuilding}");
-            //Debug.Log($"nnh: {nearestNeighborHeight}");
-            //Debug.Log($"nnw: {nearestNeighborWater}");
 
             if (insideBuilding)
             {
@@ -182,14 +157,11 @@ public class Manager : MonoBehaviour
             }
             else
             {
-                // Possible addon hc: heightOfCamera. Not sure but maybe
                 calculatedHeight = CalculateRelativeHeight(heightAtCamera, heightPoint, waterHeight);
             }
 
             //Debug.Log($"Calc height: {calculatedHeight} insideBuilding: {insideBuilding}");
-
             // An exaggeration can be added to calculatedHeight (* 15f) to see the differences more clearly.
-            //points.Add(new Vector3(longitude, calculatedHeight, latitude));
             points.Add(new Vector3(longitude, calculatedHeight, latitude));
         }
 
@@ -199,7 +171,6 @@ public class Manager : MonoBehaviour
         }
         else
         {
-            //Debug.Log($"No groundPlaneTransform");
             delaunayMesh.Generate(points, transform);
         }
     }
@@ -208,6 +179,19 @@ public class Manager : MonoBehaviour
     {
         float relativeHeight = heightAtPoint - heightAtCamera + waterHeightAtPoint;
         return relativeHeight;
+    }
+
+    public void AlterHeightOfMesh()
+    {
+        var sliderValue = exaggerateHeightSlider.value;
+        if (sliderValue > 0)
+        {
+            sliderValue += 0.5f;
+            sliderValue *= 2f;
+            var logHeight = Mathf.Log(sliderValue);
+            Debug.Log($"log height: {logHeight}");
+            delaunayMesh.SetHeightToMesh(logHeight);
+        }
     }
 
     public void RenderWalls()
