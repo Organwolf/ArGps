@@ -218,7 +218,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 86549452}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2a24341042600447bac99ab4dcc96d3, type: 3}
   m_Name: 
@@ -285,15 +285,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathToWaterCsv: csv_extended
-  radius: 20
+  radius: 50
   deviceLocation:
     Building: 0
     Height: 0
     WaterHeight: 0
     NearestNeighborWater: 0
     NearestNeighborHeight: 0
-    Latitude: 55.708675
-    Longitude: 13.200226
+    Latitude: 55.708636
+    Longitude: 13.200387
     Altitude: 0
     AltitudeMode: 0
     Label: 
@@ -959,22 +959,22 @@ PrefabInstance:
     - target: {fileID: 4674721499617871936, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4674721499617871936, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4674721499617871936, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 226.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4674721499617871936, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -64.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4674721499694745277, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -1059,7 +1059,7 @@ PrefabInstance:
     - target: {fileID: 4674721499617871939, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4674721499023607619, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}

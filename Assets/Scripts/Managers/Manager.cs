@@ -19,7 +19,10 @@ public class Manager : MonoBehaviour
     private WaterMesh waterMesh;
     private DelaunayMesh delaunayMesh;
     private WallPlacement wallPlacement;
+
+    // how can I use locationProvider?
     private ARLocationProvider locationProvider;
+
     private List<Location> withinRadiusData;
     //private Transform groundPlaneTransform;
 
@@ -30,6 +33,9 @@ public class Manager : MonoBehaviour
         wallPlacement = GetComponent<WallPlacement>();
         InitializeWaterMesh(pathToWaterCsv);
     }
+
+    // ARLocation related GPS stuff
+    //ARLocation.ARLocationProvider.LocationUpdatedUnityEvent
 
     // https://docs.unity3d.com/ScriptReference/LocationService.Start.html
     // Isn't continually updated but could be later on if needed. Now it get the phones location at start-up and uses that location 
@@ -68,11 +74,12 @@ public class Manager : MonoBehaviour
         {
             // Access granted and location value could be retrieved
             print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
-            //deviceLocation = new Location(Input.location.lastData.latitude, Input.location.lastData.longitude, 0);
+            deviceLocation = new Location(Input.location.lastData.latitude, Input.location.lastData.longitude, 0);
         }
 
         // Stop service if there is no need to query location updates continuously
         // should this stop? Not sure how it is activated in other parts of the code
+        // could add a yeild that runs every second or something?
         Input.location.Stop();
     }
 
@@ -80,6 +87,7 @@ public class Manager : MonoBehaviour
     private void OnPositionsUpdated(LocationsStateData stateData)
     {
         Debug.Log("OnPositionsUpdated");
+
         //var locations = stateData.GetLocalLocations();
         //var face = stateData.getLocalLocations();
         //var points = new List<Vector3>();
@@ -105,20 +113,16 @@ public class Manager : MonoBehaviour
         if(sliderValue > 0)
         {
             sliderValue += 0.5f;
-            sliderValue *= 1.5f;
+            sliderValue *= 6f;
             var logHeight = Mathf.Log(sliderValue);
+            Debug.Log($"log height: {logHeight}");
             delaunayMesh.SetHeightToMesh(logHeight);
         }
     }
 
     private void InitializeWaterMesh(string path)
     {        
-        waterMesh.enabled = true;
         var fullData = CSV_extended.ParseCsvFileUsingResources(path);
-
-        // Use the device location instead funrther down the line
-        //var longitude = 13.200226;
-        //var latitude = 55.708675;
 
         Debug.Log($"Before: {fullData.Count}");
         withinRadiusData = CSV_extended.PointsWithinRadius(fullData, radius, deviceLocation);
@@ -135,8 +139,10 @@ public class Manager : MonoBehaviour
     public void GenerateMesh()
     {
         //Debug.Log("GenerateMesh");
-        //Debug.Log("Device location: " + deviceLocation);
+        //waterMesh.enabled = true;
+        Debug.Log("Device location: " + deviceLocation);
         var groundPlaneTransform = wallPlacement.GetGroundPlaneTransform();
+        // currently not used
         var heightOfCamera = groundPlaneTransform.position.y;
 
         var stateData = waterMesh.GetLocationsStateData();
@@ -169,8 +175,10 @@ public class Manager : MonoBehaviour
 
             if (insideBuilding)
             {
-                // TODO
-                // havn't implemented the logic yet
+                if (nearestNeighborHeight != -9999)
+                {
+                    calculatedHeight = CalculateRelativeHeight(heightAtCamera, nearestNeighborHeight, nearestNeighborWater);
+                }
             }
             else
             {
@@ -178,11 +186,11 @@ public class Manager : MonoBehaviour
                 calculatedHeight = CalculateRelativeHeight(heightAtCamera, heightPoint, waterHeight);
             }
 
-            Debug.Log($"Calc height: {calculatedHeight} insideBuilding: {insideBuilding}");
+            //Debug.Log($"Calc height: {calculatedHeight} insideBuilding: {insideBuilding}");
 
             // An exaggeration can be added to calculatedHeight (* 15f) to see the differences more clearly.
             //points.Add(new Vector3(longitude, calculatedHeight, latitude));
-            points.Add(new Vector3(longitude, calculatedHeight * 15f, latitude));
+            points.Add(new Vector3(longitude, calculatedHeight, latitude));
         }
 
         if (groundPlaneTransform != null)

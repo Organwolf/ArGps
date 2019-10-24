@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: DebugMat
-  m_Shader: {fileID: 4800000, guid: 81b36ac1664ae5448afe88253b50278d, type: 3}
+  m_Shader: {fileID: 4800000, guid: 63cd9a3cfb90afb41a020c9b264f3f2f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -70,6 +70,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Transparency: 0.25
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
