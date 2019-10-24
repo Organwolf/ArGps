@@ -23,21 +23,23 @@ public class CSV_extended
         {
             string[] split = line.Split(',');
 
-            // TODO: Do the parsing before the creation of "data"
-            // that way you can add some logic and defensive programming
-
             double longitude = double.Parse(split[0]);
             double latitude = double.Parse(split[1]);
+            bool building = (split[2] == "1");
+            double height = double.Parse(split[3]);
+            double waterHeight = double.Parse(split[4]) / 100;           // converting from cm to m
+            double nearestNeighborHeight = double.Parse(split[5]);
+            double nearestNeighborWater = double.Parse(split[6]) / 100f; // converting from cm to m
+
             var data = new Location
             {
                 Longitude = longitude,
                 Latitude = latitude,
-                //Altitude = float.Parse(split[3]) + float.Parse(split[4]),
-                Building = (split[2] == "1"),
-                Height = float.Parse(split[3]),
-                WaterHeight = double.Parse(split[4]) / 100f,
-                NearestNeighborHeight = float.Parse(split[5]),
-                NearestNeighborWater = float.Parse(split[6]) / 100f,
+                Building = building,
+                Height = height,
+                WaterHeight = waterHeight,
+                NearestNeighborHeight = nearestNeighborHeight,
+                NearestNeighborWater = nearestNeighborWater,
             };
 
             parsedData.Add(data);

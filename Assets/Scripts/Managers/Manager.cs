@@ -73,7 +73,7 @@ public class Manager : MonoBehaviour
         else
         {
             // Access granted and location value could be retrieved
-            print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+            //print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
             deviceLocation = new Location(Input.location.lastData.latitude, Input.location.lastData.longitude, 0);
         }
 
@@ -208,6 +208,16 @@ public class Manager : MonoBehaviour
     {
         float relativeHeight = heightAtPoint - heightAtCamera + waterHeightAtPoint;
         return relativeHeight;
+    }
+
+    public void RenderWalls()
+    {
+        wallPlacement.RenderWalls();
+    }
+
+    public void RemovePreviouseWall()
+    {
+        wallPlacement.RemovePreviousWall();
     }
 
     // Använd dessa i GUIt

@@ -12,9 +12,27 @@ using System;
 using UnityEngine.Android;
 #endif
 
-
 public class WallPlacement : MonoBehaviour
 {
+    // min wall klass - tänker jag rätt här?
+    private class Wall
+    {
+        public GameObject startPoint;
+        public GameObject endPoint;
+        public GameObject quad;
+        public GameObject line;
+
+        public Wall(GameObject sPoint, GameObject ePoint, GameObject wall, GameObject lineRenderer)
+        {
+            startPoint = sPoint;
+            endPoint = ePoint;
+            quad = wall;
+            line = lineRenderer;
+        }
+    }
+
+    private List<Wall> walls = new List<Wall>();
+
     // Prefabs & materials
     public GameObject groundPlanePrefab;
     public GameObject clickPointPrefab;
@@ -58,6 +76,8 @@ public class WallPlacement : MonoBehaviour
     private void Awake()
     {
         // Lists for wall objects
+
+        // To be removed
         listOfPlacedObjects = new List<GameObject>();
         listOfWallMeshes = new List<GameObject>();
         listOfLinerenderers = new List<GameObject>();
@@ -113,18 +133,21 @@ public class WallPlacement : MonoBehaviour
                             startPoint.SetActive(true);
                             startPoint.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
 
-                            // Snapping startPoint
-                            if (listOfPlacedObjects != null)
+                            if (walls.Count > 0)
                             {
-                                foreach (var point in listOfPlacedObjects)
+                                foreach (var obj in walls)
                                 {
-                                    if (point.transform.position != startPoint.transform.position)
+                                    float dist = 0;
+                                    dist = Vector3.Distance(obj.endPoint.transform.position, startPoint.transform.position);
+                                    if (dist < 0.1)
                                     {
-                                        float dist = Vector3.Distance(point.transform.position, startPoint.transform.position);
-                                        if (dist < 0.1)
-                                        {
-                                            startPoint.transform.position = point.transform.position;
-                                        }
+                                        startPoint.transform.position = obj.endPoint.transform.position;
+                                    }
+
+                                    dist = Vector3.Distance(obj.startPoint.transform.position, startPoint.transform.position);
+                                    if (dist < 0.1)
+                                    {
+                                        startPoint.transform.position = obj.startPoint.transform.position;
                                     }
                                 }
                             }
@@ -146,18 +169,21 @@ public class WallPlacement : MonoBehaviour
 
                 else if (TouchPhase.Ended == touch.phase && wallPlacementEnabled && startPoint.activeSelf && endPoint.activeSelf)
                 {
-                    // Snapping the endPoint
-                    if (listOfPlacedObjects != null)
+                    if (walls.Count > 0)
                     {
-                        foreach (var point in listOfPlacedObjects)
+                        foreach (var obj in walls)
                         {
-                            if (point.transform.position != endPoint.transform.position)
+                            float dist = 0;
+                            dist = Vector3.Distance(obj.endPoint.transform.position, endPoint.transform.position);
+                            if (dist < 0.1)
                             {
-                                float dist = Vector3.Distance(point.transform.position, endPoint.transform.position);
-                                if (dist < 0.1)
-                                {
-                                    endPoint.transform.position = point.transform.position;
-                                }
+                                endPoint.transform.position = obj.endPoint.transform.position;
+                            }
+
+                            dist = Vector3.Distance(obj.startPoint.transform.position, endPoint.transform.position);
+                            if (dist < 0.1)
+                            {
+                                endPoint.transform.position = obj.startPoint.transform.position;
                             }
                         }
                     }
@@ -174,19 +200,29 @@ public class WallPlacement : MonoBehaviour
                     // Create the start and endpoint
                     var startPointObject = Instantiate(clickPointPrefab, startPoint.transform.position, Quaternion.identity);
                     var endPointObject = Instantiate(clickPointPrefab, endPoint.transform.position, Quaternion.identity);
-                    listOfPlacedObjects.Add(startPointObject);
-                    listOfPlacedObjects.Add(endPointObject);
+
+                    // TODO: remove and replace with wall logic
+                    //listOfPlacedObjects.Add(startPointObject);
+                    //listOfPlacedObjects.Add(endPointObject);
+                    // listOfob är gammalt som jag hade innan jag skapade Wall Då tycker jag du ska städa efter dig biat NAJ:DJOdet kan jahg göra ch
+                    // Gör det nu Ska bli
 
                     // Disable temporary line renderer and create a new one
                     measureLine.enabled = false;
-                    DrawLineBetweenTwoPoints(startPoint, endPoint);
+                    var lRenderer = DrawLineBetweenTwoPoints(startPoint, endPoint);
+
+                    // Create a wall with the startpoint and endpoint as corner vertices
+                    var wall = CreateQuadFromPoints(startPointObject.transform.position, endPointObject.transform.position);
 
                     // Then disable the startPoint and endPoint
                     startPoint.SetActive(false);
                     endPoint.SetActive(false);
 
-                    // Create a wall with the startpoint and endpoint as corner vertices
-                    CreateQuadFromPoints(startPointObject.transform.position, endPointObject.transform.position);
+                    Wall currentWall = new Wall(startPointObject, endPointObject, wall, lRenderer);
+                    // Jaja nu är jag med. detta funkar men ganska omständigt  Problemet verkar uppstå när jag väl tagit bort en vägg för då får jag en null här ska visa
+                    walls.Add(currentWall);
+                    Debug.Log("Size of list: " + walls.Count);
+                    
                 }
             }
         }
@@ -197,6 +233,24 @@ public class WallPlacement : MonoBehaviour
             measureLine.enabled = true;
             measureLine.SetPosition(0, startPoint.transform.position);
             measureLine.SetPosition(1, endPoint.transform.position);
+        }
+    }
+
+    public void RemovePreviousWall()
+    {
+        Debug.Log("Entered remove wall funciton");
+        var length = walls.Count;
+        if (length >= 1)
+        {
+            Wall wallToRemove = walls[length - 1];
+            Destroy(wallToRemove.startPoint);
+            Destroy(wallToRemove.endPoint);
+            Destroy(wallToRemove.quad);
+            Destroy(wallToRemove.line);
+            //listOfPlacedObjects.RemoveAt(length - 1);
+            //listOfPlacedObjects.RemoveAt(length - 2);
+            walls.RemoveAt(length - 1);
+            Debug.Log("Length of walls: " + walls.Count);
         }
     }
 
@@ -213,13 +267,15 @@ public class WallPlacement : MonoBehaviour
     }
 
     // Helper functions
-    private void DrawLineBetweenTwoPoints(GameObject startPoint, GameObject endPoint)
+    private GameObject DrawLineBetweenTwoPoints(GameObject startPoint, GameObject endPoint)
     {
         var lineRendererGameObject = Instantiate(lineRendererPrefab);
         var lineRenderer = lineRendererGameObject.GetComponent<LineRenderer>();
         lineRenderer.SetPosition(0, startPoint.transform.position);
         lineRenderer.SetPosition(1, endPoint.transform.position);
         listOfLinerenderers.Add(lineRendererGameObject);
+
+        return lineRendererGameObject;
     }
 
     private void TogglePlaneDetection()
@@ -233,7 +289,7 @@ public class WallPlacement : MonoBehaviour
         }
     }
 
-    private void CreateQuadFromPoints(Vector3 firstPoint, Vector3 secondPoint)
+    private GameObject CreateQuadFromPoints(Vector3 firstPoint, Vector3 secondPoint)
     {
         Debug.Log("CreateQuadeFromPoints");
 
@@ -271,6 +327,9 @@ public class WallPlacement : MonoBehaviour
 
         // Add the mesh to the list
         listOfWallMeshes.Add(newMeshObject);
+
+        // returning the quad
+        return newMeshObject;
     }
 
     private void renderWallMeshes(bool isVisible)
@@ -297,29 +356,29 @@ public class WallPlacement : MonoBehaviour
         }
     }
 
-    private void DrawLinesBetweenObjects()
-    {
-        int lengthOfList = listOfPlacedObjects.Count;
-        if (lengthOfList > 1)
-        {
-            for (int i = 0; i < lengthOfList - 1; i++)
-            {
-                try
-                {
-                    var lineRendererGameObject = Instantiate(lineRendererPrefab);
-                    var lineRenderer = lineRendererGameObject.GetComponent<LineRenderer>();
-                    lineRenderer.SetPosition(0, listOfPlacedObjects[i].transform.position);
-                    lineRenderer.SetPosition(1, listOfPlacedObjects[i + 1].transform.position);
-                    listOfLinerenderers.Add(lineRendererGameObject);
-                }
-                catch (Exception)
-                {
-                    Debug.LogError("Exceptions baby!");
-                    throw;
-                }
-            }
-        }
-    }
+    //private void DrawLinesBetweenObjects()
+    //{
+    //    int lengthOfList = listOfPlacedObjects.Count;
+    //    if (lengthOfList > 1)
+    //    {
+    //        for (int i = 0; i < lengthOfList - 1; i++)
+    //        {
+    //            try
+    //            {
+    //                var lineRendererGameObject = Instantiate(lineRendererPrefab);
+    //                var lineRenderer = lineRendererGameObject.GetComponent<LineRenderer>();
+    //                lineRenderer.SetPosition(0, listOfPlacedObjects[i].transform.position);
+    //                lineRenderer.SetPosition(1, listOfPlacedObjects[i + 1].transform.position);
+    //                listOfLinerenderers.Add(lineRendererGameObject);
+    //            }
+    //            catch (Exception)
+    //            {
+    //                Debug.LogError("Exceptions baby!");
+    //                throw;
+    //            }
+    //        }
+    //    }
+    //}
 
     // UI logic
     public void ResetSession()
@@ -351,8 +410,12 @@ public class WallPlacement : MonoBehaviour
 
     public void RenderWalls()
     {
-        renderWallMeshes(true);
-        renderClickPoints(true);
-        renderLineRenderers(true);
+        foreach(var wall in walls)
+        {
+            wall.startPoint.SetActive(false);
+            wall.endPoint.SetActive(false);
+            wall.quad.SetActive(true);
+            wall.line.SetActive(false);
+        }
     }
 }
