@@ -113,7 +113,7 @@ public class Manager : MonoBehaviour
         if(sliderValue > 0)
         {
             sliderValue += 0.5f;
-            sliderValue *= 6f;
+            sliderValue *= 2f;
             var logHeight = Mathf.Log(sliderValue);
             Debug.Log($"log height: {logHeight}");
             delaunayMesh.SetHeightToMesh(logHeight);

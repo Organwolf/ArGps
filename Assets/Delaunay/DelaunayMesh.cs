@@ -146,6 +146,7 @@ public partial class DelaunayMesh : MonoBehaviour
     {
         if (chunks != null)
         {
+            Debug.Log("Clearing the mesh");
             foreach (Transform chunk in chunks)
                 Destroy(chunk.gameObject);
         }
