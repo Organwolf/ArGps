@@ -409,11 +409,14 @@ MonoBehaviour:
     type: 3}
   clickPointPrefab: {fileID: 3955044548890492075, guid: c89ca5b1a7c43b34fa94ed1d5e762718,
     type: 3}
+  measuringStickPrefab: {fileID: 2372119420843123566, guid: a8818bb4d12d2754aafb16581627454d,
+    type: 3}
   materialForWalls:
   - {fileID: 2100000, guid: ac9a65c5c118668458bad0d8697a489a, type: 2}
   lineRendererPrefab: {fileID: 9118343838390466524, guid: 3bfbcf101dd3d3344965e75485abec31,
     type: 3}
   arSession: {fileID: 1324904971}
+  arSessionOrigin: {fileID: 2061189423}
   arRaycastManager: {fileID: 2061189426}
   arPlaneManager: {fileID: 2061189422}
   arCamera: {fileID: 1735566239}
@@ -436,7 +439,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &95980005
 Transform:
   m_ObjectHideFlags: 0

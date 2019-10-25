@@ -34,14 +34,26 @@ public class WallPlacement : MonoBehaviour
     private List<Wall> walls = new List<Wall>();
 
     // Prefabs & materials
-    public GameObject groundPlanePrefab;
-    public GameObject clickPointPrefab;
-    public Material[] materialForWalls;
+    [SerializeField] GameObject groundPlanePrefab;
+    [SerializeField] GameObject clickPointPrefab;
+    //[SerializeField] GameObject measuringStickPrefab;
+    [SerializeField] Material[] materialForWalls;
+
+    // Line renderer
+    [SerializeField] GameObject lineRendererPrefab;
+
+    // AR
+    [SerializeField] ARSession arSession;
+    [SerializeField] ARSessionOrigin arSessionOrigin;
+    [SerializeField] ARRaycastManager arRaycastManager;
+    [SerializeField] ARPlaneManager arPlaneManager;
+    [SerializeField] Camera arCamera;
 
     // startPoint & endPoint
     private GameObject startPoint;
     private GameObject endPoint;
     private LineRenderer measureLine;
+    //private GameObject measuringstick;
 
     // Plane, water & wall variables
     private bool planeIsPlaced;
@@ -51,15 +63,6 @@ public class WallPlacement : MonoBehaviour
     private List<GameObject> listOfLinerenderers;
     private List<GameObject> listOfWallMeshes;
 
-    // Line renderer
-    [SerializeField] GameObject lineRendererPrefab;
-
-    // AR
-    [SerializeField] ARSession arSession;
-    [SerializeField] ARRaycastManager arRaycastManager;
-    [SerializeField] ARPlaneManager arPlaneManager;
-    [SerializeField] Camera arCamera;
-
     // Raycasts
     private List<ARRaycastHit> hitsAR = new List<ARRaycastHit>();
     private List<GameObject> listOfPlacedObjects;
@@ -67,8 +70,6 @@ public class WallPlacement : MonoBehaviour
 
     private void Awake()
     {
-        // Lists for wall objects
-
         // To be removed
         listOfPlacedObjects = new List<GameObject>();
         listOfWallMeshes = new List<GameObject>();
@@ -77,8 +78,10 @@ public class WallPlacement : MonoBehaviour
         // startPoint & endPoint
         startPoint = Instantiate(clickPointPrefab, Vector3.zero, Quaternion.identity);
         endPoint = Instantiate(clickPointPrefab, Vector3.zero, Quaternion.identity);
+        //measuringstick = Instantiate(measuringStickPrefab, Vector3.zero, Quaternion.identity);
         startPoint.SetActive(false);
         endPoint.SetActive(false);
+        //measuringstick.SetActive(false);
         measureLine = GetComponent<LineRenderer>();
         measureLine.enabled = false;
     }
@@ -113,36 +116,56 @@ public class WallPlacement : MonoBehaviour
                             planeIsPlaced = true;
                             TogglePlaneDetection();
                         }
+
+                        //if(planeIsPlaced)
+                        //{
+                        //    // Measuring stick placed 1m in front of the camera
+                        //    var positionStick = new Vector3(arCamera.transform.position.x, groundPlane.transform.position.y, arCamera.transform.position.z + 1.0f);
+                        //    arSessionOrigin.MakeContentAppearAt(measuringstick.transform, positionStick, Quaternion.identity);
+                        //    measuringstick.GetComponent<textOverlay>().SetText("Waterlevel: \n" + "text not set yet");
+
+                        //    // enable measuring stick
+                        //    measuringstick.SetActive(true);
+                        //}
                     }
 
-                    else if (planeIsPlaced && wallPlacementEnabled)
+                    else if (planeIsPlaced)
                     {
                         Ray ray = arCamera.ScreenPointToRay(touch.position);
                         RaycastHit hitInfo;
 
                         if (Physics.Raycast(ray, out hitInfo, groundLayerMask))
                         {
-                            startPoint.SetActive(true);
-                            startPoint.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
-
-                            if (walls.Count > 0)
+                            if(wallPlacementEnabled)
                             {
-                                foreach (var obj in walls)
-                                {
-                                    float dist = 0;
-                                    dist = Vector3.Distance(obj.endPoint.transform.position, startPoint.transform.position);
-                                    if (dist < 0.1)
-                                    {
-                                        startPoint.transform.position = obj.endPoint.transform.position;
-                                    }
+                                startPoint.SetActive(true);
+                                startPoint.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
 
-                                    dist = Vector3.Distance(obj.startPoint.transform.position, startPoint.transform.position);
-                                    if (dist < 0.1)
+                                if (walls.Count > 0)
+                                {
+                                    foreach (var obj in walls)
                                     {
-                                        startPoint.transform.position = obj.startPoint.transform.position;
+                                        float dist = 0;
+                                        dist = Vector3.Distance(obj.endPoint.transform.position, startPoint.transform.position);
+                                        if (dist < 0.1)
+                                        {
+                                            startPoint.transform.position = obj.endPoint.transform.position;
+                                        }
+
+                                        dist = Vector3.Distance(obj.startPoint.transform.position, startPoint.transform.position);
+                                        if (dist < 0.1)
+                                        {
+                                            startPoint.transform.position = obj.startPoint.transform.position;
+                                        }
                                     }
                                 }
                             }
+
+                            //else if(measuringstick.activeSelf)
+                            //{
+                            //    Debug.Log("What is active selfe of measuring stick: " + measuringstick.activeSelf);
+                            //    measuringstick.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
+                            //}
                         }
                     }
                 }
@@ -154,6 +177,7 @@ public class WallPlacement : MonoBehaviour
 
                     if (Physics.Raycast(ray, out hitInfo, groundLayerMask))
                     {
+
                         endPoint.SetActive(true);
                         endPoint.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
                     }
