@@ -12,7 +12,6 @@ public class Manager : MonoBehaviour
     [SerializeField] string pathToWaterCsv;
     [SerializeField] double radius = 20.0;
     [SerializeField] Location deviceLocation;
-
     // UI
     [SerializeField] Slider exaggerateHeightSlider;
 
@@ -20,11 +19,8 @@ public class Manager : MonoBehaviour
     private DelaunayMesh delaunayMesh;
     private WallPlacement wallPlacement;
 
-    // how can I use locationProvider?
-    //private ARLocationProvider locationProvider;
-
     private List<Location> withinRadiusData;
-    //private Transform groundPlaneTransform;
+
 
     private void Awake()
     {
@@ -39,13 +35,13 @@ public class Manager : MonoBehaviour
     // once the "Generate Mesh" button is pressed. Obviuouse improvements can be made here.
     IEnumerator Start()
     {
-        // det är för att det är massa yeilds
         // First, check if user has location service enabled
         if (!Input.location.isEnabledByUser)
             yield break;
 
         // Start service before querying location
         Input.location.Start();
+
         // Wait until service initializes
         int maxWait = 20;
         while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
@@ -74,7 +70,6 @@ public class Manager : MonoBehaviour
             deviceLocation = new Location(Input.location.lastData.latitude, Input.location.lastData.longitude, 0);
         }
         // Stop service if there is no need to query location updates continuously
-        // should this stop? Not sure how it is activated in other parts of the code
         // could add a yeild that runs every second or something?
         Input.location.Stop();
     }
@@ -161,7 +156,7 @@ public class Manager : MonoBehaviour
             }
 
             //Debug.Log($"Calc height: {calculatedHeight} insideBuilding: {insideBuilding}");
-            // An exaggeration can be added to calculatedHeight (* 15f) to see the differences more clearly.
+            // Exaggerate height if needed
             points.Add(new Vector3(longitude, calculatedHeight, latitude));
         }
 
@@ -181,6 +176,7 @@ public class Manager : MonoBehaviour
         return relativeHeight;
     }
 
+    // UI
     public void AlterHeightOfMesh()
     {
         var sliderValue = exaggerateHeightSlider.value;
@@ -204,7 +200,11 @@ public class Manager : MonoBehaviour
         wallPlacement.RemovePreviousWall();
     }
 
-    // Använd dessa i GUIt
+    public void ToggleWallPlacement()
+    {
+        wallPlacement.ToggleWallPlacement();
+    }
+
     public void ShowMesh()
     {
         SetMeshVisible(true);

@@ -295,11 +295,11 @@ public class WaterMesh : MonoBehaviour
     {
 
         // Comment out if you don't want to show each sphere
-        //if (PlacementOptions.HideObjectUntilItIsPlaced && state.PositionUpdatedCount <= 0)
-        //{
-        //    // ToDo: make the mesh visible here
-        //    state.globalLocalPositions.ForEach(obj => Misc.ShowGameObject(obj.gameObject));
-        //}
+        if (PlacementOptions.HideObjectUntilItIsPlaced && state.PositionUpdatedCount <= 0)
+        {
+            // ToDo: make the mesh visible here
+            state.globalLocalPositions.ForEach(obj => Misc.ShowGameObject(obj.gameObject));
+        }
 
         state.PositionUpdatedCount++;
 

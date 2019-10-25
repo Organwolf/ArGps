@@ -47,9 +47,7 @@ public class WallPlacement : MonoBehaviour
     private bool planeIsPlaced;
     private float height = 4.0f;
     private GameObject groundPlane;
-    // These 2 aren't really in use right now 
     private bool wallPlacementEnabled = true;
-    private bool toggleVisibilityOfWalls;
     private List<GameObject> listOfLinerenderers;
     private List<GameObject> listOfWallMeshes;
 
@@ -64,14 +62,9 @@ public class WallPlacement : MonoBehaviour
 
     // Raycasts
     private List<ARRaycastHit> hitsAR = new List<ARRaycastHit>();
-    private RaycastHit hits;
-    private Vector3 savedPoint;
     private List<GameObject> listOfPlacedObjects;
     private int groundLayerMask = 1 << 8;
 
-    // UI slider values
-    private textOverlayMultSlider multiplierText;
-    private textOverlayRadiusSlider radiusText;
 
     private void Awake()
     {
@@ -123,7 +116,7 @@ public class WallPlacement : MonoBehaviour
                         }
                     }
 
-                    else if (planeIsPlaced)
+                    else if (planeIsPlaced && wallPlacementEnabled)
                     {
                         Ray ray = arCamera.ScreenPointToRay(touch.position);
                         RaycastHit hitInfo;
@@ -201,12 +194,6 @@ public class WallPlacement : MonoBehaviour
                     var startPointObject = Instantiate(clickPointPrefab, startPoint.transform.position, Quaternion.identity);
                     var endPointObject = Instantiate(clickPointPrefab, endPoint.transform.position, Quaternion.identity);
 
-                    // TODO: remove and replace with wall logic
-                    //listOfPlacedObjects.Add(startPointObject);
-                    //listOfPlacedObjects.Add(endPointObject);
-                    // listOfob är gammalt som jag hade innan jag skapade Wall Då tycker jag du ska städa efter dig biat NAJ:DJOdet kan jahg göra ch
-                    // Gör det nu Ska bli
-
                     // Disable temporary line renderer and create a new one
                     measureLine.enabled = false;
                     var lRenderer = DrawLineBetweenTwoPoints(startPoint, endPoint);
@@ -219,9 +206,7 @@ public class WallPlacement : MonoBehaviour
                     endPoint.SetActive(false);
 
                     Wall currentWall = new Wall(startPointObject, endPointObject, wall, lRenderer);
-                    // Jaja nu är jag med. detta funkar men ganska omständigt  Problemet verkar uppstå när jag väl tagit bort en vägg för då får jag en null här ska visa
                     walls.Add(currentWall);
-                    Debug.Log("Size of list: " + walls.Count);
                     
                 }
             }
@@ -278,6 +263,11 @@ public class WallPlacement : MonoBehaviour
         return lineRendererGameObject;
     }
 
+    public void ToggleWallPlacement()
+    {
+        wallPlacementEnabled = !wallPlacementEnabled;
+    }
+
     private void TogglePlaneDetection()
     {
         arPlaneManager.enabled = !arPlaneManager.enabled;
@@ -331,54 +321,6 @@ public class WallPlacement : MonoBehaviour
         // returning the quad
         return newMeshObject;
     }
-
-    private void renderWallMeshes(bool isVisible)
-    {
-        foreach (GameObject wallMesh in listOfWallMeshes)
-        {
-            wallMesh.SetActive(isVisible);
-        }
-    }
-
-    private void renderClickPoints(bool isVisible)
-    {
-        foreach (GameObject point in listOfPlacedObjects)
-        {
-            point.SetActive(isVisible);
-        }
-    }
-
-    private void renderLineRenderers(bool isVisible)
-    {
-        foreach (GameObject line in listOfLinerenderers)
-        {
-            line.SetActive(isVisible);
-        }
-    }
-
-    //private void DrawLinesBetweenObjects()
-    //{
-    //    int lengthOfList = listOfPlacedObjects.Count;
-    //    if (lengthOfList > 1)
-    //    {
-    //        for (int i = 0; i < lengthOfList - 1; i++)
-    //        {
-    //            try
-    //            {
-    //                var lineRendererGameObject = Instantiate(lineRendererPrefab);
-    //                var lineRenderer = lineRendererGameObject.GetComponent<LineRenderer>();
-    //                lineRenderer.SetPosition(0, listOfPlacedObjects[i].transform.position);
-    //                lineRenderer.SetPosition(1, listOfPlacedObjects[i + 1].transform.position);
-    //                listOfLinerenderers.Add(lineRendererGameObject);
-    //            }
-    //            catch (Exception)
-    //            {
-    //                Debug.LogError("Exceptions baby!");
-    //                throw;
-    //            }
-    //        }
-    //    }
-    //}
 
     // UI logic
     public void ResetSession()
