@@ -56,7 +56,7 @@ namespace ARLocation
             }
         }
 
-        public void AddLocation(Location location)
+        public GameObject AddLocation(Location location)
         {
             var instance = PlaceAtLocation.CreatePlacedInstance(Prefab, location, PlacementOptions, DebugMode);
 
@@ -64,6 +64,7 @@ namespace ARLocation
 
             locations.Add(location);
             instances.Add(instance);
+            return instance;
         }
     }
 }

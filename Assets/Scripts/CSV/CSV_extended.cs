@@ -3,35 +3,44 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- * Thoughts: does this even need to be a monobehaviour?
- * 
- */
+[Serializable]
+public class LocationData
+{
+    public double Longitude;
+    public double Latitude;
+    public double Altitude;
+
+    public bool Building;
+    public double Height;
+    public double WaterHeight;
+    public double NearestNeighborWater;
+    public double NearestNeighborHeight;
+}
 
 public class CSV_extended
 {
-    public static List<Location> ParseCsvFileUsingResources(string pathToFile)
+    public static List<LocationData> ParseCsvFileUsingResources(string pathToFile)
     {
-        var parsedData = new List<Location>();
+        var parsedData = new List<LocationData>();
 
-        TextAsset file = Resources.Load(pathToFile) as TextAsset;
-        string[] lines = file.text.Split('\n');
+        var file = Resources.Load(pathToFile) as TextAsset;
+        if (file == null) return parsedData;
 
-        Debug.Log("Rows in csv file: " + lines.Length);
+        var lines = file.text.Split('\n');
 
-        foreach(string line in lines)
+        foreach (var line in lines)
         {
-            string[] split = line.Split(',');
+            var split = line.Split(',');
 
-            double longitude = double.Parse(split[0]);
-            double latitude = double.Parse(split[1]);
-            bool building = (split[2] == "1");
-            double height = double.Parse(split[3]);
-            double waterHeight = double.Parse(split[4]) / 100;           // converting from cm to m
-            double nearestNeighborHeight = double.Parse(split[5]);
-            double nearestNeighborWater = double.Parse(split[6]) / 100f; // converting from cm to m
+            var longitude = double.Parse(split[0]);
+            var latitude = double.Parse(split[1]);
+            var building = (split[2] == "1");
+            var height = double.Parse(split[3]);
+            var waterHeight = double.Parse(split[4]) / 100;           // converting from cm to m
+            var nearestNeighborHeight = double.Parse(split[5]);
+            var nearestNeighborWater = double.Parse(split[6]) / 100f; // converting from cm to m
 
-            var data = new Location
+            var data = new LocationData
             {
                 Longitude = longitude,
                 Latitude = latitude,
@@ -48,33 +57,31 @@ public class CSV_extended
         return parsedData;
     }
 
-    // These math functions should obviously be in their own class but for now they reside here.
-    // Later on I will interpolate between ~4 points and return an average value. For now I find the closest.
-    public static Location ClosestPoint(List<Location> locations, Location deviceLocation)
+    public static LocationData ClosestPoint(List<LocationData> locations, LocationData deviceLocation)
     {
-        Location closestLocation = new Location();
-        double minDistance = Double.MaxValue;
+        var closestLocation = new LocationData();
+        var minDistance = Double.MaxValue;
         double distanceToClosestPoint = -1;
-        foreach (Location location in locations)
+        foreach (var location in locations)
         {
             var distance = HaversineDistance(location.Longitude, deviceLocation.Longitude, location.Latitude, deviceLocation.Latitude);
 
             if (distance <= minDistance)
                 minDistance = distance;
-                distanceToClosestPoint = distance;
-                closestLocation = location;
+            distanceToClosestPoint = distance;
+            closestLocation = location;
         }
         Debug.Log("Distance to closest point: " + distanceToClosestPoint);
         return closestLocation;
     }
 
     //public static List<Location> PointsWithinRadius(List<Location> locations, double radius, double longitude, double latitude)
-    public static List<Location> PointsWithinRadius(List<Location> locations, double radius, Location deviceLocation)
+    public static List<LocationData> PointsWithinRadius(List<LocationData> locations, double radius, Location deviceLocation)
     {
         //locationsWithinRadius.Clear();
-        List<Location> locationsWithinRadius = new List<Location>();
+        var locationsWithinRadius = new List<LocationData>();
 
-        foreach (Location loc in locations)
+        foreach (var loc in locations)
         {
             var distance = HaversineDistance(loc.Longitude, deviceLocation.Longitude, loc.Latitude, deviceLocation.Latitude);
 

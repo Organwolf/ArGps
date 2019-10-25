@@ -17,12 +17,6 @@ namespace ARLocation
     [Serializable]
     public class Location
     {
-        public bool Building;
-        public double Height;
-        public double WaterHeight;
-        public double NearestNeighborWater;
-        public double NearestNeighborHeight;
-
         [FormerlySerializedAs("latitude")] [Tooltip("The latitude, in degrees.")]
         public double Latitude;
 
