@@ -36,7 +36,7 @@ public class WallPlacement : MonoBehaviour
     // Prefabs & materials
     [SerializeField] GameObject groundPlanePrefab;
     [SerializeField] GameObject clickPointPrefab;
-    //[SerializeField] GameObject measuringStickPrefab;
+    [SerializeField] GameObject measuringStickPrefab;
     [SerializeField] Material[] materialForWalls;
 
     // Line renderer
@@ -53,7 +53,7 @@ public class WallPlacement : MonoBehaviour
     private GameObject startPoint;
     private GameObject endPoint;
     private LineRenderer measureLine;
-    //private GameObject measuringstick;
+    private GameObject measuringstick;
 
     // Plane, water & wall variables
     private bool planeIsPlaced;
@@ -78,10 +78,10 @@ public class WallPlacement : MonoBehaviour
         // startPoint & endPoint
         startPoint = Instantiate(clickPointPrefab, Vector3.zero, Quaternion.identity);
         endPoint = Instantiate(clickPointPrefab, Vector3.zero, Quaternion.identity);
-        //measuringstick = Instantiate(measuringStickPrefab, Vector3.zero, Quaternion.identity);
+        measuringstick = Instantiate(measuringStickPrefab, Vector3.zero, Quaternion.identity);
         startPoint.SetActive(false);
         endPoint.SetActive(false);
-        //measuringstick.SetActive(false);
+        measuringstick.SetActive(false);
         measureLine = GetComponent<LineRenderer>();
         measureLine.enabled = false;
     }
@@ -125,7 +125,7 @@ public class WallPlacement : MonoBehaviour
                         //    measuringstick.GetComponent<textOverlay>().SetText("Waterlevel: \n" + "text not set yet");
 
                         //    // enable measuring stick
-                        //    measuringstick.SetActive(true);
+                        
                         //}
                     }
 
@@ -161,11 +161,11 @@ public class WallPlacement : MonoBehaviour
                                 }
                             }
 
-                            //else if(measuringstick.activeSelf)
-                            //{
-                            //    Debug.Log("What is active selfe of measuring stick: " + measuringstick.activeSelf);
-                            //    measuringstick.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
-                            //}
+                            else
+                            {
+                                measuringstick.SetActive(true);
+                                measuringstick.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
+                            }
                         }
                     }
                 }
