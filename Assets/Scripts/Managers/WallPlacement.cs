@@ -65,7 +65,6 @@ public class WallPlacement : MonoBehaviour
     private List<GameObject> listOfPlacedObjects;
     private int groundLayerMask = 1 << 8;
 
-
     private void Awake()
     {
         // Lists for wall objects

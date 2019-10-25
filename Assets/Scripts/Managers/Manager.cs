@@ -1,10 +1,8 @@
 ﻿using ARLocation;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static WaterMesh;
 
 
 public class Manager : MonoBehaviour
@@ -12,15 +10,12 @@ public class Manager : MonoBehaviour
     [SerializeField] string pathToWaterCsv;
     [SerializeField] double radius = 20.0;
     [SerializeField] Location deviceLocation;
-    // UI
-    [SerializeField] Slider exaggerateHeightSlider;
+    [SerializeField] Slider exaggerateHeightSlider;    // UI
 
     private WaterMesh waterMesh;
     private DelaunayMesh delaunayMesh;
     private WallPlacement wallPlacement;
-
     private List<Location> withinRadiusData;
-
 
     private void Awake()
     {
@@ -66,35 +61,12 @@ public class Manager : MonoBehaviour
         else
         {
             // Access granted and location value could be retrieved
-            //print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+            print("Start Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
             deviceLocation = new Location(Input.location.lastData.latitude, Input.location.lastData.longitude, 0);
         }
         // Stop service if there is no need to query location updates continuously
         // could add a yeild that runs every second or something?
         Input.location.Stop();
-    }
-
-    // Called each time the positions update
-    private void OnPositionsUpdated(LocationsStateData stateData)
-    {
-        Debug.Log("OnPositionsUpdated");
-
-        //var locations = stateData.GetLocalLocations();
-        //var face = stateData.getLocalLocations();
-        //var points = new List<Vector3>();
-        //foreach (var globalLocalPosition in locations)
-        //{
-        //    var location = globalLocalPosition.location;
-        //    float longitude = (float)location.Longitude;
-        //    float altitude = (float)location.Altitude;
-        //    float latitude = (float)location.Latitude;
-        //    points.Add(new Vector3(longitude, altitude, latitude));
-        //}
-        
-        //if (groundPlaneTransform != null)
-        //{
-        //    delaunayMesh.Generate(points, groundPlaneTransform);
-        //}
     }
 
     private void InitializeWaterMesh(string path)
@@ -108,8 +80,6 @@ public class Manager : MonoBehaviour
         // Recalculate the height of each vertices before sending it to the waterMeshClass
         waterMesh.SetPositionsToHandleLocations(withinRadiusData);
         HideMesh();
-
-        waterMesh.PositionsUpdated += OnPositionsUpdated;
     }
 
     // TODO: all of this should most likely update continously
@@ -135,7 +105,6 @@ public class Manager : MonoBehaviour
 
             float latitude = globalLocalPosition.localLocation.z;
             float longitude = globalLocalPosition.localLocation.x;
-
             var location = globalLocalPosition.location;
             float heightPoint = (float)location.Height;
             float waterHeight = (float)location.WaterHeight;
@@ -155,9 +124,8 @@ public class Manager : MonoBehaviour
                 calculatedHeight = CalculateRelativeHeight(heightAtCamera, heightPoint, waterHeight);
             }
 
+            points.Add(new Vector3(longitude, calculatedHeight, latitude)); // Exaggerate height if needed
             //Debug.Log($"Calc height: {calculatedHeight} insideBuilding: {insideBuilding}");
-            // Exaggerate height if needed
-            points.Add(new Vector3(longitude, calculatedHeight, latitude));
         }
 
         if (groundPlaneTransform != null)

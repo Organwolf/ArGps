@@ -3,11 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- * Thoughts: does this even need to be a monobehaviour?
- * 
- */
-
 public class CSV_extended
 {
     public static List<Location> ParseCsvFileUsingResources(string pathToFile)

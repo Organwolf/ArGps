@@ -210,15 +210,12 @@ public class WaterMesh : MonoBehaviour
                             : 20
                     };
                 }
-
-                
             }
         }
         catch (Exception ex)
         {
             ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "Initialize", $"({ex.ToString()})", DebugMode);
         }
-
     }
 
     public void UpdatePosition(Location deviceLocation)
@@ -258,22 +255,12 @@ public class WaterMesh : MonoBehaviour
                 targetPosition.y = transform.position.y;
             }
 
-            //var log = $"Tragetpostion: {targetPosition} transform: {transform.position}";
-            //Debug.Log(log);
-
             // comment out once we just render the mesh
             obj.gameObject.transform.position = targetPosition;
             obj.localLocation = targetPosition;
         }
-
-
         PositionUpdated();
-
         state.LocationUpdatedCount++;
-
-        //Meshen borde göras EFTER positonerna blivit uppdaterade
-        //Det är konstigt för det ska kallas varje gång Mahdi uppdaterar sina positioner
-        PositionsUpdated(state);
     }
 
     private void ProviderRestarted()

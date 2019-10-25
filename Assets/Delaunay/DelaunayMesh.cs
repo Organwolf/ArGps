@@ -1,9 +1,7 @@
-﻿using ARLocation;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using TriangleNet.Geometry;
 using TriangleNet.Topology;
-using static WaterMesh;
 using System.Linq;
 
 public partial class DelaunayMesh : MonoBehaviour
@@ -26,11 +24,9 @@ public partial class DelaunayMesh : MonoBehaviour
         Polygon polygon = new Polygon();
         elevations = new List<float>();
 
-        // Lyckades generera meshen när jag testade en andra gång ?!
+        Debug.Log($"Mesh Generated with {locations.ToList().Count} points.");
 
-        Debug.Log($"Mesh Generated with {locations.ToList().Count} points."); //Kom du hit?
-
-        // Create separate polygons for the triangulation yes
+        // Create separate polygons for the triangulation
         foreach (var location in locations)
         {
             polygon.Add(new Vertex(location.x, location.z));
@@ -55,7 +51,6 @@ public partial class DelaunayMesh : MonoBehaviour
                 elevations.Add(groundPlaneTransform.position.y);
             }
         }
-
         ClearMesh();
         MakeMesh();
     }
@@ -184,24 +179,5 @@ public partial class DelaunayMesh : MonoBehaviour
         Vertex vertex = mesh.vertices[index];
         float elevation = elevations[index];
         return new Vector3((float)vertex.x, elevation, (float)vertex.y);
-    }
-
-    public void OnDrawGizmos()
-    {
-        if (mesh == null)
-        {
-            // Probably in the editor
-            return;
-        }
-
-        Gizmos.color = Color.red;
-        foreach (Edge edge in mesh.Edges)
-        {
-            Vertex v0 = mesh.vertices[edge.P0];
-            Vertex v1 = mesh.vertices[edge.P1];
-            Vector3 p0 = new Vector3((float)v0.x, 0.0f, (float)v0.y);
-            Vector3 p1 = new Vector3((float)v1.x, 0.0f, (float)v1.y);
-            Gizmos.DrawLine(p0, p1);
-        }
     }
 }
