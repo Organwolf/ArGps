@@ -1,14 +1,17 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class textOverlayMultSlider : MonoBehaviour
+namespace Assets.Scripts.UI
 {
-
-    [SerializeField]
-    private TextMeshProUGUI OverlayText;
-
-    public void SetText(string text)
+    public class textOverlayMultSlider : MonoBehaviour
     {
-        OverlayText.text = text;
+
+        [SerializeField]
+        private TextMeshProUGUI OverlayText;
+
+        public void SetText(string text)
+        {
+            OverlayText.text = text;
+        }
     }
 }

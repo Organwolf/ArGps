@@ -70,7 +70,7 @@ namespace ARLocation
 
         public override string ToString()
         {
-            return "(" + Latitude + ", " + Longitude + ", " + Altitude + ")";
+            return "(" + Latitude + " / " + Longitude + " / " + Altitude + ")";
         }
 
         public DVector3 ToDVector3()

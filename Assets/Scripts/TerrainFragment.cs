@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Managers
+﻿namespace Assets.Scripts
 {
     public class TerrainFragment
     {

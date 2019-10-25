@@ -1,32 +1,33 @@
 ﻿using ARLocation;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIController : MonoBehaviour
+namespace Assets.Scripts.UI
 {
-    [SerializeField]
-    private Text LocationAccText;
-    [SerializeField]
-    private Text CompassAccText;
-    private Assets.Mapbox.SimpleAutomaticSynchronizationContext syncContext;
-
-    private void Start()
+    public class UIController : MonoBehaviour
     {
-        syncContext = new Assets.Mapbox.SimpleAutomaticSynchronizationContext();
-    }
+        [SerializeField]
+        private Text LocationAccText;
+        [SerializeField]
+        private Text CompassAccText;
+        private Assets.Mapbox.SimpleAutomaticSynchronizationContext syncContext;
 
-    public void onLocationUpdated(LocationReading loc)
-    {
-        LocationAccText.text = string.Format("{0}", loc.accuracy.ToString()); 
+        private void Start()
+        {
+            syncContext = new Assets.Mapbox.SimpleAutomaticSynchronizationContext();
+        }
+
+        public void onLocationUpdated(LocationReading loc)
+        {
+            LocationAccText.text = string.Format("{0}", loc.accuracy.ToString()); 
         
-        //syncContext.AddSynchronizationNodes()
-    }
+            //syncContext.AddSynchronizationNodes()
+        }
 
-    public void onCompassUpdated(HeadingReading head)
-    {
-        //Debug.Log(string.Format("accuracy: {0}, heading: {1}, isMagneticHeadingAvailable: {2}, magneticHeading: {3}", head.accuracy, head.heading, head.isMagneticHeadingAvailable, head.magneticHeading));
-        CompassAccText.text = string.Format("{0}", head.accuracy.ToString());
+        public void onCompassUpdated(HeadingReading head)
+        {
+            //Debug.Log(string.Format("accuracy: {0}, heading: {1}, isMagneticHeadingAvailable: {2}, magneticHeading: {3}", head.accuracy, head.heading, head.isMagneticHeadingAvailable, head.magneticHeading));
+            CompassAccText.text = string.Format("{0}", head.accuracy.ToString());
+        }
     }
 }

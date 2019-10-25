@@ -1,6 +1,7 @@
 ﻿using System;
+using ARLocation;
 
-namespace Assets.Scripts.Managers
+namespace Assets.Scripts
 {
     public class Coordinates
     {
@@ -12,6 +13,21 @@ namespace Assets.Scripts.Managers
 
         public double Longitude { get; }
         public double Latitude { get; }
+
+        public static double Distance(Coordinates first, Coordinates second)
+        {
+            return Distance(first.Longitude, first.Latitude, second.Longitude, second.Latitude);
+        }
+
+        public static double Distance(double firstLongitude, double firstLatitude, double secondLongitude, double secondLatitude)
+        {
+            var firstLocation = new Location(firstLatitude, firstLongitude);
+            var secondLocation = new Location(secondLatitude, secondLongitude);
+            return Location.HaversineDistance(firstLocation, secondLocation);
+        }
+
+        public double DistanceTo(Coordinates coordinates) => Distance(this, coordinates);
+
         public bool IsSame(Coordinates coordinate, double tolerance)
         {
             return IsSame(this, coordinate, tolerance);

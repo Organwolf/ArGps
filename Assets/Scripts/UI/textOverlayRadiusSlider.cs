@@ -1,14 +1,17 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class textOverlayRadiusSlider : MonoBehaviour
+namespace Assets.Scripts.UI
 {
-
-    [SerializeField]
-    private TextMeshProUGUI OverlayText;
-
-    public void SetText(string text)
+    public class textOverlayRadiusSlider : MonoBehaviour
     {
-        OverlayText.text = text;
+
+        [SerializeField]
+        private TextMeshProUGUI OverlayText;
+
+        public void SetText(string text)
+        {
+            OverlayText.text = text;
+        }
     }
 }

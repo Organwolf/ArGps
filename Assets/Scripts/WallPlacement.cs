@@ -3,15 +3,17 @@
  */
 
 using System.Collections.Generic;
+using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.EventSystems;
 using UnityEngine.XR.ARFoundation;
+
 #if PLATFORM_ANDROID
 
 #endif
 
-namespace Assets.Scripts.Managers
+namespace Assets.Scripts
 {
     public class WallPlacement : MonoBehaviour
     {

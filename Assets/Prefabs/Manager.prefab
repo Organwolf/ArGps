@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7671594878662252777}
   - component: {fileID: 1088973838390338246}
   m_Layer: 0
-  m_Name: ManagerBenke
+  m_Name: Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1bc4f0b5e6ef544587bdf33bd4d8288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  csvPath: 
+  csvPath: csv_extended
   locationProvider: {fileID: 0}
 --- !u!114 &1088973838390338246
 MonoBehaviour:
@@ -73,11 +73,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24938065640cfe14eae1ff8333d6bf85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locationObjectPrefab: {fileID: 0}
+  locationObjectPrefab: {fileID: 8472906587531228353, guid: e2c9b910d50dd2442b13acaa4aac2c3b,
+    type: 3}
   placementOptions:
     MovementSmoothing: 0.05
-    MaxNumberOfLocationUpdates: 4
+    MaxNumberOfLocationUpdates: 0
     UseMovingAverage: 0
     HideObjectUntilItIsPlaced: 1
-  debugMode: 0
-  filterRadius: 10
+  debugMode: 1
+  filterRadius: 14
