@@ -17,6 +17,8 @@ namespace Assets.Scripts
             Latitude = latitude;
             Altitude = altitude;
         }
+
+        public override string ToString() => $"({Longitude},{Latitude})";
     }
 
     public class CSVReader

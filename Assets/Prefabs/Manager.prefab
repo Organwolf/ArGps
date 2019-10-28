@@ -61,6 +61,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   csvPath: csv_extended
   locationProvider: {fileID: 0}
+  spawnLocationPrefab: {fileID: 1338736688777576655, guid: 5c9f777883e1dfd4fb5d505dc8959348,
+    type: 3}
 --- !u!114 &1088973838390338246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,5 +82,5 @@ MonoBehaviour:
     MaxNumberOfLocationUpdates: 0
     UseMovingAverage: 0
     HideObjectUntilItIsPlaced: 1
-  debugMode: 1
+  debugMode: 0
   filterRadius: 14

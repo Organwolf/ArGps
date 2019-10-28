@@ -14,7 +14,7 @@ namespace Assets.Scripts
         [SerializeField] public bool debugMode;
         [SerializeField] public double filterRadius = 10;
 
-        //private List<Transform> placedObjects;
+        private List<Transform> placedObjects;
 
         private DelaunayMesh MeshGenerator => GetComponent<DelaunayMesh>();
         
@@ -29,16 +29,19 @@ namespace Assets.Scripts
         {
             yield return new WaitForSeconds(4);
 
-            var placedObjects = new List<Transform>();
+            placedObjects = new List<Transform>();
             foreach (var locationData in terrainFragments)
             {
                 var location = new Location(locationData.Latitude, locationData.Longitude, locationData.Altitude);
                 var instance = PlaceAtLocation.CreatePlacedInstance(locationObjectPrefab, location, placementOptions, debugMode);
+                var placeAtLocation = instance.GetComponent<PlaceAtLocation>();
+                if (placeAtLocation.ObjectPositionUpdated == null) placeAtLocation.ObjectPositionUpdated = new PlaceAtLocation.ObjectUpdatedEvent();
+                placeAtLocation.ObjectPositionUpdated.AddListener(OnObjectPositionUpdated);
                 instance.name = location.ToString();
                 placedObjects.Add(instance.transform);
 
-                yield return new WaitForSeconds(0.02f);
-                GenerateMeshFromTransforms(placedObjects);
+                //yield return new WaitForSeconds(0.02f);
+                //GenerateMeshFromTransforms(placedObjects);
                 yield return new WaitForSeconds(0.02f);
             }
 
@@ -48,9 +51,14 @@ namespace Assets.Scripts
             placingComplete(placedObjects);
         }
 
-        private void OnPlacingComplete(List<Transform> placedObjects)
+        private void OnObjectPositionUpdated(GameObject arg0, Location arg1, int arg2)
         {
             GenerateMeshFromTransforms(placedObjects);
+        }
+
+        private void OnPlacingComplete(List<Transform> placedObjects)
+        {
+            //GenerateMeshFromTransforms(placedObjects);
         }
 
         private void GenerateMeshFromTransforms(IEnumerable<Transform> transforms)
