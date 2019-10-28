@@ -32,18 +32,30 @@ namespace Assets.Scripts
 
             var lines = file.text.Split('\n');
 
+            var first = true;
+
             for (var index = 0; index < lines.Length; index++)
             {
                 var line = lines[index];
                 var split = line.Split(',');
 
-                var longitudeString = split[0].Replace('.', ',');
+                var longitudeString = split[0];
+                if (Application.isEditor)
+                {
+                    longitudeString = longitudeString.Replace('.', ',');
+                }
+
                 if (!decimal.TryParse(longitudeString, out var longitude))
                     throw new Exception($"Was not able to parse{split[0]}.");
                 if (longitude == 0)
                     throw new Exception($"Was not able to parse{split[0]}.");
 
-                var latitudeString = split[1].Replace('.', ',');
+                var latitudeString = split[1];
+                if (Application.isEditor)
+                {
+                    latitudeString = latitudeString.Replace('.', ',');
+                }
+
                 if (!decimal.TryParse(latitudeString, out var latitude))
                     throw new Exception($"Was not able to parse{split[1]}.");
                 if (latitude == 0)
@@ -53,7 +65,13 @@ namespace Assets.Scripts
                 const double maxHeight = 1;
                 var height = random.NextDouble() * (maxHeight - minHeight);
 
-                toReturn.Add(new CsvRow(longitude, latitude, (decimal) height));
+                var item = new CsvRow(longitude, latitude, (decimal)height);
+                if (first)
+                {
+                    Debug.Log($"First point converted is: {item.ToString()}");
+                    first = false;
+                }
+                toReturn.Add(item);
             }
 
             return toReturn;

@@ -40,22 +40,22 @@ namespace Assets.Scripts
             var csvData = CSVReader.Read(csvPath);
             csvData = CSVReader.MoveDataToPlayer(csvData, reading).ToList();
 
-            var current = new Coordinates(reading.longitude, reading.latitude);
-            Coordinates closestCoordinate = null;
-            var shortestDistance = double.MaxValue;
-            foreach (var data in csvData)
-            {
-                var second = new Coordinates((double)data.Longitude, (double)data.Latitude);
-                var distance = Coordinates.Distance(current, second);
-                if (distance < shortestDistance)
-                {
-                    shortestDistance = distance;
-                    closestCoordinate = second;
-                }
-            }
+            //var current = new Coordinates(reading.longitude, reading.latitude);
+            //Coordinates closestCoordinate = null;
+            //var shortestDistance = double.MaxValue;
+            //foreach (var data in csvData)
+            //{
+            //    var second = new Coordinates((double)data.Longitude, (double)data.Latitude);
+            //    var distance = Coordinates.Distance(current, second);
+            //    if (distance < shortestDistance)
+            //    {
+            //        shortestDistance = distance;
+            //        closestCoordinate = second;
+            //    }
+            //}
 
-            Debug.Log($"Shortest distance is {(float)shortestDistance} meters.");
-            Debug.Log($"Current: {current.ToString()}    /    Closest: {closestCoordinate.ToString()}");
+            //Debug.Log($"Shortest distance is {(float)shortestDistance} meters.");
+            //Debug.Log($"Current: {current.ToString()}    /    Closest: {closestCoordinate.ToString()}");
 
             var terrain = new Terrain();
             terrain.CreateTerrain(csvData, _ => OnTerrainCreated(_, reading));
