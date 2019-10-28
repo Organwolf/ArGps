@@ -83,4 +83,4 @@ MonoBehaviour:
     UseMovingAverage: 0
     HideObjectUntilItIsPlaced: 1
   debugMode: 0
-  filterRadius: 14
+  filterRadius: 100

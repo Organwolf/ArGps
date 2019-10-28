@@ -222,7 +222,7 @@ namespace ARLocation
         {
             if (!state.NeedsUpdate) return;
 
-            Debug.Log("[AR+GPS][GroundHeight#UpdateObjectHeight]: Setting Y to " + state.CurrentGroundY);
+            //Debug.Log("[AR+GPS][GroundHeight#UpdateObjectHeight]: Setting Y to " + state.CurrentGroundY);
 
             if (Settings.Smoothing <= 0)
             {
