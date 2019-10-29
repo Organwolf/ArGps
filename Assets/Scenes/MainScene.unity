@@ -112,6 +112,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &24779453 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5345822445770738300, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+    type: 3}
+  m_PrefabInstance: {fileID: 499284509}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &77689417 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6434061252814519471, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
@@ -221,18 +233,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathToWaterCsv: csv_extended
   radius: 50
-  deviceLocation:
-    Building: 0
-    Height: 0
-    WaterHeight: 0
-    NearestNeighborWater: 0
-    NearestNeighborHeight: 0
-    Latitude: 55.708636
-    Longitude: 13.200387
-    Altitude: 0
-    AltitudeMode: 0
-    Label: 
   exaggerateHeightSlider: {fileID: 1307137845}
+  togglePlacementText: {fileID: 24779453}
 --- !u!120 &86549458
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -510,6 +512,58 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1902060324068496898, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: 'Settings
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1902060324068496898, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427911341600607010, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Name
+      value: SettingsText
+      objectReference: {fileID: 0}
+    - target: {fileID: 4233599238351042054, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 86549457}
+    - target: {fileID: 4233599238351042054, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenSettings
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188225721775555779, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188225721775555779, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188225721775555779, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188225721775555779, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Name
+      value: UICanvas
+      objectReference: {fileID: 0}
     - target: {fileID: 5346557877901583388, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -579,11 +633,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_Name
-      value: UICanvas
       objectReference: {fileID: 0}
     - target: {fileID: 2791005526974985557, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -763,12 +812,12 @@ PrefabInstance:
     - target: {fileID: 4674721500030868234, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 790.4
+      value: 946.2
       objectReference: {fileID: 0}
     - target: {fileID: 4674721500030868234, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1580.9
+      value: 1892.5
       objectReference: {fileID: 0}
     - target: {fileID: 4674721500030868234, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -894,6 +943,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UndoText
+      objectReference: {fileID: 0}
+    - target: {fileID: 5956663551417640042, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5956663551417640042, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -60
+      objectReference: {fileID: 0}
+    - target: {fileID: 5345822445770738300, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: Place Measuring Stick
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f5ee01c89ebf38499d3b52fc3bb9469, type: 3}
@@ -1279,7 +1343,18 @@ MonoBehaviour:
   DebugMode: 0
   OnEnabled:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 86549457}
+        m_MethodName: OnLocationProviderEnabled
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnLocationUpdated:
     m_PersistentCalls:
       m_Calls:

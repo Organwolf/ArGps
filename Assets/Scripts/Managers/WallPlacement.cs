@@ -262,6 +262,11 @@ public class WallPlacement : MonoBehaviour
         }
     }
 
+    public bool GetWallPlacementEnabled()
+    {
+        return wallPlacementEnabled;
+    }
+
     public Transform GetGroundPlaneTransform()
     {
         if (groundPlane != null && planeIsPlaced)
