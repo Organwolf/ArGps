@@ -24,52 +24,7 @@ public class Manager : MonoBehaviour
         waterMesh = GetComponent<WaterMesh>();
         delaunayMesh = GetComponent<DelaunayMesh>();
         wallPlacement = GetComponent<WallPlacement>();
-        //InitializeWaterMesh(pathToWaterCsv);
     }
-
-    //// https://docs.unity3d.com/ScriptReference/LocationService.Start.html
-    //// Isn't continually updated but could be later on if needed. Now it get the phones location at start-up and uses that location 
-    //// once the "Generate Mesh" button is pressed. Obviuouse improvements can be made here.
-    //IEnumerator Start()
-    //{
-    //    // First, check if user has location service enabled
-    //    if (!Input.location.isEnabledByUser)
-    //        yield break;
-
-    //    // Start service before querying location
-    //    Input.location.Start();
-
-    //    // Wait until service initializes
-    //    int maxWait = 20;
-    //    while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
-    //    {
-    //        yield return new WaitForSeconds(1);
-    //        maxWait--;
-    //    }
-
-    //    // Service didn't initialize in 20 seconds
-    //    if (maxWait < 1)
-    //    {
-    //        print("Timed out");
-    //        yield break;
-    //    }
-
-    //    // Connection has failed
-    //    if (Input.location.status == LocationServiceStatus.Failed)
-    //    {
-    //        print("Unable to determine device location");
-    //        yield break;
-    //    }
-    //    else
-    //    {
-    //        // Access granted and location value could be retrieved
-    //        print("Start Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
-    //        deviceLocation = new Location(Input.location.lastData.latitude, Input.location.lastData.longitude, 0);
-    //    }
-    //    // Stop service if there is no need to query location updates continuously
-    //    // could add a yeild that runs every second or something?
-    //    Input.location.Stop();
-    //}
 
     public void OnLocationProviderEnabled(LocationReading reading)
     {
@@ -88,7 +43,6 @@ public class Manager : MonoBehaviour
 
         // Recalculate the height of each vertices before sending it to the waterMeshClass
         waterMesh.SetPositionsToHandleLocations(withinRadiusData);
-        //HideMesh();
     }
 
     // TODO: all of this should most likely update continously
@@ -192,34 +146,4 @@ public class Manager : MonoBehaviour
     {
         SceneManager.LoadScene("Settings");
     }
-
-    //public void ShowMesh()
-    //{
-    //    SetMeshVisible(true);
-    //}
-
-    //public void HideMesh()
-    //{
-    //    SetMeshVisible(false);
-    //}
-
-    //private void SetMeshVisible(bool visible)
-    //{
-    //    var meshes = waterMesh.GetComponentsInChildren<MeshRenderer>();
-    //    foreach (var mesh in meshes)
-    //    {
-    //        mesh.enabled = visible;
-    //    }
-    //}
-
-    // Currently doesn't work
-    //public void ResetSession()
-    //{
-    //    //waterMesh.enabled = false;
-    //    //waterMesh.Restart();
-    //    //delaunayMesh.ClearMesh();
-    //    //wallPlacement.ResetSession();
-
-    //    // solve the rescanning of the ground
-    //}
 }
