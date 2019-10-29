@@ -124,18 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &77689417 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6434061252814519471, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-    type: 3}
-  m_PrefabInstance: {fileID: 499284509}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &86549452
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +137,6 @@ GameObject:
   - component: {fileID: 86549453}
   - component: {fileID: 86549459}
   - component: {fileID: 86549455}
-  - component: {fileID: 86549456}
   - component: {fileID: 86549458}
   m_Layer: 0
   m_Name: Manager
@@ -207,18 +194,6 @@ MonoBehaviour:
   trianglesInChunk: 5000
   chunkPrefab: {fileID: 4760822391077712, guid: dfbbc8c46a7ed47de952d225cce1f52c,
     type: 3}
---- !u!114 &86549456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 86549452}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 897b12c961494e541b286ed53e053198, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &86549457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00dd732a1138141ac9ab48d44d4809d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathToWaterCsv: csv_extended
+  pathToCSV: csv_extended
   radius: 50
   exaggerateHeightSlider: {fileID: 1307137845}
   togglePlacementText: {fileID: 24779453}
@@ -563,6 +538,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UICanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7021907689931005821, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7021907689931005821, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: GPS Accuracy (m)
       objectReference: {fileID: 0}
     - target: {fileID: 5346557877901583388, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -954,6 +939,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -60
       objectReference: {fileID: 0}
+    - target: {fileID: 276188190064246572, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -410
+      objectReference: {fileID: 0}
+    - target: {fileID: 276188190064246572, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -654
+      objectReference: {fileID: 0}
+    - target: {fileID: 276188190064246572, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 321.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 276188190064246572, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 110.4
+      objectReference: {fileID: 0}
     - target: {fileID: 5345822445770738300, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_Text
@@ -1176,7 +1181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocationAccText: {fileID: 113458225}
-  CompassAccText: {fileID: 77689417}
+  CompassAccText: {fileID: 0}
 --- !u!4 &1563505320
 Transform:
   m_ObjectHideFlags: 0

@@ -1,5 +1,4 @@
 ﻿using ARLocation;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,9 +7,9 @@ using UnityEngine.UI;
 
 public class Manager : MonoBehaviour
 {
-    [SerializeField] string pathToWaterCsv;
+    [SerializeField] string pathToCSV;
     [SerializeField] double radius = 20.0;
-    [SerializeField] Slider exaggerateHeightSlider;    // UI
+    [SerializeField] Slider exaggerateHeightSlider;
     [SerializeField] Text togglePlacementText;
 
     private Location deviceLocation;
@@ -18,42 +17,36 @@ public class Manager : MonoBehaviour
     private DelaunayMesh delaunayMesh;
     private WallPlacement wallPlacement;
     private List<Location> withinRadiusData;
+    private List<Location> entireCSVData;
 
     private void Awake()
     {
         waterMesh = GetComponent<WaterMesh>();
         delaunayMesh = GetComponent<DelaunayMesh>();
         wallPlacement = GetComponent<WallPlacement>();
+        entireCSVData = CSV_extended.ParseCsvFileUsingResources(pathToCSV);
     }
 
     public void OnLocationProviderEnabled(LocationReading reading)
     {
         Debug.Log($"OnLocationProviderEnabled Lat: {reading.latitude} Long: {reading.longitude}.");
         deviceLocation = reading.ToLocation();
-        InitializeWaterMesh(pathToWaterCsv);
+        InitializeWaterMesh();
+        var closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
+        Debug.Log("Closest point: " + closestPoint);
     }
 
-    private void InitializeWaterMesh(string path)
+    private void InitializeWaterMesh()
     {        
-        var fullData = CSV_extended.ParseCsvFileUsingResources(path);
-
-        Debug.Log($"Before: {fullData.Count}");
-        withinRadiusData = CSV_extended.PointsWithinRadius(fullData, radius, deviceLocation);
-        Debug.Log($"After: {withinRadiusData.Count}");
-
-        // Recalculate the height of each vertices before sending it to the waterMeshClass
+        withinRadiusData = CSV_extended.PointsWithinRadius(entireCSVData, radius, deviceLocation);
         waterMesh.SetPositionsToHandleLocations(withinRadiusData);
     }
 
-    // TODO: all of this should most likely update continously
     public void GenerateMesh()
     {
-        Debug.Log("Device location: " + deviceLocation);
-        var groundPlaneTransform = wallPlacement.GetGroundPlaneTransform();
-        
-        // currently not used
-        // var heightOfCamera = groundPlaneTransform.position.y;
+        // currently not used -> var heightOfCamera = groundPlaneTransform.position.y;
 
+        var groundPlaneTransform = wallPlacement.GetGroundPlaneTransform();
         var stateData = waterMesh.GetLocationsStateData();
         var locations = stateData.GetLocalLocations();
         var points = new List<Vector3>();
@@ -88,7 +81,6 @@ public class Manager : MonoBehaviour
             }
 
             points.Add(new Vector3(longitude, calculatedHeight, latitude)); // Exaggerate height if needed
-            //Debug.Log($"Calc height: {calculatedHeight} insideBuilding: {insideBuilding}");
         }
 
         if (groundPlaneTransform != null)
@@ -107,7 +99,7 @@ public class Manager : MonoBehaviour
         return relativeHeight;
     }
 
-    // UI
+    #region UI
     public void AlterHeightOfMesh()
     {
         var sliderValue = exaggerateHeightSlider.value;
@@ -146,4 +138,5 @@ public class Manager : MonoBehaviour
     {
         SceneManager.LoadScene("Settings");
     }
+    #endregion
 }
