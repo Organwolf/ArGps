@@ -50,9 +50,7 @@ public class Manager : MonoBehaviour
     {        
         withinRadiusData = CSV_extended.PointsWithinRadius(entireCSVData, radius, deviceLocation);
         waterMesh.SetPositionsToHandleLocations(withinRadiusData);
-        // Enable GenerateMesh button here
         GenerateMeshButton.interactable = true;
-
     }
 
     public void GenerateMesh()
@@ -62,8 +60,7 @@ public class Manager : MonoBehaviour
         var groundPlaneTransform = wallPlacement.GetGroundPlaneTransform();
         var stateData = waterMesh.GetLocationsStateData();
 
-        
-        var locations = stateData.GetLocalLocations();
+        var globalLocalPositions = stateData.GetGlobalLocalPosition();
 
         var points = new List<Vector3>();
 
@@ -73,7 +70,7 @@ public class Manager : MonoBehaviour
         // vad är det du gör? OK sorry såhär ligger det till
 
         //foreach (var globalLocalPosition in globalLocalPositions)
-        foreach (var globalLocalPosition in locations)
+        foreach (var globalLocalPosition in globalLocalPositions)
         {
             // Sets all value of -9999 to 0 atm - could change logic while reading the csv?
             float calculatedHeight = 0;

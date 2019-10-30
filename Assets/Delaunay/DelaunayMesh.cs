@@ -45,8 +45,8 @@ public partial class DelaunayMesh : MonoBehaviour
 
             if(waterHeight != -9999)
             {
-                //elevations.Add((float)waterHeight);
-                elevations.Add((float)waterHeight + groundPlaneTransform.position.y);
+                elevations.Add((float)waterHeight);
+                //elevations.Add((float)waterHeight + groundPlaneTransform.position.y);
             }
             else
             {

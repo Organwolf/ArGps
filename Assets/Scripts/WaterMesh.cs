@@ -2,7 +2,6 @@
 using ARLocation.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -11,16 +10,10 @@ public class WaterMesh : MonoBehaviour
     // Detta objektet är länkningen mellan location och Unity positionen
     public class GlobalLocalPosition
     {
-        public Location location;       //GPS position
-        public Vector3 localLocation;   //Unity position
+        public Location location;       //Global
+        public Vector3 localLocation;   //Local
         public GameObject gameObject;
         public LocationData locationData;
-
-        //public bool Building;
-        //public double Height;
-        //public double WaterHeight;
-        //public double NearestneightborWater;
-        //public double NearestNeighborHeight;
 
         public GlobalLocalPosition(Location gLocation, Vector3 lLocation)
         {
@@ -36,27 +29,13 @@ public class WaterMesh : MonoBehaviour
         public uint PositionUpdatedCount;
         public bool Paused;
 
-        public List<Vector3> getLocalLocations()
+        public List<GlobalLocalPosition> GetGlobalLocalPosition()
         {
-            List<Vector3> lst = new List<Vector3>();
-            foreach (GlobalLocalPosition glp in this.globalLocalPositions)
-                lst.Add(glp.localLocation);
-
-            return lst;
-        }
-
-        public List<GlobalLocalPosition> GetLocalLocations()
-        {
-            //var lst = new List<Location>();
-            //foreach (GlobalLocalPosition glp in this.globalLocalPositions)
-            //{                
-            //    lst.Add(glp.globalLocation);
-            //}
-
-            //return lst;
             return globalLocalPositions;
         }
     }
+
+    #region Serialized fields
 
     [Serializable]
     public class PlaceAtOptions
@@ -78,8 +57,6 @@ public class WaterMesh : MonoBehaviour
             "when available, and enable/disable all child game objects.")]
         public bool HideObjectUntilItIsPlaced = true;
     }
-
-    #region Serialized fields
 
     [SerializeField]
     private string FileAddress;
@@ -103,9 +80,7 @@ public class WaterMesh : MonoBehaviour
 
     public bool UseGroundHeight => AltitudeMode == AltitudeMode.GroundRelative;
 
-
-    LocationsStateData state = new LocationsStateData();
-
+    private LocationsStateData state = new LocationsStateData();
     private ARLocationProvider locationProvider;
     private Transform arLocationRoot;
     private List<SmoothMove> smoothMoves = new List<SmoothMove>();
