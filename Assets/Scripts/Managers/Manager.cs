@@ -29,6 +29,13 @@ public class Manager : MonoBehaviour
         wallPlacement = GetComponent<WallPlacement>();
         entireCSVData = CSV_extended.ParseCsvFileUsingResources(pathToCSV);
         GenerateMeshButton.interactable = false;
+
+        if (PlayerPrefs.HasKey("Radius"))
+        {
+            radius = PlayerPrefs.GetInt("Radius");
+            Debug.Log("Current radius: " + radius);
+        }
+
     }
 
     public void OnLocationProviderEnabled(LocationReading reading)
@@ -111,8 +118,9 @@ public class Manager : MonoBehaviour
 
     private float CalculateRelativeHeight(float heightAtCamera, float heightAtPoint, float waterHeightAtPoint)
     {
-        float relativeHeight = heightAtPoint - heightAtCamera + waterHeightAtPoint;
-        return relativeHeight;
+        return 0;
+        //float relativeHeight = heightAtPoint - heightAtCamera + waterHeightAtPoint;
+        //return relativeHeight;
     }
 
     #region UI

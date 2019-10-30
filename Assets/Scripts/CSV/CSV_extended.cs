@@ -69,10 +69,7 @@ public class CSV_extended
         Debug.Log("Counter: " + counter);
         
         return closestLocation;
-    } // här beräknar jag närmsta punkten. Probl är att jag får värden som är aldeles för höga typ 40+ meter när jag står inne i meshen
-        // som ett sätt att debugga så skulle jag vilja komma åt GameObjektet ochg byta dess färg MEN jag har bara en location här
-        // location returneras till managern men jag har ingen funktion/metod för att komma åt det faktiska gameobjektet
-        // ska titta på Mahdis kod
+    } 
 
     //public static List<Location> PointsWithinRadius(List<Location> locations, double radius, double longitude, double latitude)
     public static List<Location> PointsWithinRadius(List<Location> locations, double radius, Location deviceLocation)

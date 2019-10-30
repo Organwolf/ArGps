@@ -39,9 +39,9 @@ public partial class DelaunayMesh : MonoBehaviour
         var globalLocalPositions = locations.ToArray();
         for (int i = 0; i < globalLocalPositions.Length; i++)
         {
-            var globalLocalPosition = globalLocalPositions[i];
+            var currentPosition = globalLocalPositions[i];
 
-            var waterHeight = globalLocalPosition.y;
+            var waterHeight = currentPosition.y;
 
             if(waterHeight != -9999)
             {
