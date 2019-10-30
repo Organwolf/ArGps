@@ -11,13 +11,16 @@ public class Manager : MonoBehaviour
     [SerializeField] double radius = 20.0;
     [SerializeField] Slider exaggerateHeightSlider;
     [SerializeField] Text togglePlacementText;
+    [SerializeField] Button GenerateMeshButton;
 
     private Location deviceLocation;
+    private Location closestPoint;
     private WaterMesh waterMesh;
     private DelaunayMesh delaunayMesh;
     private WallPlacement wallPlacement;
     private List<Location> withinRadiusData;
     private List<Location> entireCSVData;
+
 
     private void Awake()
     {
@@ -25,6 +28,7 @@ public class Manager : MonoBehaviour
         delaunayMesh = GetComponent<DelaunayMesh>();
         wallPlacement = GetComponent<WallPlacement>();
         entireCSVData = CSV_extended.ParseCsvFileUsingResources(pathToCSV);
+        GenerateMeshButton.interactable = false;
     }
 
     public void OnLocationProviderEnabled(LocationReading reading)
@@ -32,14 +36,23 @@ public class Manager : MonoBehaviour
         Debug.Log($"OnLocationProviderEnabled Lat: {reading.latitude} Long: {reading.longitude}.");
         deviceLocation = reading.ToLocation();
         InitializeWaterMesh();
-        var closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
+        closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
         Debug.Log("Closest point: " + closestPoint);
+    }
+
+    public void OnLocationUpdated(LocationReading reading)
+    {
+        deviceLocation = reading.ToLocation();
+        CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
     }
 
     private void InitializeWaterMesh()
     {        
         withinRadiusData = CSV_extended.PointsWithinRadius(entireCSVData, radius, deviceLocation);
         waterMesh.SetPositionsToHandleLocations(withinRadiusData);
+        // Enable GenerateMesh button here
+        GenerateMeshButton.interactable = true;
+
     }
 
     public void GenerateMesh()
@@ -48,12 +61,18 @@ public class Manager : MonoBehaviour
 
         var groundPlaneTransform = wallPlacement.GetGroundPlaneTransform();
         var stateData = waterMesh.GetLocationsStateData();
+
+        
         var locations = stateData.GetLocalLocations();
+
         var points = new List<Vector3>();
 
-        var closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
+        //var closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
         float heightAtCamera = (float)closestPoint.Height;
 
+        // vad är det du gör? OK sorry såhär ligger det till
+
+        //foreach (var globalLocalPosition in globalLocalPositions)
         foreach (var globalLocalPosition in locations)
         {
             // Sets all value of -9999 to 0 atm - could change logic while reading the csv?

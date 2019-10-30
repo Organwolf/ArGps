@@ -21,6 +21,7 @@ public partial class DelaunayMesh : MonoBehaviour
 
     public void Generate(IEnumerable<Vector3> locations, Transform groundPlaneTransform)
     {
+
         Polygon polygon = new Polygon();
         elevations = new List<float>();
 
@@ -44,6 +45,7 @@ public partial class DelaunayMesh : MonoBehaviour
 
             if(waterHeight != -9999)
             {
+                //elevations.Add((float)waterHeight);
                 elevations.Add((float)waterHeight + groundPlaneTransform.position.y);
             }
             else

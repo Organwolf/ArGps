@@ -3,8 +3,19 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CSV_extended
+public class HaversineTest : MonoBehaviour
 {
+    public Location loc1;
+    public Location loc2;
+
+    private void Start()
+    {
+        var distance1 = HaversineDistance(loc1.Longitude, loc2.Longitude, loc1.Latitude, loc2.Latitude);
+        var distance2 = HaversineDistance(loc2.Longitude, loc1.Longitude, loc2.Latitude, loc1.Latitude);
+        Debug.Log("Dist1: " + distance1);
+        Debug.Log("Dist2: " + distance2);
+    }
+
     public static List<Location> ParseCsvFileUsingResources(string pathToFile)
     {
         var parsedData = new List<Location>();
@@ -47,15 +58,11 @@ public class CSV_extended
     // Later on I will interpolate between ~4 points and return an average value. For now I find the closest.
     public static Location ClosestPoint(List<Location> locations, Location deviceLocation)
     {
-        var counter = 0;
-
         Location closestLocation = new Location();
         double minDistance = Double.MaxValue;
         double distanceToClosestPoint = -1;
         foreach (Location location in locations)
         {
-            counter++;
-
             var distance = HaversineDistance(location.Longitude, deviceLocation.Longitude, location.Latitude, deviceLocation.Latitude);
 
             if (distance <= minDistance)
@@ -66,13 +73,8 @@ public class CSV_extended
             }
         }
         Debug.Log("Distance to closest point: " + distanceToClosestPoint);
-        Debug.Log("Counter: " + counter);
-        
         return closestLocation;
-    } // här beräknar jag närmsta punkten. Probl är att jag får värden som är aldeles för höga typ 40+ meter när jag står inne i meshen
-        // som ett sätt att debugga så skulle jag vilja komma åt GameObjektet ochg byta dess färg MEN jag har bara en location här
-        // location returneras till managern men jag har ingen funktion/metod för att komma åt det faktiska gameobjektet
-        // ska titta på Mahdis kod
+    }
 
     //public static List<Location> PointsWithinRadius(List<Location> locations, double radius, double longitude, double latitude)
     public static List<Location> PointsWithinRadius(List<Location> locations, double radius, Location deviceLocation)
@@ -85,29 +87,26 @@ public class CSV_extended
             var distance = HaversineDistance(loc.Longitude, deviceLocation.Longitude, loc.Latitude, deviceLocation.Latitude);
 
             if (distance <= radius)
-            {
                 locationsWithinRadius.Add(loc);
-            }
         }
         return locationsWithinRadius;
     }
-    // Så Yes. Undrar om det är någit fel i den här
+
     public static double HaversineDistance(double long1, double long2, double lat1, double lat2)
     {
-        return Location.HaversineDistance(new Location(lat1,long1), new Location(lat2, long2));
-        //var R = 6371000; // earths diameter metres
-        //var deltaLat = DegreeToRadian(lat2 - lat1);
-        //var deltaLong = DegreeToRadian(long2 - long1);
+        var R = 6371000; // earths diameter metres
+        var deltaLat = DegreeToRadian(lat2 - lat1);
+        var deltaLong = DegreeToRadian(long2 - long1);
 
-        //var a = Math.Sin(deltaLat / 2) * Math.Sin(deltaLat / 2) +
-        //        Math.Cos(lat1) * Math.Cos(lat2) *
-        //        Math.Sin(deltaLong / 2) * Math.Sin(deltaLong / 2);
+        var a = Math.Sin(deltaLat / 2) * Math.Sin(deltaLat / 2) +
+                Math.Cos(lat1) * Math.Cos(lat2) *
+                Math.Sin(deltaLong / 2) * Math.Sin(deltaLong / 2);
 
-        //var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+        var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
-        //var distance = R * c;
+        var distance = R * c;
 
-        //return distance;
+        return distance;
     }
 
     private static double DegreeToRadian(double angle)

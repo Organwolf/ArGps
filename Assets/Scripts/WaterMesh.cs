@@ -8,10 +8,11 @@ using UnityEngine.Serialization;
 
 public class WaterMesh : MonoBehaviour
 {
+    // Detta objektet är länkningen mellan location och Unity positionen
     public class GlobalLocalPosition
     {
-        public Location location;
-        public Vector3 localLocation;
+        public Location location;       //GPS position
+        public Vector3 localLocation;   //Unity position
         public GameObject gameObject;
         public LocationData locationData;
 
@@ -53,9 +54,7 @@ public class WaterMesh : MonoBehaviour
             //}
 
             //return lst;
-
-            // Snart, lite rörigt bara
-            return globalLocalPositions.Select(globalLocalPosition => globalLocalPosition).ToList();
+            return globalLocalPositions;
         }
     }
 

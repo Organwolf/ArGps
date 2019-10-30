@@ -207,9 +207,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathToCSV: csv_extended
-  radius: 50
+  radius: 30
   exaggerateHeightSlider: {fileID: 1307137845}
   togglePlacementText: {fileID: 24779453}
+  GenerateMeshButton: {fileID: 1307137846}
 --- !u!120 &86549458
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -487,6 +488,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Name
+      value: UICanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5345822445770738300, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: Place Measuring Stick
+      objectReference: {fileID: 0}
+    - target: {fileID: 7021907689931005821, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7021907689931005821, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: GPS Accuracy (m)
+      objectReference: {fileID: 0}
     - target: {fileID: 1902060324068496898, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_Text
@@ -533,21 +554,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_Name
-      value: UICanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021907689931005821, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_FontData.m_MinSize
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021907689931005821, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_Text
-      value: GPS Accuracy (m)
       objectReference: {fileID: 0}
     - target: {fileID: 5346557877901583388, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -959,11 +965,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 110.4
       objectReference: {fileID: 0}
-    - target: {fileID: 5345822445770738300, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_Text
-      value: Place Measuring Stick
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f5ee01c89ebf38499d3b52fc3bb9469, type: 3}
 --- !u!1001 &926680117
@@ -1091,6 +1092,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1307137846 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4674721499694745250, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+    type: 3}
+  m_PrefabInstance: {fileID: 499284509}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1324904969
@@ -1339,7 +1352,7 @@ MonoBehaviour:
   LocationProviderSettings:
     TimeBetweenUpdates: 2
     MinDistanceBetweenUpdates: 0
-    AccuracyRadius: 10
+    AccuracyRadius: 20
     MaxNumberOfUpdates: 0
   MockLocationData: {fileID: 0}
   MaxWaitTime: 200
@@ -1364,6 +1377,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1563505319}
         m_MethodName: onLocationUpdated
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 86549457}
+        m_MethodName: OnLocationUpdated
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
