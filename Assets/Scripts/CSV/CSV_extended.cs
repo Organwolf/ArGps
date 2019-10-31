@@ -43,20 +43,15 @@ public class CSV_extended
         return parsedData;
     }
 
-    // These math functions should obviously be in their own class but for now they reside here.
-    // Later on I will interpolate between ~4 points and return an average value. For now I find the closest.
     public static Location ClosestPoint(List<Location> locations, Location deviceLocation)
     {
-        var counter = 0;
-
         Location closestLocation = new Location();
         double minDistance = Double.MaxValue;
         double distanceToClosestPoint = -1;
+
         foreach (Location location in locations)
         {
-            counter++;
-
-            var distance = HaversineDistance(location.Longitude, deviceLocation.Longitude, location.Latitude, deviceLocation.Latitude);
+            var distance = Location.HaversineDistance(location, deviceLocation);
 
             if (distance <= minDistance)
             {
@@ -66,49 +61,22 @@ public class CSV_extended
             }
         }
         Debug.Log("Distance to closest point: " + distanceToClosestPoint);
-        Debug.Log("Counter: " + counter);
-        
         return closestLocation;
-    } 
+    }
 
-    //public static List<Location> PointsWithinRadius(List<Location> locations, double radius, double longitude, double latitude)
     public static List<Location> PointsWithinRadius(List<Location> locations, double radius, Location deviceLocation)
     {
-        //locationsWithinRadius.Clear();
         List<Location> locationsWithinRadius = new List<Location>();
 
-        foreach (Location loc in locations)
+        foreach (Location location in locations)
         {
-            var distance = HaversineDistance(loc.Longitude, deviceLocation.Longitude, loc.Latitude, deviceLocation.Latitude);
+            var distance = Location.HaversineDistance(location, deviceLocation);
 
             if (distance <= radius)
             {
-                locationsWithinRadius.Add(loc);
+                locationsWithinRadius.Add(location);
             }
         }
         return locationsWithinRadius;
     }
-    // Så Yes. Undrar om det är någit fel i den här
-    public static double HaversineDistance(double long1, double long2, double lat1, double lat2)
-    {
-        return Location.HaversineDistance(new Location(lat1,long1), new Location(lat2, long2));
-        //var R = 6371000; // earths diameter metres
-        //var deltaLat = DegreeToRadian(lat2 - lat1);
-        //var deltaLong = DegreeToRadian(long2 - long1);
-
-        //var a = Math.Sin(deltaLat / 2) * Math.Sin(deltaLat / 2) +
-        //        Math.Cos(lat1) * Math.Cos(lat2) *
-        //        Math.Sin(deltaLong / 2) * Math.Sin(deltaLong / 2);
-
-        //var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-
-        //var distance = R * c;
-
-        //return distance;
-    }
-
-    //private static double DegreeToRadian(double angle)
-    //{
-    //    return Math.PI * angle / 180.0;
-    //}
 }

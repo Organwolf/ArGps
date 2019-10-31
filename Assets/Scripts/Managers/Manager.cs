@@ -33,26 +33,21 @@ public class Manager : MonoBehaviour
         entireCSVData = CSV_extended.ParseCsvFileUsingResources(pathToCSV);
         GenerateMeshButton.interactable = false;
 
-        // To be implemented in settings
-        if (PlayerPrefs.HasKey("Radius"))
-        {
-            radius = PlayerPrefs.GetInt("Radius");
-            Debug.Log("Current radius: " + radius);
-        }
+        // Playerprefs -> not implemented correctly yet
+        //if (PlayerPrefs.HasKey("Radius"))
+        //{
+        //    radius = PlayerPrefs.GetInt("Radius");
+        //    Debug.Log("Current radius: " + radius);
+        //}
 
-        if (PlayerPrefs.HasKey("Offset"))
-        {
-            offset = PlayerPrefs.GetInt("Offset");
-            // comvert from cm to m
-            offset /= 100f;
-            Debug.Log("Current offset: " + offset);
-        }
+        //if (PlayerPrefs.HasKey("Offset"))
+        //{
+        //    offset = PlayerPrefs.GetInt("Offset");
+        //    // comvert from cm to m
+        //    offset /= 100f;
+        //    Debug.Log("Current offset: " + offset);
+        //}
     }
-
-    //private void OnDisable()
-    //{
-    //    PlayerPrefs.DeleteAll();
-    //}
 
     private UnityEngine.Coroutine updateEachSecond;
 
@@ -87,11 +82,10 @@ public class Manager : MonoBehaviour
 
     public void OnLocationProviderEnabled(LocationReading reading)
     {
-        //Debug.Log($"OnLocationProviderEnabled Lat: {reading.latitude} Long: {reading.longitude}.");
         deviceLocation = reading.ToLocation();
         InitializeWaterMesh();
         closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
-        //Debug.Log("Closest point: " + closestPoint);
+        GenerateMeshButton.interactable = true;
     }
 
     public void OnLocationUpdated(LocationReading reading)
@@ -104,13 +98,10 @@ public class Manager : MonoBehaviour
     {        
         withinRadiusData = CSV_extended.PointsWithinRadius(entireCSVData, radius, deviceLocation);
         waterMesh.SetPositionsToHandleLocations(withinRadiusData);
-        GenerateMeshButton.interactable = true;
     }
 
     public void GenerateMesh()
     {
-        // currently not used -> var heightOfCamera = groundPlaneTransform.position.y;
-
         var groundPlaneTransform = wallPlacement.GetGroundPlaneTransform();
         var stateData = waterMesh.GetLocationsStateData();
 
@@ -118,12 +109,9 @@ public class Manager : MonoBehaviour
 
         var points = new List<Vector3>();
 
-        //var closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
         float heightAtCamera = (float)closestPoint.Height;
 
-        // vad är det du gör? OK sorry såhär ligger det till
 
-        //foreach (var globalLocalPosition in globalLocalPositions)
         foreach (var globalLocalPosition in globalLocalPositions)
         {
             // Sets all value of -9999 to 0 atm - could change logic while reading the csv?
@@ -145,6 +133,7 @@ public class Manager : MonoBehaviour
                     calculatedHeight = CalculateRelativeHeight(heightAtCamera, nearestNeighborHeight, nearestNeighborWater);
                 }
             }
+            // point not inside a building
             else
             {
                 calculatedHeight = CalculateRelativeHeight(heightAtCamera, heightPoint, waterHeight);
