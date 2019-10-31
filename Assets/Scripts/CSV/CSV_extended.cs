@@ -107,8 +107,8 @@ public class CSV_extended
         //return distance;
     }
 
-    private static double DegreeToRadian(double angle)
-    {
-        return Math.PI * angle / 180.0;
-    }
+    //private static double DegreeToRadian(double angle)
+    //{
+    //    return Math.PI * angle / 180.0;
+    //}
 }
