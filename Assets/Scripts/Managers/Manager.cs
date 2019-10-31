@@ -1,4 +1,5 @@
 ﻿using ARLocation;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,8 @@ public class Manager : MonoBehaviour
     [SerializeField] Slider exaggerateHeightSlider;
     [SerializeField] Text togglePlacementText;
     [SerializeField] Button GenerateMeshButton;
+    [SerializeField] Camera ARCamera;
+    [SerializeField] int bounds = 0;
 
     private Location deviceLocation;
     private Location closestPoint;
@@ -20,7 +23,7 @@ public class Manager : MonoBehaviour
     private WallPlacement wallPlacement;
     private List<Location> withinRadiusData;
     private List<Location> entireCSVData;
-
+    private float offset = 0f;
 
     private void Awake()
     {
@@ -30,21 +33,65 @@ public class Manager : MonoBehaviour
         entireCSVData = CSV_extended.ParseCsvFileUsingResources(pathToCSV);
         GenerateMeshButton.interactable = false;
 
+        // To be implemented in settings
         if (PlayerPrefs.HasKey("Radius"))
         {
             radius = PlayerPrefs.GetInt("Radius");
             Debug.Log("Current radius: " + radius);
         }
 
+        if (PlayerPrefs.HasKey("Offset"))
+        {
+            offset = PlayerPrefs.GetInt("Offset");
+            // comvert from cm to m
+            offset /= 100f;
+            Debug.Log("Current offset: " + offset);
+        }
+    }
+
+    //private void OnDisable()
+    //{
+    //    PlayerPrefs.DeleteAll();
+    //}
+
+    private UnityEngine.Coroutine updateEachSecond;
+
+    private void OnEnable()
+    {
+        updateEachSecond = StartCoroutine(OnPlayerOutOfBounds(bounds));
+    }
+
+    private void OnDisable()
+    {
+        StopCoroutine(updateEachSecond);
+        updateEachSecond = null;
+        Debug.Log("App disabled");
+    }
+
+    private IEnumerator OnPlayerOutOfBounds(int bounds)
+    {
+        // Pauses the coroutine 2 seconds between each execution
+        var wait = new WaitForSecondsRealtime(2.0f);
+
+        while (true)
+        {
+            var distanceFromOrigo = ARCamera.transform.position.magnitude;
+            Debug.Log("Distance from origo: " + distanceFromOrigo);
+            if(distanceFromOrigo > bounds)
+            {
+                SSTools.ShowMessage("Out of bounds. Scan ground", SSTools.Position.top, SSTools.Time.twoSecond);
+            }
+            yield return wait;
+        }
     }
 
     public void OnLocationProviderEnabled(LocationReading reading)
     {
-        Debug.Log($"OnLocationProviderEnabled Lat: {reading.latitude} Long: {reading.longitude}.");
+        //Debug.Log($"OnLocationProviderEnabled Lat: {reading.latitude} Long: {reading.longitude}.");
         deviceLocation = reading.ToLocation();
         InitializeWaterMesh();
         closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
-        Debug.Log("Closest point: " + closestPoint);
+        //Debug.Log("Closest point: " + closestPoint);
     }
 
     public void OnLocationUpdated(LocationReading reading)
@@ -118,9 +165,9 @@ public class Manager : MonoBehaviour
 
     private float CalculateRelativeHeight(float heightAtCamera, float heightAtPoint, float waterHeightAtPoint)
     {
-        return 0;
-        //float relativeHeight = heightAtPoint - heightAtCamera + waterHeightAtPoint;
-        //return relativeHeight;
+        float relativeHeight = heightAtPoint - heightAtCamera + waterHeightAtPoint + offset;
+        //Debug.Log($"heightAtCamera {heightAtCamera} heightAtPoint {heightAtPoint} waterHeightAtPoint {waterHeightAtPoint}. Relative height {relativeHeight}");
+        return relativeHeight;
     }
 
     #region UI
@@ -132,7 +179,6 @@ public class Manager : MonoBehaviour
             sliderValue += 0.5f;
             sliderValue *= 2f;
             var logHeight = Mathf.Log(sliderValue);
-            Debug.Log($"log height: {logHeight}");
             delaunayMesh.SetHeightToMesh(logHeight);
         }
     }

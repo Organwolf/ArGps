@@ -12,7 +12,7 @@ public class WaterMesh : MonoBehaviour
     {
         public Location location;       //Global
         public Vector3 localLocation;   //Local
-        public GameObject gameObject;
+        //public GameObject gameObject; // GO
         public LocationData locationData;
 
         public GlobalLocalPosition(Location gLocation, Vector3 lLocation)
@@ -85,18 +85,11 @@ public class WaterMesh : MonoBehaviour
     private Transform arLocationRoot;
     private List<SmoothMove> smoothMoves = new List<SmoothMove>();
     private MovingAveragePosition movingAverageFilter;
-    private GameObject debugPanel;
     private ARLocationManager arLocationManager;
     private Transform mainCameraTransform;
     private bool hasInitialized;
-    private GroundHeight groundHeight;
-    private double radius = 20f;
     private List<Location> csvWaterLocations;
 
-    // Experimenting with Events/Actions
-    public Action<string> StringPrintAction;
-
-    public Action<LocationsStateData> PositionsUpdated { get; set; }
 
     public void Start()
     {
@@ -149,7 +142,7 @@ public class WaterMesh : MonoBehaviour
                 obj.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                 obj.transform.SetParent(arLocationRoot.transform);
                 obj.transform.localPosition = glp.localLocation;
-                glp.gameObject = obj;
+                //glp.gameObject = obj; // GO
                 // <---
                 state.globalLocalPositions.Add(glp);
             }
@@ -160,7 +153,7 @@ public class WaterMesh : MonoBehaviour
                 {
                     //ToDo: Hide your mesh here!
 
-                    state.globalLocalPositions.ForEach(obj => Misc.HideGameObject(obj.gameObject));
+                    //state.globalLocalPositions.ForEach(obj => Misc.HideGameObject(obj.gameObject)); // GO
                 }
 
                 if (PlacementOptions.MovementSmoothing > 0)
@@ -201,11 +194,11 @@ public class WaterMesh : MonoBehaviour
             return;
         }
 
-        ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "UpdatePosition", $"({gameObject.name}): Received location update, location = {deviceLocation}", DebugMode);
+        //ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "UpdatePosition", $"({gameObject.name}): Received location update, location = {deviceLocation}", DebugMode);
 
         if (state.Paused)
         {
-            ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "UpdatePosition", $"({gameObject.name}): Updates are paused; returning", DebugMode);
+            //ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "UpdatePosition", $"({gameObject.name}): Updates are paused; returning", DebugMode);
             return;
         }
 
@@ -230,7 +223,8 @@ public class WaterMesh : MonoBehaviour
             }
 
             // comment out once we just render the mesh
-            obj.gameObject.transform.position = targetPosition;
+            //obj.gameObject.transform.position = targetPosition; // GO
+
             obj.localLocation = targetPosition;
         }
         PositionUpdated();
@@ -247,25 +241,21 @@ public class WaterMesh : MonoBehaviour
 
     private void locationUpdatedHandler(LocationReading currentLocation, LocationReading lastLocation)
     {
-        ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "locationUpdatedHandler", $"({gameObject.name}): locationUpdatedHandler is called.");
+        //ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "locationUpdatedHandler", $"({gameObject.name}): locationUpdatedHandler is called.");
         UpdatePosition(currentLocation.ToLocation());
     }
 
 
     private void PositionUpdated()
     {
-
-        // Comment out if you don't want to show each sphere
-        if (PlacementOptions.HideObjectUntilItIsPlaced && state.PositionUpdatedCount <= 0)
-        {
-            // ToDo: make the mesh visible here
-            state.globalLocalPositions.ForEach(obj => Misc.ShowGameObject(obj.gameObject));
-        }
-
+        state.PositionUpdatedCount++;
         state.PositionUpdatedCount++;
 
-        //ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "PositionUpdated", $"({gameObject.name}): Object position updated! PositionUpdatedCount = {state.PositionUpdatedCount}, transform.position = {transform.position}", DebugMode);
-
-        state.PositionUpdatedCount++;
+        /* Sphere GameObject specifics */
+        //if (PlacementOptions.HideObjectUntilItIsPlaced && state.PositionUpdatedCount <= 0)
+        //{
+        //    // ToDo: make the mesh visible here
+        //    state.globalLocalPositions.ForEach(obj => Misc.ShowGameObject(obj.gameObject));
+        //}
     }
 }

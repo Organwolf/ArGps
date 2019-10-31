@@ -40,13 +40,11 @@ public partial class DelaunayMesh : MonoBehaviour
         for (int i = 0; i < globalLocalPositions.Length; i++)
         {
             var currentPosition = globalLocalPositions[i];
-
             var waterHeight = currentPosition.y;
 
             if(waterHeight != -9999)
             {
-                elevations.Add((float)waterHeight);
-                //elevations.Add((float)waterHeight + groundPlaneTransform.position.y);
+                elevations.Add((float)waterHeight + groundPlaneTransform.position.y);
             }
             else
             {

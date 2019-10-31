@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FileAddress: 
-  AltitudeMode: 0
+  AltitudeMode: 1
   DebugMode: 0
   PlacementOptions:
     MovementSmoothing: 0.05
@@ -207,10 +207,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathToCSV: csv_extended
-  radius: 30
+  radius: 15
   exaggerateHeightSlider: {fileID: 1307137845}
   togglePlacementText: {fileID: 24779453}
   GenerateMeshButton: {fileID: 1307137846}
+  ARCamera: {fileID: 1735566239}
+  bounds: 2
 --- !u!120 &86549458
 LineRenderer:
   m_ObjectHideFlags: 0

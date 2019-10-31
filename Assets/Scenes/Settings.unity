@@ -469,7 +469,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter text...
+  m_Text: Add offset in cm
 --- !u!222 &815365766
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -546,7 +546,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter text...
+  m_Text: 'Unused
+
+'
 --- !u!222 &1030734961
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -568,7 +570,7 @@ GameObject:
   - component: {fileID: 1111301536}
   - component: {fileID: 1111301535}
   m_Layer: 5
-  m_Name: InputField (2)
+  m_Name: OffsetInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -588,7 +590,7 @@ RectTransform:
   - {fileID: 815365764}
   - {fileID: 1216722298}
   m_Father: {fileID: 1296067863}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -634,13 +636,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1111301536}
   m_TextComponent: {fileID: 1216722299}
   m_Placeholder: {fileID: 815365765}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -883,9 +885,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50404fc30324bfa48a0d303acf938a92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input1: {fileID: 0}
-  input2: {fileID: 0}
-  input3: {fileID: 0}
+  RadiusInputField: {fileID: 1790363293}
+  OffsetInputField: {fileID: 1111301535}
 --- !u!114 &1296067858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -993,8 +994,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1790363292}
-  - {fileID: 1981085116}
   - {fileID: 1111301534}
+  - {fileID: 1981085116}
   - {fileID: 1676437658}
   - {fileID: 1646331690}
   m_Father: {fileID: 0}
@@ -1073,7 +1074,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter text...
+  m_Text: Set radius in meters
 --- !u!222 &1443219047
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1297,7 +1298,7 @@ GameObject:
   - component: {fileID: 1790363294}
   - component: {fileID: 1790363293}
   m_Layer: 5
-  m_Name: InputField
+  m_Name: RadiusInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1363,13 +1364,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1790363294}
   m_TextComponent: {fileID: 94919235}
   m_Placeholder: {fileID: 1443219046}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -1432,12 +1433,12 @@ GameObject:
   - component: {fileID: 1981085118}
   - component: {fileID: 1981085117}
   m_Layer: 5
-  m_Name: InputField (1)
+  m_Name: Unused
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1981085116
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1452,7 +1453,7 @@ RectTransform:
   - {fileID: 1030734959}
   - {fileID: 44311862}
   m_Father: {fileID: 1296067863}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
