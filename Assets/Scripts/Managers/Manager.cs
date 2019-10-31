@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
 
 public class Manager : MonoBehaviour
@@ -12,8 +14,9 @@ public class Manager : MonoBehaviour
     [SerializeField] double radius = 20.0;
     [SerializeField] Slider exaggerateHeightSlider;
     [SerializeField] Text togglePlacementText;
-    [SerializeField] Button GenerateMeshButton;
-    [SerializeField] Camera ARCamera;
+    [SerializeField] Button generateMeshButton;
+    [SerializeField] Camera aRCamera;
+    [SerializeField] ARSession aRSession;
     [SerializeField] int bounds = 0;
 
     private Location deviceLocation;
@@ -31,7 +34,7 @@ public class Manager : MonoBehaviour
         delaunayMesh = GetComponent<DelaunayMesh>();
         wallPlacement = GetComponent<WallPlacement>();
         entireCSVData = CSV_extended.ParseCsvFileUsingResources(pathToCSV);
-        GenerateMeshButton.interactable = false;
+        generateMeshButton.interactable = false;
 
         // Playerprefs -> not implemented correctly yet
         //if (PlayerPrefs.HasKey("Radius"))
@@ -70,11 +73,27 @@ public class Manager : MonoBehaviour
 
         while (true)
         {
-            var distanceFromOrigo = ARCamera.transform.position.magnitude;
+            var distanceFromOrigo = aRCamera.transform.position.magnitude;
             Debug.Log("Distance from origo: " + distanceFromOrigo);
             if(distanceFromOrigo > bounds)
             {
                 SSTools.ShowMessage("Out of bounds. Scan ground", SSTools.Position.top, SSTools.Time.twoSecond);
+
+                /* 
+                 * trigger a function that: 
+                 *  - destroys prev.planes
+                 *  - prompt user to scan (1 sek msges?)
+                 *  - walk through the process
+                 *  - remove att walls with object connected to them
+                 *  - remove the previouse mesh
+                 */
+
+                // fade out fade in? animation?
+
+                wallPlacement.ResetSession();
+                wallPlacement.TogglePlaneDetection();
+                generateMeshButton.interactable = false;
+                waterMesh.Restart();
             }
             yield return wait;
         }
@@ -85,13 +104,18 @@ public class Manager : MonoBehaviour
         deviceLocation = reading.ToLocation();
         InitializeWaterMesh();
         closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
-        GenerateMeshButton.interactable = true;
+        // only enable button when then groundplane is placed
     }
 
     public void OnLocationUpdated(LocationReading reading)
     {
         deviceLocation = reading.ToLocation();
-        CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
+        // was only a test
+        //CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
+        if(wallPlacement.IsGroundPlaneSet())
+        {
+            generateMeshButton.interactable = true;
+        }
     }
 
     private void InitializeWaterMesh()

@@ -58,7 +58,7 @@ public class WallPlacement : MonoBehaviour
     // Plane, water & wall variables
     private bool planeIsPlaced;
     private float height = 4.0f;
-    private GameObject groundPlane;
+    private GameObject groundPlane = null;
     private bool wallPlacementEnabled = true;
     private List<GameObject> listOfLinerenderers;
     private List<GameObject> listOfWallMeshes;
@@ -177,7 +177,6 @@ public class WallPlacement : MonoBehaviour
 
                     if (Physics.Raycast(ray, out hitInfo, groundLayerMask))
                     {
-
                         endPoint.SetActive(true);
                         endPoint.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
                     }
@@ -232,6 +231,11 @@ public class WallPlacement : MonoBehaviour
                     walls.Add(currentWall);
                     
                 }
+
+                else if(!endPoint.activeSelf && startPoint.activeSelf)
+                {
+                    startPoint.SetActive(false);
+                }
             }
         }
 
@@ -255,10 +259,22 @@ public class WallPlacement : MonoBehaviour
             Destroy(wallToRemove.endPoint);
             Destroy(wallToRemove.quad);
             Destroy(wallToRemove.line);
-            //listOfPlacedObjects.RemoveAt(length - 1);
-            //listOfPlacedObjects.RemoveAt(length - 2);
             walls.RemoveAt(length - 1);
             Debug.Log("Length of walls: " + walls.Count);
+        }
+    }
+
+    private void RemoveWalls()
+    {
+        var length = walls.Count;
+        while (length >= 1)
+        {
+            Wall wallToRemove = walls[length - 1];
+            Destroy(wallToRemove.startPoint);
+            Destroy(wallToRemove.endPoint);
+            Destroy(wallToRemove.quad);
+            Destroy(wallToRemove.line);
+            walls.RemoveAt(length - 1);
         }
     }
 
@@ -279,6 +295,18 @@ public class WallPlacement : MonoBehaviour
         }
     }
 
+    public bool IsGroundPlaneSet()
+    {
+        if(groundPlane == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     // Helper functions
     private GameObject DrawLineBetweenTwoPoints(GameObject startPoint, GameObject endPoint)
     {
@@ -286,7 +314,7 @@ public class WallPlacement : MonoBehaviour
         var lineRenderer = lineRendererGameObject.GetComponent<LineRenderer>();
         lineRenderer.SetPosition(0, startPoint.transform.position);
         lineRenderer.SetPosition(1, endPoint.transform.position);
-        listOfLinerenderers.Add(lineRendererGameObject);
+        //listOfLinerenderers.Add(lineRendererGameObject);
 
         return lineRendererGameObject;
     }
@@ -296,7 +324,7 @@ public class WallPlacement : MonoBehaviour
         wallPlacementEnabled = !wallPlacementEnabled;
     }
 
-    private void TogglePlaneDetection()
+    public void TogglePlaneDetection()
     {
         arPlaneManager.enabled = !arPlaneManager.enabled;
 
@@ -353,39 +381,21 @@ public class WallPlacement : MonoBehaviour
     // UI logic
     public void ResetSession()
     {
-        // Destroy the placed objects if any
-        for (int i = 0; i < listOfPlacedObjects.Count; i++)
-        {
-            Destroy(listOfPlacedObjects[i].gameObject);
-        }
-        listOfPlacedObjects.Clear();
-
-        // Destroy the gameobjects holding the wall meshes
-        for (int i = 0; i < listOfWallMeshes.Count; i++)
-        {
-            Destroy(listOfWallMeshes[i].gameObject);
-        }
-        listOfWallMeshes.Clear();
-
-        for (int i = 0; i < listOfLinerenderers.Count; i++)
-        {
-            Destroy(listOfLinerenderers[i].gameObject);
-        }
-        listOfLinerenderers.Clear();
-
+        RemoveWalls();
         planeIsPlaced = false;
-        //arSession.Reset();
-        Debug.Log("Session reset");
     }
 
     public void RenderWalls()
     {
-        foreach(var wall in walls)
+        if(walls.Count > 0)
         {
-            wall.startPoint.SetActive(false);
-            wall.endPoint.SetActive(false);
-            wall.quad.SetActive(true);
-            wall.line.SetActive(false);
+            foreach(var wall in walls)
+            {
+                wall.startPoint.SetActive(false);
+                wall.endPoint.SetActive(false);
+                wall.quad.SetActive(true);
+                wall.line.SetActive(false);
+            }
         }
     }
 }

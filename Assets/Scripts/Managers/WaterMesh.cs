@@ -109,15 +109,21 @@ public class WaterMesh : MonoBehaviour
 
     public void Restart()
     {
-        ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "Restart", $"({gameObject.name}) - Restarting!", DebugMode);
-
-        state = new LocationsStateData();
-        hasInitialized = false;
-
-        if (locationProvider.IsEnabled)
+        ARLocationManager.Instance.ResetARSession((() =>
         {
-            locationUpdatedHandler(locationProvider.CurrentLocation, locationProvider.LastLocation);
-        }
+            Debug.Log("AR+GPS and AR Session were restarted!");
+        }));
+
+        //ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "Restart", $"({gameObject.name}) - Restarting!", DebugMode);
+
+        //state = new LocationsStateData();
+        //hasInitialized = false;
+        //ARLocationManager.Instance.Restart();
+
+        //if (locationProvider.IsEnabled)
+        //{
+        //    locationUpdatedHandler(locationProvider.CurrentLocation, locationProvider.LastLocation);
+        //}
     }
 
     public void SetPositionsToHandleLocations(List<Location> locationWithWaterHeight)
@@ -138,8 +144,9 @@ public class WaterMesh : MonoBehaviour
             {
                 GlobalLocalPosition glp = new GlobalLocalPosition(loc, Vector3.zero);
                 // comment out once we just render the mesh
-                GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                obj.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                //GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                GameObject obj = new GameObject();
+                //obj.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                 obj.transform.SetParent(arLocationRoot.transform);
                 obj.transform.localPosition = glp.localLocation;
                 //glp.gameObject = obj; // GO
