@@ -52,6 +52,11 @@ public class Manager : MonoBehaviour
         //}
     }
 
+    private void Start()
+    {
+        SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
+    }
+
     private UnityEngine.Coroutine updateEachSecond;
 
     private void OnEnable()
@@ -77,7 +82,9 @@ public class Manager : MonoBehaviour
             Debug.Log("Distance from origo: " + distanceFromOrigo);
             if(distanceFromOrigo > bounds)
             {
-                SSTools.ShowMessage("Out of bounds. Scan ground", SSTools.Position.top, SSTools.Time.twoSecond);
+                SSTools.ShowMessage("Out of bounds. Reloading", SSTools.Position.top, SSTools.Time.twoSecond);
+                new WaitForSecondsRealtime(2f);
+                SceneManager.LoadScene("MainScene");
 
                 /* 
                  * trigger a function that: 
@@ -90,10 +97,10 @@ public class Manager : MonoBehaviour
 
                 // fade out fade in? animation?
 
-                wallPlacement.ResetSession();
-                wallPlacement.TogglePlaneDetection();
-                generateMeshButton.interactable = false;
-                waterMesh.Restart();
+                //wallPlacement.ResetSession();
+                //wallPlacement.TogglePlaneDetection();
+                //generateMeshButton.interactable = false;
+                //waterMesh.Restart();
             }
             yield return wait;
         }
@@ -128,11 +135,8 @@ public class Manager : MonoBehaviour
     {
         var groundPlaneTransform = wallPlacement.GetGroundPlaneTransform();
         var stateData = waterMesh.GetLocationsStateData();
-
         var globalLocalPositions = stateData.GetGlobalLocalPosition();
-
         var points = new List<Vector3>();
-
         float heightAtCamera = (float)closestPoint.Height;
 
 
@@ -140,11 +144,10 @@ public class Manager : MonoBehaviour
         {
             // Sets all value of -9999 to 0 atm - could change logic while reading the csv?
             float calculatedHeight = 0;
-
             float latitude = globalLocalPosition.localLocation.z;
             float longitude = globalLocalPosition.localLocation.x;
             var location = globalLocalPosition.location;
-            float heightPoint = (float)location.Height;
+            float height = (float)location.Height;
             float waterHeight = (float)location.WaterHeight;
             bool insideBuilding = location.Building;
             float nearestNeighborHeight = (float)location.NearestNeighborHeight;
@@ -160,7 +163,7 @@ public class Manager : MonoBehaviour
             // point not inside a building
             else
             {
-                calculatedHeight = CalculateRelativeHeight(heightAtCamera, heightPoint, waterHeight);
+                calculatedHeight = CalculateRelativeHeight(heightAtCamera, height, waterHeight);
             }
 
             points.Add(new Vector3(longitude, calculatedHeight, latitude)); // Exaggerate height if needed
@@ -215,6 +218,11 @@ public class Manager : MonoBehaviour
         {
             togglePlacementText.text = "Place Walls";
         }
+    }
+
+    public void ReLoadScene()
+    {
+        SceneManager.LoadScene("MainScene");
     }
 
     public void OpenSettings()

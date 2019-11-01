@@ -207,13 +207,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathToCSV: csv_extended
-  radius: 15
+  radius: 50
   exaggerateHeightSlider: {fileID: 1307137845}
   togglePlacementText: {fileID: 24779453}
   generateMeshButton: {fileID: 1307137846}
   aRCamera: {fileID: 1735566239}
   aRSession: {fileID: 1324904971}
-  bounds: 2
+  bounds: 15
 --- !u!120 &86549458
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -514,19 +514,17 @@ PrefabInstance:
     - target: {fileID: 1902060324068496898, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_Text
-      value: 'Settings
-
-'
+      value: Reset
       objectReference: {fileID: 0}
     - target: {fileID: 1902060324068496898, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_FontData.m_Alignment
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7427911341600607010, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_Name
-      value: SettingsText
+      value: ResetText
       objectReference: {fileID: 0}
     - target: {fileID: 4233599238351042054, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -536,7 +534,7 @@ PrefabInstance:
     - target: {fileID: 4233599238351042054, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenSettings
+      value: ReLoadScene
       objectReference: {fileID: 0}
     - target: {fileID: 7188225721775555779, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -946,7 +944,7 @@ PrefabInstance:
     - target: {fileID: 5956663551417640042, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 276188190064246572, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -967,6 +965,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 110.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500120829688931460, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Name
+      value: Reset
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f5ee01c89ebf38499d3b52fc3bb9469, type: 3}

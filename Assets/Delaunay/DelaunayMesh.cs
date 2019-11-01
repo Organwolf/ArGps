@@ -139,7 +139,7 @@ public partial class DelaunayMesh : MonoBehaviour
 
     public void ClearMesh()
     {
-        if (chunks != null)
+        if (chunks != null && chunks.Count > 0)
         {
             Debug.Log("Clearing the mesh");
             foreach (Transform chunk in chunks)
