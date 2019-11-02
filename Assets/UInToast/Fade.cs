@@ -21,7 +21,8 @@ public class Fade : MonoBehaviour
         {
             if (show) show = false;
             else show = true;
-            GetComponentInChildren<Animator>().SetBool("show", show);
+            //GetComponentInChildren<Animator>().SetBool("show", show);
+            GetComponent<Animator>().SetBool("show", show);
         }
     }
 }
