@@ -208,6 +208,7 @@ public class Manager : MonoBehaviour
         // Show/hide information panel
         if(informationCanvas.enabled)
         {
+            SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
             informationCanvas.enabled = false;
         }
         else
