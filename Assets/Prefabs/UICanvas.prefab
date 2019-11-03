@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 241.20001, y: 38.1}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &5550377100645540935
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
     m_FontSize: 10
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 1
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Accuracy
+  m_Text: GPS Accuracy (m)
 --- !u!1 &1159338707532962116
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,7 +299,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 362.4, y: 108.6}
+  m_SizeDelta: {x: 0, y: 108.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1915124440401486257
 CanvasRenderer:
@@ -421,8 +421,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 181.19998, y: 54.32499}
-  m_SizeDelta: {x: 362.4, y: 108.55}
+  m_AnchoredPosition: {x: 170.48996, y: 54.32499}
+  m_SizeDelta: {x: 340.98, y: 108.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1934827864319249864
 CanvasRenderer:
@@ -498,8 +498,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000015258789}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -160, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1824664218309605401
 CanvasRenderer:
@@ -540,7 +540,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Information
+  m_Text: Information about placing walls and alternating between wallplacement and
+    the measuring stick
 --- !u!1 &3037263510111110792
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,8 +657,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -42.80005, y: 53.700012}
-  m_SizeDelta: {x: -798.7, y: -417.4}
+  m_AnchoredPosition: {x: -38.30005, y: 53.700012}
+  m_SizeDelta: {x: -807.8, y: -417.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1599629387195786683
 Canvas:
@@ -867,7 +868,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1948132031318669624}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: ToggleInformation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3921051041308442184
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,8 +991,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000015258789}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -160, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7566192719413401276
 CanvasRenderer:
@@ -1021,7 +1033,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Information
+  m_Text: Information about how to generate the mesh via the "Generate Mesh" button
+    once it is active.
 --- !u!1 &4372055745277356362
 GameObject:
   m_ObjectHideFlags: 0
@@ -1070,7 +1083,7 @@ GameObject:
   - component: {fileID: 4674721499023607622}
   - component: {fileID: 4674721499023607617}
   m_Layer: 5
-  m_Name: GenMeshText
+  m_Name: ShowMeshText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1092,8 +1105,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 181.19998, y: 54.32499}
-  m_SizeDelta: {x: 362.4, y: 108.55}
+  m_AnchoredPosition: {x: 170.49002, y: 54.32499}
+  m_SizeDelta: {x: 340.98, y: 108.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4674721499023607622
 CanvasRenderer:
@@ -1148,7 +1161,7 @@ GameObject:
   - component: {fileID: 4674721499617871942}
   - component: {fileID: 4674721499617871937}
   m_Layer: 5
-  m_Name: ResetButton
+  m_Name: UndoButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1167,12 +1180,12 @@ RectTransform:
   m_Children:
   - {fileID: 4674721500977034951}
   m_Father: {fileID: 4674721500030868234}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 362.4, y: 108.6}
+  m_SizeDelta: {x: 0, y: 108.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4674721499617871943
 CanvasRenderer:
@@ -1250,7 +1263,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_MethodName: ResetSession
+        m_MethodName: RemovePreviouseWall
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1297,7 +1310,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 362.4, y: 108.6}
+  m_SizeDelta: {x: 0, y: 108.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4674721499694745248
 CanvasRenderer:
@@ -1375,7 +1388,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_MethodName: TogglePlaneDetection
+        m_MethodName: GenerateMesh
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1413,18 +1426,18 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4674721499617871936}
+  - {fileID: 7188225721775555779}
   - {fileID: 4674721499694745277}
   - {fileID: 3033183851367858112}
   - {fileID: 457036709520352533}
-  - {fileID: 7188225721775555779}
+  - {fileID: 4674721499617871936}
   m_Father: {fileID: 4674721501056865552}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 416.3, y: 80.1}
-  m_SizeDelta: {x: 832.6, y: 160.3}
+  m_AnchoredPosition: {x: 954.9, y: 80.1}
+  m_SizeDelta: {x: 1909.9, y: 160.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4674721500030868235
 MonoBehaviour:
@@ -1444,10 +1457,10 @@ MonoBehaviour:
     m_Top: 10
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 0
+  m_Spacing: 40
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
 --- !u!1 &4674721500977034950
 GameObject:
@@ -1461,7 +1474,7 @@ GameObject:
   - component: {fileID: 4674721500977034949}
   - component: {fileID: 4674721500977034948}
   m_Layer: 5
-  m_Name: ResetText
+  m_Name: UndoText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1483,8 +1496,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 181.20001, y: 54.32499}
-  m_SizeDelta: {x: 362.4, y: 108.55}
+  m_AnchoredPosition: {x: 170.49, y: 54.32499}
+  m_SizeDelta: {x: 340.98, y: 108.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4674721500977034949
 CanvasRenderer:
@@ -1525,7 +1538,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Reset Current Session
+  m_Text: Undo Wall Placement
 --- !u!1 &4674721501056865516
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,7 +1679,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 100, y: 112.5}
+  m_AnchoredPosition: {x: 129, y: 112.5}
   m_SizeDelta: {x: 160, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8339921664078938172
@@ -1790,7 +1803,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -160, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4733301180128664098
 CanvasRenderer:
@@ -1831,8 +1844,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Information about placing walls and alternating between wallplacement and
-    the measuring stick
+  m_Text: Information about removing the latest wallplacement as well as resetting
+    the session. If you move to far from where you start the app the session will
+    be reloaded.
 --- !u!1 &6222180037272521771
 GameObject:
   m_ObjectHideFlags: 0
@@ -1865,11 +1879,11 @@ RectTransform:
   m_Father: {fileID: 4674721501056865552}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -658.5, y: -236.5}
-  m_SizeDelta: {x: 308.9, y: 213}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 47, y: 49.85}
+  m_SizeDelta: {x: 219.7, y: 110.4}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &1536570459739926180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1927,8 +1941,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 181.19998, y: 54.32499}
-  m_SizeDelta: {x: 362.4, y: 108.55}
+  m_AnchoredPosition: {x: 170.49002, y: 54.32499}
+  m_SizeDelta: {x: 340.98, y: 108.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8612840664662836762
 CanvasRenderer:
@@ -1969,7 +1983,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Toggle Wall Placement
+  m_Text: Place Measuring Stick
 --- !u!1 &6738729323404468880
 GameObject:
   m_ObjectHideFlags: 0
@@ -2079,7 +2093,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 362.4, y: 108.6}
+  m_SizeDelta: {x: 0, y: 108.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5969878051498703089
 CanvasRenderer:
@@ -2245,7 +2259,7 @@ GameObject:
   - component: {fileID: 3537336578455087821}
   - component: {fileID: 3215424421940097780}
   m_Layer: 5
-  m_Name: Information
+  m_Name: Information 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2267,8 +2281,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000015258789}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -160, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3537336578455087821
 CanvasRenderer:
@@ -2309,7 +2323,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Information
+  m_Text: Information about scanning the ground and selecting the surface within the
+    black lines.
 --- !u!1 &7427911341600607010
 GameObject:
   m_ObjectHideFlags: 0
@@ -2322,7 +2337,7 @@ GameObject:
   - component: {fileID: 4839552563855553078}
   - component: {fileID: 1902060324068496898}
   m_Layer: 5
-  m_Name: ToggleText
+  m_Name: ResetText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2344,8 +2359,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 181.19998, y: 54.32499}
-  m_SizeDelta: {x: 362.4, y: 108.55}
+  m_AnchoredPosition: {x: 170.49002, y: 54.32499}
+  m_SizeDelta: {x: 340.98, y: 108.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4839552563855553078
 CanvasRenderer:
@@ -2386,7 +2401,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Toggle Wall Placement
+  m_Text: Reset
 --- !u!1 &7791558159421165208
 GameObject:
   m_ObjectHideFlags: 0
@@ -2475,7 +2490,7 @@ GameObject:
   - component: {fileID: 5956663551417640042}
   - component: {fileID: 2508430853433161315}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: ExaggerateHeightSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2490,7 +2505,7 @@ RectTransform:
   m_GameObject: {fileID: 7872138992871119394}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.8, y: 4.8, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children:
   - {fileID: 6780663037555152085}
   - {fileID: 635339069472585738}
@@ -2500,7 +2515,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: -50}
+  m_AnchoredPosition: {x: -100, y: 0}
   m_SizeDelta: {x: 20, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2508430853433161315
@@ -2549,7 +2564,18 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: AlterHeightOfMesh
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8500120829688931460
 GameObject:
   m_ObjectHideFlags: 0
@@ -2563,7 +2589,7 @@ GameObject:
   - component: {fileID: 5278705736840534801}
   - component: {fileID: 4233599238351042054}
   m_Layer: 5
-  m_Name: Settings
+  m_Name: Reset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2582,12 +2608,12 @@ RectTransform:
   m_Children:
   - {fileID: 1688746555781304806}
   m_Father: {fileID: 4674721500030868234}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 362.4, y: 108.6}
+  m_SizeDelta: {x: 0, y: 108.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4721094323775982390
 CanvasRenderer:
@@ -2665,7 +2691,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_MethodName: ToggleWallPlacement
+        m_MethodName: ReLoadScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2711,7 +2737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -100, y: 112.5}
+  m_AnchoredPosition: {x: -129, y: 112.5}
   m_SizeDelta: {x: 160, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3019413625892677591

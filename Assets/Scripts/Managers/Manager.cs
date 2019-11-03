@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine;
-using UnityEngine.XR.ARFoundation;
 
 
 public class Manager : MonoBehaviour
@@ -15,10 +13,8 @@ public class Manager : MonoBehaviour
     [SerializeField] Slider exaggerateHeightSlider;
     [SerializeField] Text togglePlacementText;
     [SerializeField] Button generateMeshButton;
-    [SerializeField] Button informationButton;
     [SerializeField] Canvas informationCanvas;
     [SerializeField] Camera aRCamera;
-    [SerializeField] ARSession aRSession;
     [SerializeField] int bounds = 0;
     [SerializeField] Text[] informationTexts;
 
@@ -38,30 +34,13 @@ public class Manager : MonoBehaviour
         wallPlacement = GetComponent<WallPlacement>();
         entireCSVData = CSV_extended.ParseCsvFileUsingResources(pathToCSV);
         generateMeshButton.interactable = false;
-
         informationCanvas.enabled = false;
         DisableInformationText();
-
-        // Playerprefs -> not implemented correctly yet
-        //if (PlayerPrefs.HasKey("Radius"))
-        //{
-        //    radius = PlayerPrefs.GetInt("Radius");
-        //    Debug.Log("Current radius: " + radius);
-        //}
-
-        //if (PlayerPrefs.HasKey("Offset"))
-        //{
-        //    offset = PlayerPrefs.GetInt("Offset");
-        //    // comvert from cm to m
-        //    offset /= 100f;
-        //    Debug.Log("Current offset: " + offset);
-        //}
     }
 
     private void Start()
     {
-        // Only activate when info panel ånot avtive
-        //SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
+        SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
     }
 
     private UnityEngine.Coroutine updateEachSecond;
@@ -80,35 +59,20 @@ public class Manager : MonoBehaviour
 
     private IEnumerator OnPlayerOutOfBounds(int bounds)
     {
-        // Pauses the coroutine 2 seconds between each execution
+        // Run the coroutine every 2 seconds
         var wait = new WaitForSecondsRealtime(2.0f);
 
         while (true)
         {
             var distanceFromOrigo = aRCamera.transform.position.magnitude;
-            Debug.Log("Distance from origo: " + distanceFromOrigo);
+
             if(distanceFromOrigo > bounds)
             {
                 SSTools.ShowMessage("Out of bounds. Reloading", SSTools.Position.top, SSTools.Time.twoSecond);
                 new WaitForSecondsRealtime(2f);
                 SceneManager.LoadScene("MainScene");
-
-                /* 
-                 * trigger a function that: 
-                 *  - destroys prev.planes
-                 *  - prompt user to scan (1 sek msges?)
-                 *  - walk through the process
-                 *  - remove att walls with object connected to them
-                 *  - remove the previouse mesh
-                 */
-
-                // fade out fade in? animation?
-
-                //wallPlacement.ResetSession();
-                //wallPlacement.TogglePlaneDetection();
-                //generateMeshButton.interactable = false;
-                //waterMesh.Restart();
             }
+            //Debug.Log("Distance from origo: " + distanceFromOrigo);
             yield return wait;
         }
     }
@@ -118,14 +82,12 @@ public class Manager : MonoBehaviour
         deviceLocation = reading.ToLocation();
         InitializeWaterMesh();
         closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
-        // only enable button when then groundplane is placed
     }
 
     public void OnLocationUpdated(LocationReading reading)
     {
         deviceLocation = reading.ToLocation();
-        // was only a test
-        //CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
+
         if(wallPlacement.IsGroundPlaneSet())
         {
             generateMeshButton.interactable = true;
@@ -140,16 +102,17 @@ public class Manager : MonoBehaviour
 
     public void GenerateMesh()
     {
+        // Toast instruction
+        SSTools.ShowMessage("Place walls if needed", SSTools.Position.top, SSTools.Time.threeSecond);
+        
         var groundPlaneTransform = wallPlacement.GetGroundPlaneTransform();
         var stateData = waterMesh.GetLocationsStateData();
         var globalLocalPositions = stateData.GetGlobalLocalPosition();
         var points = new List<Vector3>();
         float heightAtCamera = (float)closestPoint.Height;
 
-
         foreach (var globalLocalPosition in globalLocalPositions)
         {
-            // Sets all value of -9999 to 0 atm - could change logic while reading the csv?
             float calculatedHeight = 0;
             float latitude = globalLocalPosition.localLocation.z;
             float longitude = globalLocalPosition.localLocation.x;
@@ -167,7 +130,6 @@ public class Manager : MonoBehaviour
                     calculatedHeight = CalculateRelativeHeight(heightAtCamera, nearestNeighborHeight, nearestNeighborWater);
                 }
             }
-            // point not inside a building
             else
             {
                 calculatedHeight = CalculateRelativeHeight(heightAtCamera, height, waterHeight);
@@ -203,13 +165,17 @@ public class Manager : MonoBehaviour
         }
     }
 
+    // Show/hide information panel
     public void ToggleInformation()
     {
-        // Show/hide information panel
         if(informationCanvas.enabled)
         {
-            SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
             informationCanvas.enabled = false;
+
+            if(!wallPlacement.IsGroundPlaneSet())
+            {
+                SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
+            }
         }
         else
         {
@@ -219,12 +185,9 @@ public class Manager : MonoBehaviour
         DisableInformationText();
         informationTexts[0].enabled = true;
 
-        // Disable buttons and sliders
-
-        // Run the appropriate animations on buttons - should be it's own functions
-
     }
 
+    // Display next information
     public void NextText()
     {
         var index = 0;
@@ -244,6 +207,7 @@ public class Manager : MonoBehaviour
         }
     }
 
+    // Exaggerate height of water
     public void AlterHeightOfMesh()
     {
         var sliderValue = exaggerateHeightSlider.value;
@@ -286,5 +250,6 @@ public class Manager : MonoBehaviour
     {
         SceneManager.LoadScene("Settings");
     }
+
     #endregion
 }
