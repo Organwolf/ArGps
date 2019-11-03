@@ -15,9 +15,12 @@ public class Manager : MonoBehaviour
     [SerializeField] Slider exaggerateHeightSlider;
     [SerializeField] Text togglePlacementText;
     [SerializeField] Button generateMeshButton;
+    [SerializeField] Button informationButton;
+    [SerializeField] Canvas informationCanvas;
     [SerializeField] Camera aRCamera;
     [SerializeField] ARSession aRSession;
     [SerializeField] int bounds = 0;
+    [SerializeField] Text[] informationTexts;
 
     private Location deviceLocation;
     private Location closestPoint;
@@ -35,6 +38,9 @@ public class Manager : MonoBehaviour
         wallPlacement = GetComponent<WallPlacement>();
         entireCSVData = CSV_extended.ParseCsvFileUsingResources(pathToCSV);
         generateMeshButton.interactable = false;
+
+        informationCanvas.enabled = false;
+        DisableInformationText();
 
         // Playerprefs -> not implemented correctly yet
         //if (PlayerPrefs.HasKey("Radius"))
@@ -54,7 +60,8 @@ public class Manager : MonoBehaviour
 
     private void Start()
     {
-        SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
+        // Only activate when info panel ånot avtive
+        //SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
     }
 
     private UnityEngine.Coroutine updateEachSecond;
@@ -187,6 +194,55 @@ public class Manager : MonoBehaviour
     }
 
     #region UI
+
+    private void DisableInformationText()
+    {
+        foreach(var text in informationTexts)
+        {
+            text.enabled = false;
+        }
+    }
+
+    public void ToggleInformation()
+    {
+        // Show/hide information panel
+        if(informationCanvas.enabled)
+        {
+            informationCanvas.enabled = false;
+        }
+        else
+        {
+            informationCanvas.enabled = true;
+        }
+
+        DisableInformationText();
+        informationTexts[0].enabled = true;
+
+        // Disable buttons and sliders
+
+        // Run the appropriate animations on buttons - should be it's own functions
+
+    }
+
+    public void NextText()
+    {
+        var index = 0;
+        var length = informationTexts.Length;
+        foreach (var text in informationTexts)
+        {
+            index++;
+            if(text.enabled & index < length)
+            { 
+                text.enabled = false;
+                break;
+            }
+        }
+        if(index < length)
+        {
+            informationTexts[index].enabled = true;
+        }
+    }
+
     public void AlterHeightOfMesh()
     {
         var sliderValue = exaggerateHeightSlider.value;
