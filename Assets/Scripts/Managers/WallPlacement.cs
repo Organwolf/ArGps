@@ -106,30 +106,7 @@ public class WallPlacement : MonoBehaviour
 
                 if (TouchPhase.Began == touch.phase)
                 {
-                    if (!planeIsPlaced)
-                    {
-                        if (arRaycastManager.Raycast(touch.position, hitsAR, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
-                        {
-                            Debug.Log("Placed the plane");
-                            var hitPose = hitsAR[0].pose;
-                            groundPlane = Instantiate(groundPlanePrefab, hitPose.position, hitPose.rotation);
-                            planeIsPlaced = true;
-                            TogglePlaneDetection();
-                        }
-
-                        //if(planeIsPlaced)
-                        //{
-                        //    // Measuring stick placed 1m in front of the camera
-                        //    var positionStick = new Vector3(arCamera.transform.position.x, groundPlane.transform.position.y, arCamera.transform.position.z + 1.0f);
-                        //    arSessionOrigin.MakeContentAppearAt(measuringstick.transform, positionStick, Quaternion.identity);
-                        //    measuringstick.GetComponent<textOverlay>().SetText("Waterlevel: \n" + "text not set yet");
-
-                        //    // enable measuring stick
-                        
-                        //}
-                    }
-
-                    else if (planeIsPlaced)
+                    if (planeIsPlaced)
                     {
                         Ray ray = arCamera.ScreenPointToRay(touch.position);
                         RaycastHit hitInfo;
@@ -138,7 +115,6 @@ public class WallPlacement : MonoBehaviour
                         {
                             if(wallPlacementEnabled)
                             {
-                                startPoint.SetActive(true);
                                 startPoint.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
 
                                 if (walls.Count > 0)
@@ -168,6 +144,18 @@ public class WallPlacement : MonoBehaviour
                             }
                         }
                     }
+
+                    else if (!planeIsPlaced)
+                    {
+                        if (arRaycastManager.Raycast(touch.position, hitsAR, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
+                        {
+                            Debug.Log("Placed the plane");
+                            var hitPose = hitsAR[0].pose;
+                            groundPlane = Instantiate(groundPlanePrefab, hitPose.position, hitPose.rotation);
+                            planeIsPlaced = true;
+                            TogglePlaneDetection();
+                        }
+                    }
                 }
 
                 else if (TouchPhase.Moved == touch.phase && wallPlacementEnabled)
@@ -179,6 +167,11 @@ public class WallPlacement : MonoBehaviour
                     {
                         endPoint.SetActive(true);
                         endPoint.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
+                    }
+
+                    if (endPoint.activeSelf && !startPoint.activeSelf)
+                    {
+                        startPoint.SetActive(true);
                     }
                 }
 
