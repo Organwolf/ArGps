@@ -532,6 +532,32 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Name
+      value: UICanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 620106219564309957, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: Once the water is in place you might want to create walls. This is done
+        by drawing a line where you wish the wall to be placed. Visualize the walls
+        by using the button.
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768163495714872774, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: Once the ground plane is selected it will be possible to generate the
+        water mesh. Use the Generate mesh button below.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4992585609083415090, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: 'It is possible to undo wall placement as well as reset the entire session
+        if needed.
+
+        Good luck!'
+      objectReference: {fileID: 0}
     - target: {fileID: 243385448031182582, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -547,11 +573,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 86549457}
-    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_Name
-      value: UICanvas
-      objectReference: {fileID: 0}
     - target: {fileID: 4233599238351042054, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -605,27 +626,27 @@ PrefabInstance:
     - target: {fileID: 457036709520352533, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 457036709520352533, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 457036709520352533, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1358.43
       objectReference: {fileID: 0}
     - target: {fileID: 457036709520352533, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -64.3
       objectReference: {fileID: 0}
     - target: {fileID: 457036709520352533, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 340.98
       objectReference: {fileID: 0}
     - target: {fileID: 2791005526974985557, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
@@ -837,6 +858,92 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 86549457}
+    - target: {fileID: 3215424421940097780, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: Scan the ground. Once a plane is detected you will see a convex gray
+        shape representing the scanned area. Select it by tapping on it's surface.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674721500030868234, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 953.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674721500030868234, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1907.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674721500030868234, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 80.100006
+      objectReference: {fileID: 0}
+    - target: {fileID: 6821128851446273434, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3945363932754727068, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8983513218632186216, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 218.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8983513218632186216, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 436.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 2984743736809070962, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7172246855027026079, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6148954889390289486, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674721500977034951, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 218.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674721500977034951, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 436.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674721499023607616, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 218.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674721499023607616, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 436.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688746555781304806, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 218.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688746555781304806, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 436.22
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f5ee01c89ebf38499d3b52fc3bb9469, type: 3}
 --- !u!223 &947414975 stripped
@@ -1396,7 +1503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlanePrefab: {fileID: 6905757972169501161, guid: d9d28919d6747454882ab39254d53433,
+  m_PlanePrefab: {fileID: 4219635677196157913, guid: ea8b249b1e142b845a3e5fcbdfb87b58,
     type: 3}
   m_DetectionMode: -1
 --- !u!114 &2061189423
