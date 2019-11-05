@@ -326,7 +326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ba4ec2b2dec7244bac6fc75a33332b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterHeightText: {fileID: 490512760}
   groundPlanePrefab: {fileID: 389070635158937013, guid: 25bcdf69d6efa05438a95aced6b61721,
     type: 3}
   clickPointPrefab: {fileID: 3955044548890492075, guid: c89ca5b1a7c43b34fa94ed1d5e762718,
@@ -515,18 +514,6 @@ MonoBehaviour:
 --- !u!114 &311792421 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4992585609083415090, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-    type: 3}
-  m_PrefabInstance: {fileID: 499284509}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &490512760 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5137389554070869857, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
     type: 3}
   m_PrefabInstance: {fileID: 499284509}
   m_PrefabAsset: {fileID: 0}
@@ -1043,7 +1030,7 @@ PrefabInstance:
     - target: {fileID: 3157624214815704282, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f5ee01c89ebf38499d3b52fc3bb9469, type: 3}
