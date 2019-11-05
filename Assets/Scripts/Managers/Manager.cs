@@ -87,6 +87,17 @@ public class Manager : MonoBehaviour
         }
     }
 
+    public void CalculateClosestPointToMeasuringstick(Vector3 measuringstickPos)
+    {
+        var stateData = waterMesh.GetLocationsStateData();
+        var globalLocalPositions = stateData.GetGlobalLocalPosition();
+
+        foreach (var globalLocalPosition in globalLocalPositions)
+        {
+
+        }
+    }
+
     public void OnLocationProviderEnabled(LocationReading reading)
     {
         deviceLocation = reading.ToLocation();

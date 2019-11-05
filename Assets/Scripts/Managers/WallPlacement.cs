@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.Events;
 
 #if PLATFORM_ANDROID
 using UnityEngine.Android;
@@ -15,7 +16,6 @@ using UnityEngine.Android;
 
 public class WallPlacement : MonoBehaviour
 {
-    // min wall klass - tänker jag rätt här?
     private class Wall
     {
         public GameObject startPoint;
@@ -32,9 +32,6 @@ public class WallPlacement : MonoBehaviour
         }
     }
 
-    // UI
-    [SerializeField] GameObject waterHeightTextGameObject;
-
     // Prefabs & materials
     [SerializeField] GameObject groundPlanePrefab;
     [SerializeField] GameObject clickPointPrefab;
@@ -49,9 +46,6 @@ public class WallPlacement : MonoBehaviour
     [SerializeField] ARPlaneManager arPlaneManager;
     [SerializeField] Camera arCamera;
 
-    // UI
-    private textOverlay waterHeightText;
-    
     // startPoint & endPoint
     private GameObject startPoint;
     private GameObject endPoint;
@@ -74,9 +68,6 @@ public class WallPlacement : MonoBehaviour
 
     private void Awake()
     {
-        // UI
-        waterHeightText = waterHeightTextGameObject.GetComponent<textOverlay>();
-
         // Walls
         listOfWallMeshes = new List<GameObject>();
 
@@ -111,8 +102,8 @@ public class WallPlacement : MonoBehaviour
 
                 if (TouchPhase.Began == touch.phase)
                 {
-                    //if (planeIsPlaced && waterMeshRendered) <-- solves the issue w wallplacement before mesh gen. 
-                    if (planeIsPlaced && waterMeshRendered)
+                    if (planeIsPlaced && waterMeshRendered) // < --solves the issue w wallplacement before mesh gen.
+                    //if (planeIsPlaced)
                     {
                         Ray ray = arCamera.ScreenPointToRay(touch.position);
                         RaycastHit hitInfo;
@@ -145,9 +136,9 @@ public class WallPlacement : MonoBehaviour
 
                             else
                             {
-                                //waterHeightTextGameObject.SetActive(true);
-                                //waterHeightText.SetText("Hello human");
-                                //waterHeightTextGameObject.transform.position = new Vector3(hitInfo.point.x, hitInfo.point.y);
+                                // Possible fix for text from worldSpace to ScreenSpace problem
+                                // add it to the update in the manager? The rotation of the text that is
+                                // Either use events or something else
 
                                 var cameraForward = arCamera.transform.forward;
                                 var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;

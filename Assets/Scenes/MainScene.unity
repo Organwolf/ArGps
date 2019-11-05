@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ba4ec2b2dec7244bac6fc75a33332b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterHeightTextGameObject: {fileID: 499284510}
+  waterHeightText: {fileID: 490512760}
   groundPlanePrefab: {fileID: 389070635158937013, guid: 25bcdf69d6efa05438a95aced6b61721,
     type: 3}
   clickPointPrefab: {fileID: 3955044548890492075, guid: c89ca5b1a7c43b34fa94ed1d5e762718,
@@ -524,6 +524,18 @@ MonoBehaviour:
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &490512760 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5137389554070869857, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+    type: 3}
+  m_PrefabInstance: {fileID: 499284509}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &499284509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -531,6 +543,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5137389554070869857, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354310649296932418, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.000030518
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354310649296932418, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354310649296932418, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 890.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354310649296932418, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 247.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 8498824611944540414, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4726155672800598972, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_IsActive
@@ -1005,25 +1047,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f5ee01c89ebf38499d3b52fc3bb9469, type: 3}
---- !u!1 &499284510 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4726155672800598972, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-    type: 3}
-  m_PrefabInstance: {fileID: 499284509}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &499284514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 499284510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaeecf6af6d84d140adbbbb483253ffd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverlayText: {fileID: 0}
 --- !u!223 &947414975 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 1599629387195786683, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
