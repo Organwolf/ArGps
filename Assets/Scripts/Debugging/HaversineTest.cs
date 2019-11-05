@@ -12,7 +12,7 @@ public class HaversineTest : MonoBehaviour
     {
         var distance1 = HaversineDistance(loc1.Longitude, loc2.Longitude, loc1.Latitude, loc2.Latitude);
         var distance2 = HaversineDistance(loc2.Longitude, loc1.Longitude, loc2.Latitude, loc1.Latitude);
-        //CSV_extended.ClosestPoint();
+        //CSV_extended.ClosestPointGPS();
 
         Debug.Log("Dist1: " + distance1);
         Debug.Log("Dist2: " + distance2);

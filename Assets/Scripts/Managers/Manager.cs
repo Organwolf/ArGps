@@ -43,6 +43,15 @@ public class Manager : MonoBehaviour
         SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
     }
 
+    private void Update()
+    {
+        // Om m.stick är SetAvtive == true 
+        // då ska texten uppdateras till en viss storlek beroende på avstånd till skärmen
+        // och roteras mot skärmen
+
+        // Skicka info till wallplacement att meshen genererats?
+    }
+
     private UnityEngine.Coroutine updateEachSecond;
 
     private void OnEnable()
@@ -54,6 +63,7 @@ public class Manager : MonoBehaviour
     {
         StopCoroutine(updateEachSecond);
         updateEachSecond = null;
+
         Debug.Log("App disabled");
     }
 
@@ -81,7 +91,7 @@ public class Manager : MonoBehaviour
     {
         deviceLocation = reading.ToLocation();
         InitializeWaterMesh();
-        closestPoint = CSV_extended.ClosestPoint(withinRadiusData, deviceLocation);
+        closestPoint = CSV_extended.ClosestPointGPS(withinRadiusData, deviceLocation);
     }
 
     public void OnLocationUpdated(LocationReading reading)
@@ -104,7 +114,8 @@ public class Manager : MonoBehaviour
     {
         // Toast instruction
         SSTools.ShowMessage("Place walls if needed", SSTools.Position.top, SSTools.Time.threeSecond);
-        
+
+        double currentWaterHeight = 0;
         var groundPlaneTransform = wallPlacement.GetGroundPlaneTransform();
         var stateData = waterMesh.GetLocationsStateData();
         var globalLocalPositions = stateData.GetGlobalLocalPosition();
@@ -128,11 +139,13 @@ public class Manager : MonoBehaviour
                 if (nearestNeighborHeight != -9999)
                 {
                     calculatedHeight = CalculateRelativeHeight(heightAtCamera, nearestNeighborHeight, nearestNeighborWater);
+                    currentWaterHeight = nearestNeighborWater;
                 }
             }
             else
             {
                 calculatedHeight = CalculateRelativeHeight(heightAtCamera, height, waterHeight);
+                currentWaterHeight = waterHeight;
             }
 
             points.Add(new Vector3(longitude, calculatedHeight, latitude)); // Exaggerate height if needed
@@ -146,6 +159,12 @@ public class Manager : MonoBehaviour
         {
             delaunayMesh.Generate(points, transform);
         }
+
+        // Enable wall placement and update current water height at closest point
+        wallPlacement.SetWallPlacementEnabled(true);
+        wallPlacement.WaterMeshGenerated(true);
+        wallPlacement.SetCurrentWaterHeight(currentWaterHeight);
+        
     }
 
     private float CalculateRelativeHeight(float heightAtCamera, float heightAtPoint, float waterHeightAtPoint)

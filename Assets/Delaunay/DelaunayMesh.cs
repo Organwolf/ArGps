@@ -19,6 +19,9 @@ public partial class DelaunayMesh : MonoBehaviour
     private TriangleNet.Mesh mesh = null;
     private List<Transform> chunks = new List<Transform>();
 
+    // Boolean set to true when the mesh has been generated
+    private bool isMeshGenerated = false;
+
     public void Generate(IEnumerable<Vector3> locations, Transform groundPlaneTransform)
     {
 
@@ -53,6 +56,8 @@ public partial class DelaunayMesh : MonoBehaviour
         }
         ClearMesh();
         MakeMesh();
+        // Boolean that is set once the mesh is created
+        isMeshGenerated = true;
     }
 
     public void MakeMesh()
@@ -137,6 +142,11 @@ public partial class DelaunayMesh : MonoBehaviour
         }
     }
 
+    public bool isMeshCreated()
+    {
+        return isMeshGenerated;
+    }
+
     public void ClearMesh()
     {
         if (chunks != null && chunks.Count > 0)
@@ -158,6 +168,7 @@ public partial class DelaunayMesh : MonoBehaviour
             return null;
     }
 
+    // Used for the exaggerated height of the water mesh
     public void SetHeightToMesh(float newHeight)
     {
         if (chunks.Count == 1)
@@ -173,11 +184,13 @@ public partial class DelaunayMesh : MonoBehaviour
         return height;
     }
 
-    /* Returns a point's local coordinates. */
+    // Returns a point's local coordinates
     private Vector3 GetPoint3D(int index)
     {
         Vertex vertex = mesh.vertices[index];
         float elevation = elevations[index];
         return new Vector3((float)vertex.x, elevation, (float)vertex.y);
     }
+
+
 }

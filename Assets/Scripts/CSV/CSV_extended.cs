@@ -43,8 +43,31 @@ public class CSV_extended
         return parsedData;
     }
 
-    public static Location ClosestPoint(List<Location> locations, Location deviceLocation)
+    public static Location ClosestPointGPS(List<Location> locations, Location deviceLocation)
     {
+        Location closestLocation = new Location();
+        double minDistance = Double.MaxValue;
+        double distanceToClosestPoint = -1;
+
+        foreach (Location location in locations)
+        {
+            var distance = Location.HaversineDistance(location, deviceLocation);
+
+            if (distance <= minDistance)
+            {
+                minDistance = distance;
+                distanceToClosestPoint = distance;
+                closestLocation = location;
+            }
+        }
+        Debug.Log("Distance to closest point: " + distanceToClosestPoint);
+        return closestLocation;
+    }
+
+    // Implement a function that finds the closest point based on Unity world space
+    public static Location ClosestPointLocal(List<Location> locations, Location deviceLocation)
+    {
+
         Location closestLocation = new Location();
         double minDistance = Double.MaxValue;
         double distanceToClosestPoint = -1;

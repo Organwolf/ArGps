@@ -4,9 +4,10 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.EventSystems;
-using System;
+using TMPro;
 
 #if PLATFORM_ANDROID
 using UnityEngine.Android;
@@ -31,7 +32,8 @@ public class WallPlacement : MonoBehaviour
         }
     }
 
-    private List<Wall> walls = new List<Wall>();
+    // UI
+    [SerializeField] GameObject waterHeightTextGameObject;
 
     // Prefabs & materials
     [SerializeField] GameObject groundPlanePrefab;
@@ -43,12 +45,13 @@ public class WallPlacement : MonoBehaviour
     [SerializeField] GameObject lineRendererPrefab;
 
     // AR
-    [SerializeField] ARSession arSession;
-    [SerializeField] ARSessionOrigin arSessionOrigin;
     [SerializeField] ARRaycastManager arRaycastManager;
     [SerializeField] ARPlaneManager arPlaneManager;
     [SerializeField] Camera arCamera;
 
+    // UI
+    private textOverlay waterHeightText;
+    
     // startPoint & endPoint
     private GameObject startPoint;
     private GameObject endPoint;
@@ -56,24 +59,26 @@ public class WallPlacement : MonoBehaviour
     private GameObject measuringstick;
 
     // Plane, water & wall variables
+    private List<Wall> walls = new List<Wall>();
     private bool planeIsPlaced;
-    private float height = 4.0f;
+    private float wallHeight = 4.0f;
     private GameObject groundPlane = null;
-    private bool wallPlacementEnabled = true;
-    private List<GameObject> listOfLinerenderers;
+    private bool wallPlacementEnabled = false;
     private List<GameObject> listOfWallMeshes;
+    private double currentWaterHeight = 0;
+    private bool waterMeshRendered = false;
 
     // Raycasts
     private List<ARRaycastHit> hitsAR = new List<ARRaycastHit>();
-    private List<GameObject> listOfPlacedObjects;
     private int groundLayerMask = 1 << 8;
 
     private void Awake()
     {
-        // To be removed
-        listOfPlacedObjects = new List<GameObject>();
+        // UI
+        waterHeightText = waterHeightTextGameObject.GetComponent<textOverlay>();
+
+        // Walls
         listOfWallMeshes = new List<GameObject>();
-        listOfLinerenderers = new List<GameObject>();
 
         // startPoint & endPoint
         startPoint = Instantiate(clickPointPrefab, Vector3.zero, Quaternion.identity);
@@ -106,7 +111,8 @@ public class WallPlacement : MonoBehaviour
 
                 if (TouchPhase.Began == touch.phase)
                 {
-                    if (planeIsPlaced)
+                    //if (planeIsPlaced && waterMeshRendered) <-- solves the issue w wallplacement before mesh gen. 
+                    if (planeIsPlaced && waterMeshRendered)
                     {
                         Ray ray = arCamera.ScreenPointToRay(touch.position);
                         RaycastHit hitInfo;
@@ -139,8 +145,16 @@ public class WallPlacement : MonoBehaviour
 
                             else
                             {
+                                //waterHeightTextGameObject.SetActive(true);
+                                //waterHeightText.SetText("Hello human");
+                                //waterHeightTextGameObject.transform.position = new Vector3(hitInfo.point.x, hitInfo.point.y);
+
+                                var cameraForward = arCamera.transform.forward;
+                                var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
+                                measuringstick.transform.SetPositionAndRotation(hitInfo.point, Quaternion.LookRotation(cameraBearing));
                                 measuringstick.SetActive(true);
-                                measuringstick.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
+                                var waterHeightInCm = currentWaterHeight * 100;
+                                measuringstick.GetComponent<textOverlay>().SetText($"Water height: {waterHeightInCm.ToString("0.00")} cm");
                             }
                         }
                     }
@@ -220,9 +234,9 @@ public class WallPlacement : MonoBehaviour
                     startPoint.SetActive(false);
                     endPoint.SetActive(false);
 
+                    // Instantiate a wall object with the current data and add it to a list
                     Wall currentWall = new Wall(startPointObject, endPointObject, wall, lRenderer);
                     walls.Add(currentWall);
-                    
                 }
 
                 else if(!endPoint.activeSelf && startPoint.activeSelf)
@@ -239,6 +253,16 @@ public class WallPlacement : MonoBehaviour
             measureLine.SetPosition(0, startPoint.transform.position);
             measureLine.SetPosition(1, endPoint.transform.position);
         }
+    }
+
+    public void WaterMeshGenerated(bool state)
+    {
+        waterMeshRendered = state;
+    }
+
+    public void SetCurrentWaterHeight(double currentHeight)
+    {
+        currentWaterHeight = currentHeight;
     }
 
     public void RemovePreviousWall()
@@ -271,10 +295,10 @@ public class WallPlacement : MonoBehaviour
         }
     }
 
-    public bool GetWallPlacementEnabled()
-    {
-        return wallPlacementEnabled;
-    }
+    // Might need to work out a solution where I remove either toggleWallPlacement or these getters and setters
+    public bool GetWallPlacementEnabled() => wallPlacementEnabled;
+
+    public void SetWallPlacementEnabled(bool state) => wallPlacementEnabled = state;
 
     public Transform GetGroundPlaneTransform()
     {
@@ -307,7 +331,6 @@ public class WallPlacement : MonoBehaviour
         var lineRenderer = lineRendererGameObject.GetComponent<LineRenderer>();
         lineRenderer.SetPosition(0, startPoint.transform.position);
         lineRenderer.SetPosition(1, endPoint.transform.position);
-        //listOfLinerenderers.Add(lineRendererGameObject);
 
         return lineRendererGameObject;
     }
@@ -340,7 +363,7 @@ public class WallPlacement : MonoBehaviour
         newMeshObject.GetComponent<Renderer>().material = materialForWalls[0];
         Mesh newMesh = new Mesh();
 
-        Vector3 heightVector = new Vector3(0, height, 0);
+        Vector3 heightVector = new Vector3(0, wallHeight, 0);
 
         newMesh.vertices = new Vector3[]
         {
@@ -372,11 +395,11 @@ public class WallPlacement : MonoBehaviour
     }
 
     // UI logic
-    public void ResetSession()
-    {
-        RemoveWalls();
-        planeIsPlaced = false;
-    }
+    //public void ResetSession()
+    //{
+    //    RemoveWalls();
+    //    planeIsPlaced = false;
+    //}
 
     public void RenderWalls()
     {
