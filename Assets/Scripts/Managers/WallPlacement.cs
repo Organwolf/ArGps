@@ -65,6 +65,7 @@ public class WallPlacement : MonoBehaviour
     private bool waterMeshRendered = false;
     private List<WaterMesh.GlobalLocalPosition> currentGlobalLocalPositions;
     private List<Location> dataWithinRadius;
+    private textOverlay measuringStickTextOverlay;
 
     // Raycasts
     private List<ARRaycastHit> hitsAR = new List<ARRaycastHit>();
@@ -79,6 +80,7 @@ public class WallPlacement : MonoBehaviour
         startPoint = Instantiate(clickPointPrefab, Vector3.zero, Quaternion.identity);
         endPoint = Instantiate(clickPointPrefab, Vector3.zero, Quaternion.identity);
         measuringstick = Instantiate(measuringStickPrefab, Vector3.zero, Quaternion.identity);
+        measuringStickTextOverlay = measuringstick.GetComponent<textOverlay>();
         startPoint.SetActive(false);
         endPoint.SetActive(false);
         measuringstick.SetActive(false);
@@ -88,12 +90,12 @@ public class WallPlacement : MonoBehaviour
 
     private void Start()
     {
-        #if PLATFORM_ANDROID
+#if PLATFORM_ANDROID
         if (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
         {
             Permission.RequestUserPermission(Permission.FineLocation);
         }
-        #endif
+#endif
     }
 
     private void Update()
@@ -107,14 +109,13 @@ public class WallPlacement : MonoBehaviour
                 if (TouchPhase.Began == touch.phase)
                 {
                     if (planeIsPlaced && waterMeshRendered) // < --solves the issue w wallplacement before mesh gen.
-                    //if (planeIsPlaced)
                     {
                         Ray ray = arCamera.ScreenPointToRay(touch.position);
                         RaycastHit hitInfo;
 
                         if (Physics.Raycast(ray, out hitInfo, groundLayerMask))
                         {
-                            if(wallPlacementEnabled)
+                            if (wallPlacementEnabled)
                             {
                                 startPoint.transform.SetPositionAndRotation(hitInfo.point, Quaternion.identity);
 
@@ -138,18 +139,16 @@ public class WallPlacement : MonoBehaviour
                                 }
                             }
 
+                            // Placement of measuring stick
                             else
                             {
-                                // Possible fix for text from worldSpace to ScreenSpace problem
-                                // add it to the update in the manager? The rotation of the text that is
-                                // Either use events or something else
-
                                 var cameraForward = arCamera.transform.forward;
                                 var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
                                 measuringstick.transform.SetPositionAndRotation(hitInfo.point, Quaternion.LookRotation(cameraBearing));
                                 measuringstick.SetActive(true);
                                 var waterHeightInCm = CalculateWaterHeightAtPosision(new Vector3(measuringstick.transform.position.x, 0, measuringstick.transform.position.z)) * 100;
-                                measuringstick.GetComponent<textOverlay>().SetText($"Water height: {waterHeightInCm.ToString("0.00")} cm");
+                                AdjustFontSize();
+                                measuringStickTextOverlay.SetText($"Water height: {waterHeightInCm.ToString("0.00")} cm");
                             }
                         }
                     }
@@ -234,7 +233,7 @@ public class WallPlacement : MonoBehaviour
                     walls.Add(currentWall);
                 }
 
-                else if(!endPoint.activeSelf && startPoint.activeSelf)
+                else if (!endPoint.activeSelf && startPoint.activeSelf)
                 {
                     startPoint.SetActive(false);
                 }
@@ -248,6 +247,24 @@ public class WallPlacement : MonoBehaviour
             measureLine.SetPosition(0, startPoint.transform.position);
             measureLine.SetPosition(1, endPoint.transform.position);
         }
+    }
+
+    private void AdjustFontSize()
+    {
+        var fontSizeAtStart = 0.43f;
+        var multiplier = 1f;
+        var cameraPosition = arCamera.transform.position;
+        var measuringstickPosition = measuringstick.transform.position;
+        var currentDistance = Vector3.Distance(cameraPosition, measuringstickPosition);
+
+        if (currentDistance > 1)
+        {
+            multiplier = Mathf.Log(currentDistance, 10) + 1;
+        }
+
+        var newFontSize = fontSizeAtStart * multiplier;
+        measuringStickTextOverlay.SetFontSize(newFontSize);
+        Debug.Log("Font size: " + newFontSize);
     }
 
     internal void SetPointsWithinRadius(List<Location> pointsWithinSetRadius)
@@ -319,21 +336,6 @@ public class WallPlacement : MonoBehaviour
         }
     }
 
-    private void RemoveWalls()
-    {
-        var length = walls.Count;
-        while (length >= 1)
-        {
-            Wall wallToRemove = walls[length - 1];
-            Destroy(wallToRemove.startPoint);
-            Destroy(wallToRemove.endPoint);
-            Destroy(wallToRemove.quad);
-            Destroy(wallToRemove.line);
-            walls.RemoveAt(length - 1);
-        }
-    }
-
-    // Might need to work out a solution where I remove either toggleWallPlacement or these getters and setters
     public bool GetWallPlacementEnabled() => wallPlacementEnabled;
 
     public void SetWallPlacementEnabled(bool state) => wallPlacementEnabled = state;
@@ -431,13 +433,6 @@ public class WallPlacement : MonoBehaviour
         // returning the quad
         return newMeshObject;
     }
-
-    // UI logic
-    //public void ResetSession()
-    //{
-    //    RemoveWalls();
-    //    planeIsPlaced = false;
-    //}
 
     public void RenderWalls()
     {

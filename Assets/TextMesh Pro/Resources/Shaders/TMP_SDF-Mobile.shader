@@ -70,11 +70,13 @@ SubShader {
 		WriteMask [_StencilWriteMask]
 	}
 
-	Cull [_CullMode]
+	//Cull [_CullMode]
+	Cull Off
 	ZWrite Off
 	Lighting Off
 	Fog { Mode Off }
-	ZTest [unity_GUIZTestMode]
+	//ZTest [unity_GUIZTestMode]
+	ZTest Off
 	Blend One OneMinusSrcAlpha
 	ColorMask [_ColorMask]
 

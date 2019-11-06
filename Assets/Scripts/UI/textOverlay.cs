@@ -16,4 +16,9 @@ public class textOverlay : MonoBehaviour
     {
         OverlayText.text = text;
     }
+
+    public void SetFontSize(float size)
+    {
+        OverlayText.fontSize = size;
+    }
 }
