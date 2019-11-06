@@ -148,7 +148,7 @@ public class WallPlacement : MonoBehaviour
                                 measuringstick.SetActive(true);
                                 var waterHeightInCm = CalculateWaterHeightAtPosision(new Vector3(measuringstick.transform.position.x, 0, measuringstick.transform.position.z)) * 100;
                                 AdjustFontSize();
-                                measuringStickTextOverlay.SetText($"Water height: {waterHeightInCm.ToString("0.00")} cm");
+                                measuringStickTextOverlay.SetText($"Water height: \n{waterHeightInCm.ToString("0.00")} cm");
                             }
                         }
                     }
@@ -251,7 +251,7 @@ public class WallPlacement : MonoBehaviour
 
     private void AdjustFontSize()
     {
-        var fontSizeAtStart = 0.43f;
+        var fontSizeAtStart = 0.6f;
         var multiplier = 1f;
         var cameraPosition = arCamera.transform.position;
         var measuringstickPosition = measuringstick.transform.position;
