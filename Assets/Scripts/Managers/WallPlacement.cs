@@ -9,6 +9,8 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.Events;
+using ARLocation;
+using System;
 
 #if PLATFORM_ANDROID
 using UnityEngine.Android;
@@ -61,6 +63,8 @@ public class WallPlacement : MonoBehaviour
     private List<GameObject> listOfWallMeshes;
     private double currentWaterHeight = 0;
     private bool waterMeshRendered = false;
+    private List<WaterMesh.GlobalLocalPosition> currentGlobalLocalPositions;
+    private List<Location> dataWithinRadius;
 
     // Raycasts
     private List<ARRaycastHit> hitsAR = new List<ARRaycastHit>();
@@ -144,7 +148,7 @@ public class WallPlacement : MonoBehaviour
                                 var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
                                 measuringstick.transform.SetPositionAndRotation(hitInfo.point, Quaternion.LookRotation(cameraBearing));
                                 measuringstick.SetActive(true);
-                                var waterHeightInCm = currentWaterHeight * 100;
+                                var waterHeightInCm = CalculateWaterHeightAtPosision(new Vector3(measuringstick.transform.position.x, 0, measuringstick.transform.position.z)) * 100;
                                 measuringstick.GetComponent<textOverlay>().SetText($"Water height: {waterHeightInCm.ToString("0.00")} cm");
                             }
                         }
@@ -243,6 +247,49 @@ public class WallPlacement : MonoBehaviour
             measureLine.enabled = true;
             measureLine.SetPosition(0, startPoint.transform.position);
             measureLine.SetPosition(1, endPoint.transform.position);
+        }
+    }
+
+    internal void SetPointsWithinRadius(List<Location> pointsWithinSetRadius)
+    {
+        dataWithinRadius = pointsWithinSetRadius;
+    }
+
+    public void SetCurrentGlobalLocalPositions(List<WaterMesh.GlobalLocalPosition> globalLocalPositions)
+    {
+        currentGlobalLocalPositions = globalLocalPositions;
+        
+        var lengthOfList = currentGlobalLocalPositions.Count;
+        Debug.Log($"length of global local positions: {lengthOfList} ");
+    }
+
+    public double CalculateWaterHeightAtPosision(Vector3 stickPosition)
+    {
+        var minDistance = float.MaxValue;
+        float distance;
+        int length = currentGlobalLocalPositions.Count;
+        int index = 0;
+
+        for (int i= 0;  i < length; i++)
+        {
+            distance = Vector3.Distance(currentGlobalLocalPositions[i].localLocation, stickPosition);
+
+            if(distance < minDistance)
+            {
+                minDistance = distance;
+                index = i;
+            }
+        }
+
+        Location point = dataWithinRadius[index];
+
+        if (point.Building)
+        {
+            return point.NearestNeighborWater;
+        }
+        else
+        {
+            return point.WaterHeight;
         }
     }
 

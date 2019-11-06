@@ -26,6 +26,7 @@ public class Manager : MonoBehaviour
     private List<Location> withinRadiusData;
     private List<Location> entireCSVData;
     private float offset = 0f;
+    private bool meshGenerated = false;
 
     private void Awake()
     {
@@ -41,15 +42,6 @@ public class Manager : MonoBehaviour
     private void Start()
     {
         SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
-    }
-
-    private void Update()
-    {
-        // Om m.stick är SetAvtive == true 
-        // då ska texten uppdateras till en viss storlek beroende på avstånd till skärmen
-        // och roteras mot skärmen
-
-        // Skicka info till wallplacement att meshen genererats?
     }
 
     private UnityEngine.Coroutine updateEachSecond;
@@ -87,31 +79,29 @@ public class Manager : MonoBehaviour
         }
     }
 
-    public void CalculateClosestPointToMeasuringstick(Vector3 measuringstickPos)
-    {
-        var stateData = waterMesh.GetLocationsStateData();
-        var globalLocalPositions = stateData.GetGlobalLocalPosition();
-
-        foreach (var globalLocalPosition in globalLocalPositions)
-        {
-
-        }
-    }
-
     public void OnLocationProviderEnabled(LocationReading reading)
     {
         deviceLocation = reading.ToLocation();
         InitializeWaterMesh();
         closestPoint = CSV_extended.ClosestPointGPS(withinRadiusData, deviceLocation);
+
     }
 
     public void OnLocationUpdated(LocationReading reading)
     {
         deviceLocation = reading.ToLocation();
 
-        if(wallPlacement.IsGroundPlaneSet())
+        if(!meshGenerated && wallPlacement.IsGroundPlaneSet())
         {
             generateMeshButton.interactable = true;
+            meshGenerated = true;
+
+            var stateData = waterMesh.GetLocationsStateData();
+            var globalLocalPositions = stateData.GetGlobalLocalPosition();
+            wallPlacement.SetCurrentGlobalLocalPositions(globalLocalPositions);
+            wallPlacement.SetPointsWithinRadius(withinRadiusData);
+            Debug.Log($"Size of points within radius: {withinRadiusData.Count}");
+
         }
     }
 
@@ -138,7 +128,7 @@ public class Manager : MonoBehaviour
             float calculatedHeight = 0;
             float latitude = globalLocalPosition.localLocation.z;
             float longitude = globalLocalPosition.localLocation.x;
-            var location = globalLocalPosition.location;
+            Location location = globalLocalPosition.location;
             float height = (float)location.Height;
             float waterHeight = (float)location.WaterHeight;
             bool insideBuilding = location.Building;
