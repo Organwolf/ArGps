@@ -109,21 +109,16 @@ public class WaterMesh : MonoBehaviour
 
     public void Restart()
     {
-        ARLocationManager.Instance.ResetARSession((() =>
+        ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "Restart", $"({gameObject.name}) - Restarting!", DebugMode);
+
+        state = new LocationsStateData();
+        hasInitialized = false;
+        ARLocationManager.Instance.Restart();
+
+        if (locationProvider.IsEnabled)
         {
-            Debug.Log("AR+GPS and AR Session were restarted!");
-        }));
-
-        //ARLocation.Utils.Logger.LogFromMethod("WaterMesh", "Restart", $"({gameObject.name}) - Restarting!", DebugMode);
-
-        //state = new LocationsStateData();
-        //hasInitialized = false;
-        //ARLocationManager.Instance.Restart();
-
-        //if (locationProvider.IsEnabled)
-        //{
-        //    locationUpdatedHandler(locationProvider.CurrentLocation, locationProvider.LastLocation);
-        //}
+            locationUpdatedHandler(locationProvider.CurrentLocation, locationProvider.LastLocation);
+        }
     }
 
     public void SetPositionsToHandleLocations(List<Location> locationWithWaterHeight)

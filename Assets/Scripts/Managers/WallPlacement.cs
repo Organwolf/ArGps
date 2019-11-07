@@ -310,6 +310,19 @@ public class WallPlacement : MonoBehaviour
         }
     }
 
+    public void ResetScanning()
+    {
+        planeIsPlaced = false;
+        waterMeshRendered = false;
+        groundPlane = null;
+        measuringstick.SetActive(false);
+        RemoveAllWalls();
+        if(!arPlaneManager.enabled)
+        {
+            arPlaneManager.enabled = true;
+        }
+    }
+
     public void WaterMeshGenerated(bool state)
     {
         waterMeshRendered = state;
@@ -333,6 +346,14 @@ public class WallPlacement : MonoBehaviour
             Destroy(wallToRemove.line);
             walls.RemoveAt(length - 1);
             Debug.Log("Length of walls: " + walls.Count);
+        }
+    }
+
+    private void RemoveAllWalls()
+    {
+        foreach(var wall in walls)
+        {
+            RemovePreviousWall();
         }
     }
 
@@ -405,6 +426,7 @@ public class WallPlacement : MonoBehaviour
 
         Vector3 heightVector = new Vector3(0, wallHeight, 0);
 
+        // Adding a negative offset in Y would render the walls below the mesh and upwards 
         newMesh.vertices = new Vector3[]
         {
             firstPoint,

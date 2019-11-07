@@ -1,4 +1,5 @@
 ﻿using ARLocation;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class Manager : MonoBehaviour
     [SerializeField] Text togglePlacementText;
     [SerializeField] Button generateMeshButton;
     [SerializeField] Canvas informationCanvas;
+    [SerializeField] Canvas settingsCanvas;
+    [SerializeField] InputField boundsInput;
     [SerializeField] Camera aRCamera;
     [SerializeField] int bounds = 0;
     [SerializeField] Text[] informationTexts;
@@ -27,6 +30,7 @@ public class Manager : MonoBehaviour
     private List<Location> entireCSVData;
     private float offset = 0f;
     private bool meshGenerated = false;
+    private Vector3 lastScannedPosition = Vector3.zero;
 
     private void Awake()
     {
@@ -36,11 +40,13 @@ public class Manager : MonoBehaviour
         entireCSVData = CSV_extended.ParseCsvFileUsingResources(pathToCSV);
         generateMeshButton.interactable = false;
         informationCanvas.enabled = false;
+        settingsCanvas.enabled = false;
         DisableInformationText();
     }
 
     private void Start()
     {
+        //GetComponent<Animator>().SetBool("fadeIn", true);
         SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
     }
 
@@ -48,7 +54,7 @@ public class Manager : MonoBehaviour
 
     private void OnEnable()
     {
-        updateEachSecond = StartCoroutine(OnPlayerOutOfBounds(bounds));
+        updateEachSecond = StartCoroutine(OutOfBoundsCheck());
     }
 
     private void OnDisable()
@@ -59,24 +65,37 @@ public class Manager : MonoBehaviour
         Debug.Log("App disabled");
     }
 
-    private IEnumerator OnPlayerOutOfBounds(int bounds)
+    private IEnumerator OutOfBoundsCheck()
     {
         // Run the coroutine every 2 seconds
         var wait = new WaitForSecondsRealtime(2.0f);
 
         while (true)
         {
-            var distanceFromOrigo = aRCamera.transform.position.magnitude;
+            Debug.Log("New bounds: " + bounds);
+            var distance = Vector3.Distance(aRCamera.transform.position, lastScannedPosition);
 
-            if(distanceFromOrigo > bounds)
+            if(distance > bounds)
             {
-                SSTools.ShowMessage("Out of bounds. Reloading", SSTools.Position.top, SSTools.Time.twoSecond);
-                new WaitForSecondsRealtime(2f);
                 SceneManager.LoadScene("MainScene");
+                
+                // PlayerOutOfBounds is an atempt to avoid the reloading of the mainscene
+                // PlayerOutOfBounds();
             }
-            //Debug.Log("Distance from origo: " + distanceFromOrigo);
             yield return wait;
         }
+    }
+
+    private void PlayerOutOfBounds()
+    {
+        lastScannedPosition = aRCamera.transform.position;
+        SSTools.ShowMessage("Out of bounds. Re-scan ground", SSTools.Position.top, SSTools.Time.twoSecond);
+        // Remove the water mesh
+        delaunayMesh.ClearMesh();
+        waterMesh.Restart();
+        new WaitForSecondsRealtime(2f);
+        wallPlacement.ResetScanning();
+        //SceneManager.LoadScene("MainScene");
     }
 
     public void OnLocationProviderEnabled(LocationReading reading)
@@ -101,7 +120,6 @@ public class Manager : MonoBehaviour
             wallPlacement.SetCurrentGlobalLocalPositions(globalLocalPositions);
             wallPlacement.SetPointsWithinRadius(withinRadiusData);
             Debug.Log($"Size of points within radius: {withinRadiusData.Count}");
-
         }
     }
 
@@ -182,6 +200,41 @@ public class Manager : MonoBehaviour
         foreach(var text in informationTexts)
         {
             text.enabled = false;
+        }
+    }
+
+    public void SettingsDone()
+    {
+        // Get the new bounds from settings panel
+        var newBounds = boundsInput.text;
+        try
+        {
+            bounds = int.Parse(newBounds);
+
+        }
+        catch (Exception)
+        {
+            Debug.Log("input field not set");
+        }
+
+        // Reset coroutine with new bounds
+        //StopCoroutine(updateEachSecond);
+        //updateEachSecond = null;
+        //updateEachSecond = StartCoroutine(OutOfBoundsCheck());
+
+        // Finally isable the panel
+        ToggleSettings();
+    }
+
+    public void ToggleSettings()
+    {
+        if(settingsCanvas.enabled)
+        {
+            settingsCanvas.enabled = false;
+        }
+        else
+        {
+            settingsCanvas.enabled = true;
         }
     }
 
