@@ -46,7 +46,7 @@ public class Manager : MonoBehaviour
 
     private void Start()
     {
-        //GetComponent<Animator>().SetBool("fadeIn", true);
+        // Toast instruction
         SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
     }
 
@@ -61,8 +61,6 @@ public class Manager : MonoBehaviour
     {
         StopCoroutine(updateEachSecond);
         updateEachSecond = null;
-
-        Debug.Log("App disabled");
     }
 
     private IEnumerator OutOfBoundsCheck()
@@ -77,25 +75,21 @@ public class Manager : MonoBehaviour
 
             if(distance > bounds)
             {
-                SceneManager.LoadScene("MainScene");
-                
-                // PlayerOutOfBounds is an atempt to avoid the reloading of the mainscene
-                // PlayerOutOfBounds();
+                SceneManager.LoadScene("MainScene");                
             }
             yield return wait;
         }
     }
 
+    // Currently not used - could be called from OutOfBoundsCheck
     private void PlayerOutOfBounds()
     {
         lastScannedPosition = aRCamera.transform.position;
         SSTools.ShowMessage("Out of bounds. Re-scan ground", SSTools.Position.top, SSTools.Time.twoSecond);
-        // Remove the water mesh
         delaunayMesh.ClearMesh();
         waterMesh.Restart();
         new WaitForSecondsRealtime(2f);
         wallPlacement.ResetScanning();
-        //SceneManager.LoadScene("MainScene");
     }
 
     public void OnLocationProviderEnabled(LocationReading reading)
@@ -103,7 +97,6 @@ public class Manager : MonoBehaviour
         deviceLocation = reading.ToLocation();
         InitializeWaterMesh();
         closestPoint = CSV_extended.ClosestPointGPS(withinRadiusData, deviceLocation);
-
     }
 
     public void OnLocationUpdated(LocationReading reading)
@@ -210,7 +203,6 @@ public class Manager : MonoBehaviour
         try
         {
             bounds = int.Parse(newBounds);
-
         }
         catch (Exception)
         {
@@ -222,7 +214,6 @@ public class Manager : MonoBehaviour
         //updateEachSecond = null;
         //updateEachSecond = StartCoroutine(OutOfBoundsCheck());
 
-        // Finally isable the panel
         ToggleSettings();
     }
 
