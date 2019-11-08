@@ -138,7 +138,6 @@ GameObject:
   - component: {fileID: 86549459}
   - component: {fileID: 86549455}
   - component: {fileID: 86549458}
-  - component: {fileID: 86549456}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -195,25 +194,6 @@ MonoBehaviour:
   trianglesInChunk: 5000
   chunkPrefab: {fileID: 4760822391077712, guid: dfbbc8c46a7ed47de952d225cce1f52c,
     type: 3}
---- !u!95 &86549456
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 86549452}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9a940897b7258ee4dbce09899d170f7b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &86549457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,6 +544,37 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Name
+      value: UICanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 620106219564309957, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: Once the water is in place you might want to create walls. This is done
+        by drawing a line where you wish the wall to be placed. Visualize the walls
+        by using the button.
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768163495714872774, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: Once the ground plane is selected it will be possible to generate the
+        water mesh. Use the Generate mesh button below.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4992585609083415090, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
+        type: 3}
+      propertyPath: m_Text
+      value: 'It is possible to undo wall placement as well and reset the entire session
+        if needed.
+
+        Good luck!'
+      objectReference: {fileID: 0}
     - target: {fileID: 5005413041560477991, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}
       propertyPath: m_FontData.m_FontSize
@@ -683,37 +694,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SettingsTitle
-      objectReference: {fileID: 0}
-    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_Name
-      value: UICanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 4674721501056865516, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 620106219564309957, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_Text
-      value: Once the water is in place you might want to create walls. This is done
-        by drawing a line where you wish the wall to be placed. Visualize the walls
-        by using the button.
-      objectReference: {fileID: 0}
-    - target: {fileID: 8768163495714872774, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_Text
-      value: Once the ground plane is selected it will be possible to generate the
-        water mesh. Use the Generate mesh button below.
-      objectReference: {fileID: 0}
-    - target: {fileID: 4992585609083415090, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
-        type: 3}
-      propertyPath: m_Text
-      value: 'It is possible to undo wall placement as well and reset the entire session
-        if needed.
-
-        Good luck!'
       objectReference: {fileID: 0}
     - target: {fileID: 5137389554070869857, guid: 1f5ee01c89ebf38499d3b52fc3bb9469,
         type: 3}

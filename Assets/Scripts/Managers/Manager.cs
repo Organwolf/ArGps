@@ -48,6 +48,17 @@ public class Manager : MonoBehaviour
     {
         // Toast instruction
         SSTools.ShowMessage("Scan the ground", SSTools.Position.top, SSTools.Time.threeSecond);
+
+        if(PlayerPrefs.HasKey("Bounds"))
+        {
+            bounds = PlayerPrefs.GetInt("Bounds");
+        }
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        // reset playerpreffs
+        PlayerPrefs.DeleteKey("Bounds");
     }
 
     private UnityEngine.Coroutine updateEachSecond;
@@ -199,10 +210,11 @@ public class Manager : MonoBehaviour
     public void SettingsDone()
     {
         // Get the new bounds from settings panel
-        var newBounds = boundsInput.text;
+        int newBounds = int.Parse(boundsInput.text);
         try
         {
-            bounds = int.Parse(newBounds);
+            PlayerPrefs.SetInt("Bounds", newBounds);
+            bounds = newBounds;
         }
         catch (Exception)
         {

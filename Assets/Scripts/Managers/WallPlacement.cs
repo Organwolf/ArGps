@@ -284,21 +284,29 @@ public class WallPlacement : MonoBehaviour
     {
         var minDistance = float.MaxValue;
         float distance;
+        Location closestLocation = null;
         int length = currentGlobalLocalPositions.Count;
         int index = 0;
 
+        // Separate function (?)
         for (int i= 0;  i < length; i++)
         {
-            distance = Vector3.Distance(currentGlobalLocalPositions[i].localLocation, stickPosition);
+            var locationData = currentGlobalLocalPositions[i];
+            distance = Vector3.Distance(locationData.localLocation, stickPosition);
 
             if(distance < minDistance)
             {
                 minDistance = distance;
+                closestLocation = locationData.location;
                 index = i;
             }
         }
 
         Location point = dataWithinRadius[index];
+
+        // DEBUG STUFF
+        Debug.Log($"Index: Long: {point.Longitude}  Lat: {point.Latitude}  Water height: {point.WaterHeight}");
+        Debug.Log($"locationData:  Long: {closestLocation.Longitude}  Lat: {closestLocation.Latitude}  Water height: {closestLocation.WaterHeight}");
 
         if (point.Building)
         {
@@ -426,7 +434,7 @@ public class WallPlacement : MonoBehaviour
 
         Vector3 heightVector = new Vector3(0, wallHeight, 0);
 
-        // Adding a negative offset in Y would render the walls below the mesh and upwards 
+        // Adding a negative offset in Y would render the walls from below the mesh and upwards 
         newMesh.vertices = new Vector3[]
         {
             firstPoint,
