@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Settings.unity
     guid: 4cb2ad9f93c4cda4bb1a63c86e865fa3
   - enabled: 0
-    path: Assets/Scenes/Tests/UISandbox.unity
+    path: Assets/Scenes/Tests/UIFadeAnimation.unity
     guid: bce6fa1c0f935de459ffa71d066968d5
   m_configObjects: {}
